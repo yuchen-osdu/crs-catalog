@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "os-catalog-service"
+  labels:
+    app: "os-catalog-service"
+    version: v2
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: "os-catalog-service"
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: "os-catalog-service"
+        version: v2
+    spec:
+      volumes:
+      - name: shared-data
+        emptyDir: {}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.repository }}os-crs-catalog-app:{{ .Values.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+          - name: shared-data
+            mountPath: /mnt/crs_catalogs
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.http.targetPort }}
+            - name: https
+              containerPort: {{ .Values.service.https.targetPort }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: os-service-config
+          env:
+            - name: ENTITLEMENT_URL
+              value: "{{ .Values.service.entitlement.url }}"
+      initContainers:
+      - name: "init-crs-catalog"
+        image: {{ .Values.repository }}crs_catalogs:{{ .Values.tag }}
+        imagePullPolicy: {{ .Values.image.catalogs.pullPolicy }}
+        volumeMounts:
+        - name: shared-data
+          mountPath: /mnt/crs_catalogs
+      imagePullSecrets:
+        - name: {{ .Values.image.imagePullSecrets }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

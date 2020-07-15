@@ -1,0 +1,44 @@
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.factorypath
+.settings/
+*.sublime-workspace
+*.iml
+openapi.json
+target/
+
+# IDE - VSCode
+.vscode/*
+
+#IDE - Webstorm
+/**/vcs.xml
+/**/works
+
+#Docker
+docker-compose.override.yml
+
+# Misc
+/cloc
+/bin
+/pkg
+/src/vendor
+/src/api/vendor
+/deploy
+/cobertura
+/testresults
+/.cover
+
+# Runtime files created during local run
+/app/*
+
+# Python, virtualenv
+/venv
+testing/*/venv/
+testing/*/env/
+
+#.pyc files in all directories
+**/*.pyc

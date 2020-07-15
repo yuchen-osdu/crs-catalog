@@ -1,0 +1,75 @@
+# Copyright 2017-2019, Schlumberger
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+      - README.md
+
+pool:
+  name: Hosted Ubuntu 1604
+  demands: maven
+
+variables:
+  dockerId: 'hubpoc'
+  imageName: 'crs-catalog-gke:v2'
+
+steps:
+- task: Maven@3
+  displayName: 'Maven: build, test, and install crs-catalog-core'
+  inputs:
+    mavenPomFile: 'pom.xml'
+    goals: install
+    options: '--settings ./maven/settings.xml -DVSTS_FEED_TOKEN=$(VSTS_FEED_TOKEN)'
+    codeCoverageToolOption: JaCoCo
+
+- task: Maven@3
+  displayName: 'build, test, code coverage'
+  inputs:
+    mavenPomFile: 'pom.xml'
+    options: '--settings ./maven/settings.xml -DVSTS_FEED_TOKEN=$(VSTS_FEED_TOKEN) -P crs-catalog-gke'
+    testResultsFiles: '**/*/TEST-*.xml'
+    codeCoverageToolOption: JaCoCo
+
+- bash: |
+   #!/bin/bash
+   pushd provider/crs-catalog-gcp/crs-catalog-gke   
+   docker login -u $(dockerId) -p $(dockerPassword) $(dockerId).azurecr.io
+   docker build -t $(dockerId).azurecr.io/$(imageName) .
+   docker push $(dockerId).azurecr.io/$(imageName)
+   # copy istio config files to artifacts staging directory
+   cp -R istio $(build.artifactstagingdirectory)/istio
+   # Zip integration tests and upload it as artifact
+   zip -r testing.zip testing
+   cp testing.zip $(build.artifactstagingdirectory)   
+   popd
+  displayName: 'build and upload docker image as well as copy istio config files'
+
+- bash: |
+   # install helm 3
+   curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
+   chmod 700 get_helm.sh
+   ./get_helm.sh
+   # package helm chart
+   helm package provider/crs-catalog-gcp/crs-catalog-gke/crs-catalog-gke --version 0.0.1 --destination '$(build.artifactstagingdirectory)'
+  displayName: 'install helm 3 and package helm chart'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+  condition: succeededOrFailed()

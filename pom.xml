@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <docker.image.prefix>org.opengroup.osdu</docker.image.prefix>
+        <powermock.version>2.0.6</powermock.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.5.RELEASE</version>
+    </parent>
+
+    <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
+    <artifactId>crs-catalog-service</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <name>crs-catalog-service</name>
+    <description>crs-catalog service</description>
+
+    <profiles>
+        <profile>
+            <id>crs-catalog-core</id>
+            <activation>
+                <!-- this profile is active by default -->
+                <activeByDefault>true</activeByDefault>
+                <!-- activate if system properties 'env=crs-catalog-core' -->
+                <property>
+                    <name>env</name>
+                    <value>crs-catalog-core</value>
+                </property>
+            </activation>
+            <modules>
+                <module>crs-catalog-core</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>crs-catalog-aks</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>crs-catalog-aks</value>
+                </property>
+            </activation>
+            <modules>
+                <module>provider/crs-catalog-azure/crs-catalog-aks</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>crs-catalog-gke</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>crs-catalog-gke</value>
+                </property>
+            </activation>
+            <modules>
+                <module>provider/crs-catalog-gcp/crs-catalog-gke</module>
+            </modules>
+        </profile>
+    </profiles>
+
+
+    <repositories>
+        <repository>
+            <id>os-core</id>
+            <url>https://pkgs.dev.azure.com/slb-des-ext-collaboration/_packaging/os-core/maven/v1</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+</project>

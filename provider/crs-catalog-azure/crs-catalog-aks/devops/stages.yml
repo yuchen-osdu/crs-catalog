@@ -1,0 +1,133 @@
+parameters:
+  environments: []
+
+stages:
+  - ${{ each environment in parameters.environments }}:
+    - stage: 'Build_${{ environment.name }}'
+
+      variables:
+      - group: 'AKS Target Env - ${{ environment.name }}'
+
+      jobs:
+        - job: MavenPackageAndPublishArtifacts
+          displayName: Maven Package and Publish Artifacts
+          pool: $(AGENT_POOL)
+
+          steps:
+          - task: Maven@3
+            displayName: 'Maven: build, test, and install crs-catalog-core'
+            inputs:
+              mavenPomFile: 'pom.xml'
+              goals: 'install'
+              options: '--settings ./maven/settings.xml -DVSTS_FEED_TOKEN=$(VSTS_FEED_TOKEN)'
+              codeCoverageToolOption: JaCoCo
+
+          - task: Maven@3
+            displayName: 'build, test, code coverage'
+            inputs:
+              mavenPomFile: 'pom.xml'
+              options: '--settings ./maven/settings.xml -DVSTS_FEED_TOKEN=$(VSTS_FEED_TOKEN) -P crs-catalog-aks'
+              testResultsFiles: '**/*/TEST-*.xml'
+              codeCoverageToolOption: JaCoCo
+
+          - bash: |
+              #!/bin/bash
+              set -e
+              pushd provider/crs-catalog-azure/crs-catalog-aks
+              docker login -u $(dockerId) -p $(dockerPassword) $(dockerId).azurecr.io
+              docker build -t $(dockerId).azurecr.io/$(imageName) .
+              docker push $(dockerId).azurecr.io/$(imageName)
+              popd
+            displayName: 'build and upload docker image $(dockerId).azurecr.io/$(imageName)'
+          - bash: |
+              #!/bin/bash
+              set -e
+              pushd provider/crs-catalog-azure/crs-catalog-aks/crs-catalog-aks
+              sed "s|ENTITLEMENT_URL|$(ENTITLEMENT_URL)|g" values.yaml.tmpl > values.yaml
+              cat values.yaml
+              popd
+            displayName: 'generate values.yaml with actual variables: $(ENTITLEMENT_URL)'
+          - bash: |
+              #!/bin/bash
+              set -e
+              curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+              chmod 700 get_helm.sh
+              ./get_helm.sh
+              # package helm chart
+              helm package provider/crs-catalog-azure/crs-catalog-aks/crs-catalog-aks --version 0.0.1 --destination '$(build.artifactstagingdirectory)'
+            displayName: 'install helm 3 and package helm chart'
+          - bash: |
+              #!/bin/bash
+              set -e
+              # Zip integration tests and upload it as artifact
+              zip -r testing.zip testing
+              cp testing.zip $(build.artifactstagingdirectory)
+            displayName: 'Zip integration tests and upload it as artifact'
+          - upload: $(Build.ArtifactStagingDirectory)
+            artifact: drop_${{environment.name}}
+
+    - stage: Deploy_${{environment.name}}
+      dependsOn: 'Build_${{ environment.name }}'
+      condition: succeeded()
+
+      variables:
+      - group: 'AKS Target Env - ${{ environment.name }}'
+
+      jobs:
+        - deployment: DeployLinuxWebApp
+          displayName: Deploy Linux Web App
+          environment: ${{ environment.name }}
+          pool: $(AGENT_POOL)
+
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                - task: KubectlInstaller@0
+                  displayName: 'Install Kubectl latest'
+                - bash: |
+                    #!/bin/bash
+                    set -e
+                    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+                    chmod 700 get_helm.sh
+                    ./get_helm.sh
+                  displayName: 'Install helm 3'
+                - task: HelmDeploy@0
+                  displayName: 'helm delete: delete existing deployment'
+                  inputs:
+                    connectionType: 'Kubernetes Service Connection'
+                    kubernetesServiceConnection: ${{ environment.kubeconfig }}                   
+                    command: delete
+                    arguments: 'crs-catalog-aks'                   
+                - task: HelmDeploy@0
+                  displayName: 'helm upgrade'
+                  inputs:
+                    connectionType: 'Kubernetes Service Connection'
+                    kubernetesServiceConnection: ${{ environment.kubeconfig }}
+                    command: upgrade
+                    options: '--force --wait'
+                    chartType: FilePath
+                    chartPath: '$(Pipeline.Workspace)/drop_${{environment.name}}/crs-catalog-aks-0.0.1.tgz'
+                    releaseName: 'crs-catalog-aks'
+                  condition: succeededOrFailed()                     
+                # - bash: |
+                #     #!/bin/bash
+                #     set -e
+                #     pushd $(Pipeline.Workspace)/drop_${{environment.name}}
+                #     echo "Current working directory: "
+                #     pwd
+                #     echo "Contents: "
+                #     ls -al
+                #     # Unzip integration tests
+                #     unzip testing.zip -d ./
+                #     chmod +x ./testing/catalog_test_azure/run-integration-tests.sh
+                #     popd
+                #   displayName: 'Unzip integration tests'
+                # - task: Bash@3
+                #   displayName: 'Run integration tests'
+                #   inputs:
+                #     targetType: filePath
+                #     filePath: '$(Pipeline.Workspace)/drop_${{environment.name}}/testing/catalog_test_sazure/run-integration-tests.sh'
+                #     arguments: ''
+                #     workingDirectory: '$(Pipeline.Workspace)/drop_${{environment.name}}/testing/catalog_test_azure'
+
