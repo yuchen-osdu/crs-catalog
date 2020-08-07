@@ -83,7 +83,7 @@ python3 -m pip install -r requirements.txt
 
 To run:
 ```bash
-python3 python3 run_test.py
+python3 run_test.py
 ```
 
 **Note:** To simulate a runtime exactly as that of the vsts build agent, you can simply exec into the docker image we use for the build agent, and run the tests from inside it. To know how to do this, please follow [this](https://slb-swt.visualstudio.com/data-at-rest/_git/dps-vsts-build-agent?path=%2FREADME.md&version=GBmaster) documentation.
