@@ -138,7 +138,7 @@ class AreasOfUseApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/area', 'GET',
                                         path_params,
@@ -249,7 +249,7 @@ class AreasOfUseApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/area', 'POST',
                                         path_params,
@@ -387,7 +387,7 @@ class AreasOfUseApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/search/area', 'POST',
                                         path_params,

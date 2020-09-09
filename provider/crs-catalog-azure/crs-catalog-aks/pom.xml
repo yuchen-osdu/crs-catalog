@@ -43,6 +43,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <objectify.version>5.1.22</objectify.version>
+        <azure.version>2.1.7</azure.version>
         <slf4j.version>1.7.25</slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
@@ -111,6 +112,12 @@
             <artifactId>cobertura-maven-plugin</artifactId>
             <version>2.7</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-active-directory-spring-boot-starter</artifactId>
+            <version>${azure.version}</version>
         </dependency>
     </dependencies>
 

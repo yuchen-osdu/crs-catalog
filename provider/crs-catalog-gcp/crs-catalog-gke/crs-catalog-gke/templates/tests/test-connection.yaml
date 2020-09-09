@@ -12,15 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-{{- $fullName := include "os-catalog-service.fullname" . -}}
+{{- $fullName := include "crs-catalog-service.fullname" . -}}
 
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ include "os-catalog-service.fullname" . }}-test-connection"
+  name: "{{ include "crs-catalog-service.fullname" . }}-test-connection"
   labels:
-    app.kubernetes.io/name: {{ include "os-catalog-service.name" . }}
-    helm.sh/chart: {{ include "os-catalog-service.chart" . }}
+    app.kubernetes.io/name: {{ include "crs-catalog-service.name" . }}
+    helm.sh/chart: {{ include "crs-catalog-service.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
   annotations:
@@ -30,5 +30,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args:  ['{{ include "os-catalog-service.fullname" . }}:{{ .Values.service.port }}']
+      args:  ['{{ include "crs-catalog-service.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never

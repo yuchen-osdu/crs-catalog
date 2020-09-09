@@ -27,9 +27,6 @@
       "Bearer": []
     },
     {
-      "sauth_id_token": []
-    },
-    {
       "google_id_token": []
     }
   ],
@@ -72,9 +69,6 @@
             "Bearer": []
           },
           {
-            "sauth_id_token": []
-          },
-          {
             "google_id_token": []
           }
         ]
@@ -107,9 +101,6 @@
         "security": [
           {
             "Bearer": []
-          },
-          {
-            "sauth_id_token": []
           },
           {
             "google_id_token": []
@@ -169,9 +160,6 @@
             "Bearer": []
           },
           {
-            "sauth_id_token": []
-          },
-          {
             "google_id_token": []
           }
         ]
@@ -225,9 +213,6 @@
         "security": [
           {
             "Bearer": []
-          },
-          {
-            "sauth_id_token": []
           },
           {
             "google_id_token": []
@@ -288,9 +273,6 @@
             "Bearer": []
           },
           {
-            "sauth_id_token": []
-          },
-          {
             "google_id_token": []
           }
         ]
@@ -344,9 +326,6 @@
         "security": [
           {
             "Bearer": []
-          },
-          {
-            "sauth_id_token": []
           },
           {
             "google_id_token": []
@@ -407,9 +386,6 @@
             "Bearer": []
           },
           {
-            "sauth_id_token": []
-          },
-          {
             "google_id_token": []
           }
         ]
@@ -463,9 +439,6 @@
         "security": [
           {
             "Bearer": []
-          },
-          {
-            "sauth_id_token": []
           },
           {
             "google_id_token": []
@@ -526,9 +499,6 @@
             "Bearer": []
           },
           {
-            "sauth_id_token": []
-          },
-          {
             "google_id_token": []
           }
         ]
@@ -582,9 +552,6 @@
         "security": [
           {
             "Bearer": []
-          },
-          {
-            "sauth_id_token": []
           },
           {
             "google_id_token": []
@@ -645,9 +612,6 @@
             "Bearer": []
           },
           {
-            "sauth_id_token": []
-          },
-          {
             "google_id_token": []
           }
         ]
@@ -701,9 +665,6 @@
         "security": [
           {
             "Bearer": []
-          },
-          {
-            "sauth_id_token": []
           },
           {
             "google_id_token": []
@@ -764,9 +725,6 @@
             "Bearer": []
           },
           {
-            "sauth_id_token": []
-          },
-          {
             "google_id_token": []
           }
         ]
@@ -820,9 +778,6 @@
         "security": [
           {
             "Bearer": []
-          },
-          {
-            "sauth_id_token": []
           },
           {
             "google_id_token": []
@@ -883,9 +838,6 @@
             "Bearer": []
           },
           {
-            "sauth_id_token": []
-          },
-          {
             "google_id_token": []
           }
         ]
@@ -939,9 +891,6 @@
         "security": [
           {
             "Bearer": []
-          },
-          {
-            "sauth_id_token": []
           },
           {
             "google_id_token": []
@@ -1002,9 +951,6 @@
             "Bearer": []
           },
           {
-            "sauth_id_token": []
-          },
-          {
             "google_id_token": []
           }
         ]
@@ -1058,9 +1004,6 @@
         "security": [
           {
             "Bearer": []
-          },
-          {
-            "sauth_id_token": []
           },
           {
             "google_id_token": []
@@ -1162,9 +1105,6 @@
             "Bearer": []
           },
           {
-            "sauth_id_token": []
-          },
-          {
             "google_id_token": []
           }
         ]
@@ -1262,9 +1202,6 @@
         "security": [
           {
             "Bearer": []
-          },
-          {
-            "sauth_id_token": []
           },
           {
             "google_id_token": []
@@ -1366,9 +1303,6 @@
             "Bearer": []
           },
           {
-            "sauth_id_token": []
-          },
-          {
             "google_id_token": []
           }
         ]
@@ -1380,15 +1314,6 @@
       "type": "apiKey",
       "name": "Authorization",
       "in": "header"
-    },
-    "sauth_id_token": {
-      "authorizationUrl": "https://opsauth-dot-cfsauth-preview.appspot.com/v1/auth",
-      "flow": "implicit",
-      "type": "oauth2",
-      "x-google-issuer": "sauth-preview.slb.com",
-      "x-google-jwks_uri": "https://opsauth-dot-cfsauth-preview.appspot.com/v1/certs",
-      "x-google-audiences": "services-datalake.slbservice.com,entitlement-datalake.slbclient.com,dev-slbdev-devportal.slbapp.com,test-slbdev-devportal.slbapp.com,discover-evd-csp-slb-com-dtwdev.slbapp.com,discover-evt-csp-slb-com-dtwcmz.slbapp.com,discover-evq-csp-slb-com-dtwstage.slbapp.com,fuse-evd-csp-slb-com-dtwdev.slbapp.com,fuse-evt-csp-slb-com-dtwcmz.slbapp.com,fuse-evq-csp-slb-com-dtwstage.slbapp.com,local-logstore.slbapp.com,localhost3000-dtwdev.slbapp.com,prod-logstoreproject.slbapp.com,prodanadarko-logstoreproject.slbapp.com,prodeu-logstoreproject.slbapp.com,local-logstore.slbapp.com,widget-catalogue-evd-csp-slb-com-dtwdev.slbapp.com,automation-test-svc-dtwdev.slbservice.com,slb-wellbore-dev1-wing.slbapp.com,slb-wellbore-stg1-wing.slbapp.com,slb-wellbore-stg2-wing.slbapp.com,test-sauthdevportalsvc-devportal.slbapp.com,prodops-evd-prodops.slbapp.com,prodops-evq-prodops.slbapp.com,prodops-evt-prodops.slbapp.com,pwe-evd-prodops.slbapp.com,prodops-pdi-evq-prodops.slbapp.com,geoxspar-service-geoxspar.slbservice.com,dps-manager-datalake.slbclient.com,production-finder-geosciencemapping.slbservice.com,evd-data-delfi-cloud-slb-ds-com-dtwdev.slbapp.com,test-services-datalake-datalake.slbservice.com,nor-apidemo.slbclient.com,geoscience-mapping-dev@appspot.gserviceaccount.com,production-finder-geosciencemapping.slbservice.com,infrastructure-evd-prodops.slbapp.com,evd-widgets-delfi-cloud-slb-ds-com-dtwdev.slbapp.com,carbon.slbapp.com,evt-widgets-delfi-cloud-slb-ds-com-dtwcmz.slbapp.com,p4d-widgets-delfi-cloud-slb-ds-com-dtwstage.slbapp.com,widget-catalogue-demo-csp-slb-com-dtwstage.slbapp.com,deployment-drill1-evd-prodops.slbapp.com,deployment-drill2-evd-prodops.slbapp.com,deployment-drill3-evd-prodops.slbapp.com",
-      "scopes": {}
     },
     "google_id_token": {
       "authorizationUrl": "",

@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "os-catalog-service"
+  name: "crs-catalog-service"
   labels:
-    app: "os-catalog-service"
+    app: "crs-catalog-service"
     version: v2
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: "os-catalog-service"
+      app: "crs-catalog-service"
       version: v2
   template:
     metadata:
       labels:
-        app: "os-catalog-service"
+        app: "crs-catalog-service"
         version: v2
     spec:
       volumes:
@@ -22,7 +22,7 @@ spec:
         emptyDir: {}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.repository }}os-crs-catalog-app:{{ .Values.tag }}
+          image: {{ .Values.repository }}crs-catalog-app:{{ .Values.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
           - name: shared-data

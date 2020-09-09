@@ -22,7 +22,6 @@
 			<id>os-core</id>
 			<username>slb-des-ext-collaboration</username>
 			<!-- Treat this auth token like a password. Do not share it with anyone, including Microsoft support. -->
-			<!-- The generated token expires on or before 10/8/2019 -->
 			<password>${VSTS_FEED_TOKEN}</password>
 		</server>
 	</servers>

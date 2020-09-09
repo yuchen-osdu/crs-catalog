@@ -29,8 +29,6 @@ swagger_client.configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # swagger_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
 # Configure OAuth2 access token for authorization: google_id_token
 swagger_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
-# Configure OAuth2 access token for authorization: sauth_id_token
-swagger_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # create an instance of the API class
 api_instance = swagger_client.CRSCatalogApi()
@@ -56,7 +54,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Bearer](../README.md#Bearer), [google_id_token](../README.md#google_id_token), [sauth_id_token](../README.md#sauth_id_token)
+[Bearer](../README.md#Bearer), [google_id_token](../README.md#google_id_token)
 
 ### HTTP request headers
 
@@ -86,8 +84,6 @@ swagger_client.configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # swagger_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
 # Configure OAuth2 access token for authorization: google_id_token
 swagger_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
-# Configure OAuth2 access token for authorization: sauth_id_token
-swagger_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # create an instance of the API class
 api_instance = swagger_client.CRSCatalogApi()
@@ -113,7 +109,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[Bearer](../README.md#Bearer), [google_id_token](../README.md#google_id_token), [sauth_id_token](../README.md#sauth_id_token)
+[Bearer](../README.md#Bearer), [google_id_token](../README.md#google_id_token)
 
 ### HTTP request headers
 
