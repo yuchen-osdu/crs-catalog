@@ -31,43 +31,18 @@ mvn clean install
 ```
 
 ## Running Azure Catalog Service locally
-### Configure Maven Settings
-To obtain maven dependencies from the **Azure DevOps Artifacts** we need to configure the value for variable ${VSTS_FEED_TOKEN} described in `maven\settings.xml`:
-- **Get token:**  
-We can use personal token generated in VSTS on [Personal Access Tokens](https://dev.azure.com/slb-swt/_usersSettings/tokens) > New token > Organization: slb-des-ext-collaboration > Create
-- **Set token in your local home folder:** 
-Open or create `USER_HOME_FOLDER\.m2\settings.xml` and paste your personal token in `<password></password>`section.
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
-  <servers>
-        <server>
-          <id>os-core</id>
-          <username>slb-des-ext-collaboration</username>
-          <password></password>
-        </server>
-  </servers>
-</settings>
-```
 #### Build and run Catalog Service locally using bash
 - Set the required environments described in [Release/deployment](##Release/deployment) section
-- Navigate to the Catalog Service's root folder ```os-crs-catalog-service``` 
+- Navigate to the Catalog Service's root folder ```crs-catalog-service```
 - Build core and run unit tests in command line:
 ```bash
-mvn clean install -P crs-catalog-core
+mvn clean install
 # To run without tests add -Dmaven.test.skip=true
 ```
-- Navigate to the Catalog Service's Azure 
-- Build services in command line:
-```bash
-mvn clean package -P crs-catalog-aks,crs-catalog-core
-```
-- Navigate to the Catalog Service's root folder ```os-crs-catalog-service``` 
+- Navigate to the Catalog Service's root folder ```crs-catalog-service```
 - Run application with command
 ```bash
-java -jar provider/crs-catalog-azure/crs-catalog-aks/target/crs-catalog-aks-1.0.0.jar
+java -Dclient-id=${aad_client_id} -jar provider/crs-catalog-azure/crs-catalog-aks/target/crs-catalog-aks-1.0.0.jar
 ```
 
 #### Running Azure Catalog Service using IntelliJ IDEA
@@ -75,8 +50,8 @@ Navigate to the **Create Run/Debug Configuration** tool
 Select **'Add New Configuration'** and select **Application**
 
 Type the next commands into the suggested fields: 
-- Working directory: ```{path_to_the_catalog}/os-crs-catalog-service``` 
-- Main class: ```org.opengroup.osdu.crs.CRSAKSApplication``` 
+- Working directory: ```{path_to_the_catalog}/crs-catalog-service```
+- Main class: ```org.opengroup.osdu.crs.CrsAksApplication```
 - Use classpath of module:  ```crs-catalog-aks```  
 ***Note: If you don't see "crs-catalog-aks" in the dropdown menu - find appropriate pom.xml and click "Add as a Maven project"***
 - Environment variables: Set the required environments described in [Release/deployment](##Release/deployment) section  
@@ -129,4 +104,5 @@ requires the following environment variables:
 | Variable | Contents |
 |----------|----------|
 | ENTITLEMENT_URL | Required |
-| CRS_CATALOG_FILENAME | Required, e.g. `{path_to_the_catalog}/os-crs-catalog-service/data/crs_catalog_v2.json` |
+| client-id | Required, Azure AAD client id |
+| CRS_CATALOG_FILENAME | Required, e.g. `{path_to_the_catalog}/crs-catalog-service/data/crs_catalog_v2.json` |

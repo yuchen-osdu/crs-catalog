@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "os-catalog-service"
+  name: "crs-catalog-service"
   labels:
-    app: "os-catalog-service"
-    name: "os-catalog-service"
+    app: "crs-catalog-service"
+    name: "crs-catalog-service"
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -15,4 +15,4 @@ spec:
       targetPort: {{ .Values.service.https.targetPort }}
       name: https
   selector:
-    app: "os-catalog-service"
+    app: "crs-catalog-service"

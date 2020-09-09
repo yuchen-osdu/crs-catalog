@@ -823,8 +823,8 @@ class TestUnAuthorizedCrsCatalog(unittest.TestCase):
             api_response = self.api_instance.get_catalog_attributes(data_partition_id=data_partition_header)
             self.fail(api_response)
         except ApiException as e:
-            self.assertTrue(401 == e.status or 400 == e.status)
-            self.assertTrue("Unauthorized" == e.reason or "BAD REQUEST" == e.reason)
+            self.assertTrue(401 == e.status or 403 == e.status)
+            self.assertTrue("Unauthorized" == e.reason or "Forbidden" == e.reason)
 
     def test_crs_get_catalog_with_invalid_token(self):
         """Get the entire catalog"""
@@ -833,5 +833,5 @@ class TestUnAuthorizedCrsCatalog(unittest.TestCase):
             api_response = self.api_instance.get_catalog_summary(data_partition_id=data_partition_header)
             self.fail(api_response)
         except ApiException as e:
-            self.assertTrue(401 == e.status or 400 == e.status)
-            self.assertTrue("Unauthorized" == e.reason or "BAD REQUEST" == e.reason)
+            self.assertTrue(401 == e.status or 403 == e.status)
+            self.assertTrue("Unauthorized" == e.reason or "Forbidden" == e.reason)

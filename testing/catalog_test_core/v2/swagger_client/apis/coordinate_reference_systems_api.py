@@ -138,7 +138,7 @@ class CoordinateReferenceSystemsApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/compoundcrs', 'GET',
                                         path_params,
@@ -253,7 +253,7 @@ class CoordinateReferenceSystemsApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/crs', 'GET',
                                         path_params,
@@ -368,7 +368,7 @@ class CoordinateReferenceSystemsApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/earlyboundcrs', 'GET',
                                         path_params,
@@ -484,7 +484,7 @@ class CoordinateReferenceSystemsApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/lateboundcrs', 'GET',
                                         path_params,
@@ -596,7 +596,7 @@ class CoordinateReferenceSystemsApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/compoundcrs', 'POST',
                                         path_params,
@@ -708,7 +708,7 @@ class CoordinateReferenceSystemsApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/crs', 'POST',
                                         path_params,
@@ -820,7 +820,7 @@ class CoordinateReferenceSystemsApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/earlyboundcrs', 'POST',
                                         path_params,
@@ -932,7 +932,7 @@ class CoordinateReferenceSystemsApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/lateboundcrs', 'POST',
                                         path_params,
@@ -1071,7 +1071,7 @@ class CoordinateReferenceSystemsApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/search/crs', 'POST',
                                         path_params,

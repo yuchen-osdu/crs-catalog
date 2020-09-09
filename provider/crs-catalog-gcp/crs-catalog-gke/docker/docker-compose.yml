@@ -1,9 +1,9 @@
 version: "3"
 services:
-  os-crs-catalog-app:
+  catalog-service-app:
     build:
       context: ../
       dockerfile: docker/Dockerfile
-    image: gcr.io/opendes/os-crs-catalog-app
+    image: gcr.io/opendes/catalog-service-app
     ports:
      - "8080:8080"

@@ -229,14 +229,6 @@ class Configuration(object):
                     'value': 'Bearer ' + self.access_token
                 },
 
-            'sauth_id_token':
-                {
-                    'type': 'oauth2',
-                    'in': 'header',
-                    'key': 'Authorization',
-                    'value': 'Bearer ' + self.access_token
-                },
-
         }
 
     def to_debug_report(self):

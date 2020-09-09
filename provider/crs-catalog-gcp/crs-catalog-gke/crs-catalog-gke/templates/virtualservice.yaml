@@ -1,12 +1,12 @@
 {{- if .Values.virtualservice.enabled -}}
-{{- $fullName := include "os-catalog-service.fullname" . -}}
+{{- $fullName := include "crs-catalog-service.fullname" . -}}
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: {{ $fullName }}
   labels:
-    app.kubernetes.io/name: {{ include "os-catalog-service.name" . }}
-    helm.sh/chart: {{ include "os-catalog-service.chart" . }}
+    app.kubernetes.io/name: {{ include "crs-catalog-service.name" . }}
+    helm.sh/chart: {{ include "crs-catalog-service.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:

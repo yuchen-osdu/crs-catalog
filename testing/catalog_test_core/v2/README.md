@@ -57,8 +57,6 @@ swagger_client.configuration.api_key['Authorization'] = 'YOUR_API_KEY'
 # swagger_client.configuration.api_key_prefix['Authorization'] = 'Bearer'
 # Configure OAuth2 access token for authorization: google_id_token
 swagger_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
-# Configure OAuth2 access token for authorization: sauth_id_token
-swagger_client.configuration.access_token = 'YOUR_ACCESS_TOKEN'
 # create an instance of the API class
 api_instance = swagger_client.AreasOfUseApi()
 offset = 56 # int | The offset of the first item in the list of all AreaOfUse. It is optional and is 0 by default. (optional)
@@ -166,13 +164,6 @@ Class | Method | HTTP request | Description
 - **Type**: OAuth
 - **Flow**: implicit
 - **Authorization URL**: 
-- **Scopes**: N/A
-
-## sauth_id_token
-
-- **Type**: OAuth
-- **Flow**: implicit
-- **Authorization URL**: https://opsauth-dot-cfsauth-preview.appspot.com/v1/auth
 - **Scopes**: N/A
 
 

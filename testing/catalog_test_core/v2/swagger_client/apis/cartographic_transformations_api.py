@@ -138,7 +138,7 @@ class CartographicTransformationsApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/compoundct', 'GET',
                                         path_params,
@@ -253,7 +253,7 @@ class CartographicTransformationsApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/ct', 'GET',
                                         path_params,
@@ -368,7 +368,7 @@ class CartographicTransformationsApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/singlect', 'GET',
                                         path_params,
@@ -479,7 +479,7 @@ class CartographicTransformationsApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/compoundct', 'POST',
                                         path_params,
@@ -590,7 +590,7 @@ class CartographicTransformationsApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/ct', 'POST',
                                         path_params,
@@ -701,7 +701,7 @@ class CartographicTransformationsApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/singlect', 'POST',
                                         path_params,
@@ -839,7 +839,7 @@ class CartographicTransformationsApi(object):
             select_header_content_type(['application/json'])
 
         # Authentication setting
-        auth_settings = ['Bearer', 'google_id_token', 'sauth_id_token']
+        auth_settings = ['Bearer', 'google_id_token']
 
         return self.api_client.call_api('/search/ct', 'POST',
                                         path_params,

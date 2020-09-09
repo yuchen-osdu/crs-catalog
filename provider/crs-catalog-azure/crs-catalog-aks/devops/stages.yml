@@ -6,7 +6,10 @@ stages:
     - stage: 'Build_${{ environment.name }}'
 
       variables:
-      - group: 'AKS Target Env - ${{ environment.name }}'
+      - group: 'Azure Target Env - ${{environment.name}}'
+      - group: 'Azure Target Env Secrets - ${{environment.name}}'
+      - name: tag
+        value: 'v2'
 
       jobs:
         - job: MavenPackageAndPublishArtifacts
@@ -14,39 +17,48 @@ stages:
           pool: $(AGENT_POOL)
 
           steps:
-          - task: Maven@3
-            displayName: 'Maven: build, test, and install crs-catalog-core'
-            inputs:
-              mavenPomFile: 'pom.xml'
-              goals: 'install'
-              options: '--settings ./maven/settings.xml -DVSTS_FEED_TOKEN=$(VSTS_FEED_TOKEN)'
-              codeCoverageToolOption: JaCoCo
+          - ${{ if eq(environment.name, 'devint') }}:
+            - bash: |
+                #!/bin/bash
+                set -e
+                pushd data
+                docker login -u $(dockerId) -p $(dockerPassword) $(dockerId).azurecr.io
+                docker build -t $(dockerId).azurecr.io/crs-catalogs:v2 .
+                docker push $(dockerId).azurecr.io/crs-catalogs:v2
+                popd
+              displayName: 'build and upload data catalog image'
+            - task: Maven@3
+              displayName: 'Maven: build'
+              inputs:
+                mavenPomFile: 'pom.xml'
+                goals: 'install'
+                publishJUnitResults: true
 
-          - task: Maven@3
-            displayName: 'build, test, code coverage'
-            inputs:
-              mavenPomFile: 'pom.xml'
-              options: '--settings ./maven/settings.xml -DVSTS_FEED_TOKEN=$(VSTS_FEED_TOKEN) -P crs-catalog-aks'
-              testResultsFiles: '**/*/TEST-*.xml'
-              codeCoverageToolOption: JaCoCo
+            - bash: |
+                #!/bin/bash
+                set -e
+                pushd provider/crs-catalog-azure/crs-catalog-aks
+                docker login -u $(dockerId) -p $(dockerPassword) $(dockerId).azurecr.io
+                docker build -t $(dockerId).azurecr.io/$(imageName):$(tag) .
+                echo 'Image done.'
+                docker tag $(dockerId).azurecr.io/$(imageName):$(tag) $(dockerId).azurecr.io/$(imageName):latest
+                echo 'Added $(dockerId).azurecr.io/$(imageName):latest tag to $(dockerId).azurecr.io/$(imageName):$(tag)'
+                docker push $(dockerId).azurecr.io/$(imageName):$(tag)
+                echo 'Pushed $(dockerId).azurecr.io/$(imageName):$(tag)'
+                docker push $(dockerId).azurecr.io/$(imageName):latest
+                echo 'Pushed $(dockerId).azurecr.io/$(imageName):latest'
+                popd
+              displayName: 'build and upload docker image $(dockerId).azurecr.io/$(imageName)'
 
-          - bash: |
-              #!/bin/bash
-              set -e
-              pushd provider/crs-catalog-azure/crs-catalog-aks
-              docker login -u $(dockerId) -p $(dockerPassword) $(dockerId).azurecr.io
-              docker build -t $(dockerId).azurecr.io/$(imageName) .
-              docker push $(dockerId).azurecr.io/$(imageName)
-              popd
-            displayName: 'build and upload docker image $(dockerId).azurecr.io/$(imageName)'
           - bash: |
               #!/bin/bash
               set -e
               pushd provider/crs-catalog-azure/crs-catalog-aks/crs-catalog-aks
               sed "s|ENTITLEMENT_URL|$(ENTITLEMENT_URL)|g" values.yaml.tmpl > values.yaml
+              sed -i "s|client-id|$(AZURE_AD_APP_RESOURCE_ID)|g" values.yaml
               cat values.yaml
               popd
-            displayName: 'generate values.yaml with actual variables: $(ENTITLEMENT_URL)'
+            displayName: 'generate values.yaml with actual variables: $(ENTITLEMENT_URL) and $(client-id)'
           - bash: |
               #!/bin/bash
               set -e
@@ -71,8 +83,12 @@ stages:
       condition: succeeded()
 
       variables:
+      - group: 'Azure Target Env - ${{environment.name}}'
+      - group: 'Azure Target Env Secrets - ${{environment.name}}'
       - group: 'AKS Target Env - ${{ environment.name }}'
-
+      - name: tag
+        value: 'v2'
+      
       jobs:
         - deployment: DeployLinuxWebApp
           displayName: Deploy Linux Web App
@@ -83,6 +99,10 @@ stages:
             runOnce:
               deploy:
                 steps:
+                - task: DownloadSecureFile@1
+                  name: kubeConfig
+                  inputs:
+                    secureFile: 'kubeconfig-${{environment.name}}'
                 - task: KubectlInstaller@0
                   displayName: 'Install Kubectl latest'
                 - bash: |
@@ -93,41 +113,56 @@ stages:
                     ./get_helm.sh
                   displayName: 'Install helm 3'
                 - task: HelmDeploy@0
-                  displayName: 'helm delete: delete existing deployment'
-                  inputs:
-                    connectionType: 'Kubernetes Service Connection'
-                    kubernetesServiceConnection: ${{ environment.kubeconfig }}                   
-                    command: delete
-                    arguments: 'crs-catalog-aks'                   
-                - task: HelmDeploy@0
                   displayName: 'helm upgrade'
                   inputs:
                     connectionType: 'Kubernetes Service Connection'
                     kubernetesServiceConnection: ${{ environment.kubeconfig }}
                     command: upgrade
-                    options: '--force --wait'
+                    options: '--wait'
                     chartType: FilePath
                     chartPath: '$(Pipeline.Workspace)/drop_${{environment.name}}/crs-catalog-aks-0.0.1.tgz'
                     releaseName: 'crs-catalog-aks'
-                  condition: succeededOrFailed()                     
-                # - bash: |
-                #     #!/bin/bash
-                #     set -e
-                #     pushd $(Pipeline.Workspace)/drop_${{environment.name}}
-                #     echo "Current working directory: "
-                #     pwd
-                #     echo "Contents: "
-                #     ls -al
-                #     # Unzip integration tests
-                #     unzip testing.zip -d ./
-                #     chmod +x ./testing/catalog_test_azure/run-integration-tests.sh
-                #     popd
-                #   displayName: 'Unzip integration tests'
-                # - task: Bash@3
-                #   displayName: 'Run integration tests'
-                #   inputs:
-                #     targetType: filePath
-                #     filePath: '$(Pipeline.Workspace)/drop_${{environment.name}}/testing/catalog_test_sazure/run-integration-tests.sh'
-                #     arguments: ''
-                #     workingDirectory: '$(Pipeline.Workspace)/drop_${{environment.name}}/testing/catalog_test_azure'
 
+                - bash: |
+                    #!/bin/bash
+                    set -e
+                    kubectl --kubeconfig $(kubeConfig.secureFilePath) rollout restart deployment/crs-catalog-aks
+                  displayName: 'kubectl rollout restart deployment/crs-catalog-aks'
+
+                - ${{ if or(eq(environment.name, 'devint'), eq(environment.name, 'qa')) }}:
+                  - bash: |
+                      #!/bin/bash
+                      set -e
+
+                      pushd $(Pipeline.Workspace)/drop_${{environment.name}}
+                      echo "Current working directory: "
+                      pwd
+                      echo "Contents: "
+                      ls -al
+                      # Unzip integration tests
+                      unzip testing.zip -d ./
+                      chmod +x ./testing/catalog_test_azure/run-integration-tests.sh
+
+                      printf 'waiting for service to be ready:'
+                      sleep 10
+                      attempt_counter=0
+                      max_attempts=60
+                      until [ $(curl -s -o /dev/null -w "%{http_code}" https://$(VIRTUAL_SERVICE_HOST_NAME)/api/crs/catalog/_ah/liveness_check) -eq 200 ]; do
+                      if [ ${attempt_counter} -ge ${max_attempts} ]; then
+                          echo "Service is not available, please check the deployment"
+                          exit 1
+                      fi
+                      printf '.'
+                      attempt_counter=$(($attempt_counter+1))
+                      sleep 2
+                      done
+
+                      popd
+                    displayName: 'Unzip integration tests and wait for service to be ready'
+                  - task: Bash@3
+                    displayName: 'Run integration tests'
+                    inputs:
+                      targetType: filePath
+                      filePath: '$(Pipeline.Workspace)/drop_${{environment.name}}/testing/catalog_test_azure/run-integration-tests.sh'
+                      arguments: '$(AUTH_SECRET) $(AUTH_SERVICE_TOKEN_X_API_KEY)'
+                      workingDirectory: '$(Pipeline.Workspace)/drop_${{environment.name}}/testing/catalog_test_azure'

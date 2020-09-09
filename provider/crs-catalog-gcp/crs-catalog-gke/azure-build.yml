@@ -30,18 +30,11 @@ variables:
 
 steps:
 - task: Maven@3
-  displayName: 'Maven: build, test, and install crs-catalog-core'
+  displayName: 'build, test, code coverage'
   inputs:
     mavenPomFile: 'pom.xml'
     goals: install
     options: '--settings ./maven/settings.xml -DVSTS_FEED_TOKEN=$(VSTS_FEED_TOKEN)'
-    codeCoverageToolOption: JaCoCo
-
-- task: Maven@3
-  displayName: 'build, test, code coverage'
-  inputs:
-    mavenPomFile: 'pom.xml'
-    options: '--settings ./maven/settings.xml -DVSTS_FEED_TOKEN=$(VSTS_FEED_TOKEN) -P crs-catalog-gke'
     testResultsFiles: '**/*/TEST-*.xml'
     codeCoverageToolOption: JaCoCo
 

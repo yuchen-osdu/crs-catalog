@@ -31,20 +31,22 @@ trigger:
       - images/*
 
 variables:
-  - group: 'MAVEN_BUILD_VARS'
-  - group: 'AKS_COMMON'
+  - group: 'AZURE_REGISTRY_DELFI'
+  - group: 'Azure Common Secrets'
+  - group: 'Azure - Common'
   - group: 'Azure Service Release - crs-catalog'
   - name: imageName
-    value: 'crs-catalog-aks:v2'
+    value: 'crs-catalog-aks'
 
 stages:
   - template: stages.yml
     parameters:
       environments:
         - name: 'devint'
-          kubeconfig: 'aks-oidc'
-        # - ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
-        #   - name: 'qa'
-        #     kubeconfig: ''
-        #   - name: 'prod'
-        #     kubeconfig: ''
+          kubeconfig: 'devint-aks-kubeconfig'
+        - ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+          - name: 'qa'
+            kubeconfig: 'qa-aks-kubeconfig'
+          - name: 'prod'
+            kubeconfig: 'prod-aks-kubeconfig'
+
