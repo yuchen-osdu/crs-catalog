@@ -5,7 +5,7 @@ version: 2
 cli:
   server: https://app.fossa.com
   fetcher: custom
-  project: os-crs-catalog-service
+  project: CRS Catalog
 analyze:
   modules:
   - name: crs-catalog-service
@@ -14,13 +14,13 @@ analyze:
     path: .
   - name: crs-catalog-core
     type: mvn
-    target: pom.xml
-    path: crs-catalog-core
+    target: crs-catalog-core/pom.xml
+    path: .
   - name: crs-catalog-aks
     type: mvn
-    target: pom.xml
-    path: provider/crs-catalog-azure/crs-catalog-aks
+    target: provider/crs-catalog-azure/crs-catalog-aks/pom.xml
+    path: .
   - name: crs-catalog-gke
     type: mvn
-    target: pom.xml
-    path: provider/crs-catalog-gcp/crs-catalog-gke
+    target: provider/crs-catalog-gcp/crs-catalog-gke/pom.xml
+    path: .
