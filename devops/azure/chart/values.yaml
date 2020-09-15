@@ -1,0 +1,14 @@
+global:
+  replicaCount: 1
+
+image:
+  repository: community.opengroup.org:5555/osdu/platform/ref/crs-catalog-service
+  branch: master
+  tag: latest
+
+catalogs:
+  repository: delfi.azurecr.io/crs-catalogs
+  tag: v2
+  pullPolicy: Always
+  imagePullSecrets: acr
+
