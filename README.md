@@ -106,3 +106,8 @@ requires the following environment variables:
 | ENTITLEMENT_URL | Required |
 | client-id | Required, Azure AAD client id |
 | CRS_CATALOG_FILENAME | Required, e.g. `{path_to_the_catalog}/crs-catalog-service/data/crs_catalog_v2.json` |
+
+## GCP
+
+Instructions for running the Google Cloud Platform implementation locally can be found [here](./provider/crs-catalog-gcp/crs-catalog-gke/README.md).
+
