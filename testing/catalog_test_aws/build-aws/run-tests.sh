@@ -50,10 +50,9 @@ mkdir test-reports
 chmod +x run-integration-tests.sh
 echo Running CRS Catalog Service Integration Tests...
 ./run-integration-tests.sh
-
+TEST_EXIT_CODE=$?
 popd
 
-TEST_EXIT_CODE=$?
 
 #### COPY TEST REPORTS #########################################################################
 
