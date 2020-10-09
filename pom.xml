@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -28,12 +28,12 @@
     	</license>
     </licenses>
 
-    <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
-    <artifactId>crs-catalog-service</artifactId>
-    <version>1.0.0</version>
-    <packaging>pom</packaging>
-    <name>crs-catalog-service</name>
-    <description>crs-catalog service</description>
+	<groupId>org.opengroup.osdu.crs-catalog-service</groupId>
+	<artifactId>crs-catalog-service</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+	<name>crs-catalog-service</name>
+	<description>crs-catalog service</description>
 
     <modules>
         <module>crs-catalog-core</module>
@@ -51,11 +51,11 @@
     <distributionManagement>
         <repository>
             <id>${gitlab-server}</id>
-            <url>https://community.opengroup.org/api/v4/projects/74/packages/maven</url>
+            <url>https://community.opengroup.org/api/v4/projects/21/packages/maven</url>
         </repository>
         <snapshotRepository>
             <id>${gitlab-server}</id>
-            <url>https://community.opengroup.org/api/v4/projects/74/packages/maven</url>
+            <url>https://community.opengroup.org/api/v4/projects/21/packages/maven</url>
         </snapshotRepository>
     </distributionManagement>
 

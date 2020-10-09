@@ -2,16 +2,12 @@ global:
   replicaCount: 1
 
 image:
-  imagePullSecrets: acr
-
-app:
-  repository: community.opengroup.org:5555/osdu/platform/ref-and-helper/crs-catalog-app
-  branch: master
+  repository: ${CONTAINER_REGISTRY_NAME}.azurecr.io/crs-catalog-app
   tag: latest
   pullPolicy: Always
 
 catalog:
-  repository: community.opengroup.org:5555/osdu/platform/ref-and-helper/crs-catalogs
+  repository: ${CONTAINER_REGISTRY_NAME}.azurecr.io/crs-catalog-data
   tag: v2
   pullPolicy: Always
 

@@ -23,8 +23,6 @@ spec:
             secretProviderClass: azure-keyvault
       - name: shared-data
         emptyDir: {}
-      imagePullSecrets:
-        - name: {{ .Values.image.imagePullSecrets }}         
       initContainers:
       - name: "init-crs-catalog"
         image: "{{ .Values.catalog.repository }}:{{ .Values.catalog.tag }}"
@@ -34,8 +32,8 @@ spec:
           mountPath: /mnt/crs_catalogs              
       containers:
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.app.repository }}:{{ .Values.app.tag }}"
-        imagePullPolicy: {{ .Values.app.pullPolicy }}
+        image: {{ .Values.image.repository }}/{{ .Chart.Name }}-{{ .Values.image.branch }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
         readinessProbe:
@@ -64,29 +62,29 @@ spec:
               key: ENV_KEYVAULT
         - name: AZURE_TENANT_ID
           valueFrom:
-            configMapKeyRef:
-              name: osdu-svc-properties
-              key: ENV_TENANT_ID
-        - name: client-id
+            secretKeyRef:
+              name: active-directory
+              key: tenantid
+        - name: AZURE_CLIENT_ID
           valueFrom:
             secretKeyRef:
-              name: clientid
-              key: clientid
+              name: active-directory
+              key: principal-clientid
         - name: AZURE_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: clientpassword
-              key: clientpassword
-        - name: aad_client_id
-          valueFrom:
-            secretKeyRef:
-              name: appid
-              key: appid
+              name: active-directory
+              key: principal-clientpassword
         - name: appinsights_key
           valueFrom:
             secretKeyRef:
-              name: appinsights
+              name: central-logging
               key: appinsights
+        - name: aad_client_id
+          valueFrom:
+            secretKeyRef:
+              name: active-directory
+              key: application-appid
         - name: ENTITLEMENT_URL
           value: http://entitlements-azure/entitlements/v1
         - name: azure_istioauth_enabled
