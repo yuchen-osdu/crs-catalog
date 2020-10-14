@@ -39,6 +39,7 @@
         <module>crs-catalog-core</module>
         <module>provider/crs-catalog-azure/crs-catalog-aks</module>
         <module>provider/crs-catalog-gcp/crs-catalog-gke</module>
+        <module>provider/crs-catalog-ibm/crs-catalog-ocp</module>
     </modules>
 
     <repositories>
