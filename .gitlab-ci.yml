@@ -1,8 +1,9 @@
-AWS_BUILD_SUBDIR: provider/crs-catalog-aws/build-aws
-AWS_TEST_SUBDIR: testing/catalog_test_aws
-AWS_SERVICE: crs-catalog
-AWS_ENVIRONMENT: dev
-AWS_INT_TEST_TYPE: python
+variables:
+  AWS_BUILD_SUBDIR: provider/crs-catalog-aws/build-aws
+  AWS_TEST_SUBDIR: testing/catalog_test_aws
+  AWS_SERVICE: crs-catalog
+  AWS_ENVIRONMENT: dev
+  AWS_INT_TEST_TYPE: python
 
 include:
   - project: 'osdu/platform/ci-cd-pipelines'
