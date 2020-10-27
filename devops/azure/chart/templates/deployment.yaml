@@ -38,7 +38,7 @@ spec:
         - containerPort: 80
         readinessProbe:
           httpGet:
-            path: /api/crs/catalog/_ah/readiness_check
+            path: /api/crs/catalog/swagger-ui.html
             port: 80
         volumeMounts:
         - name: azure-keyvault

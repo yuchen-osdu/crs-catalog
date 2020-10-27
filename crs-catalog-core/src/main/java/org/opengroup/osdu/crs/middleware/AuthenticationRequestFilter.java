@@ -8,7 +8,6 @@ import org.opengroup.osdu.core.common.model.entitlements.EntitlementsException;
 import org.opengroup.osdu.core.common.model.entitlements.Groups;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.crs.util.AppException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -38,7 +37,7 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
     private final String entitlementsUrl;
     private final HandlerExceptionResolver handlerExceptionResolver;
 
-    public AuthenticationRequestFilter(@Value("${osdu.entitlement.url}") String entitlementsUrl,
+    public AuthenticationRequestFilter(String entitlementsUrl,
                                        HandlerExceptionResolver handlerExceptionResolver) {
         this.entitlementsUrl = entitlementsUrl;
         this.handlerExceptionResolver = handlerExceptionResolver;
