@@ -4,6 +4,9 @@ variables:
   AWS_SERVICE: crs-catalog
   AWS_ENVIRONMENT: dev
   AWS_INT_TEST_TYPE: python
+  IBM_BUILD_SUBDIR: provider/crs-catalog-ibm/crs-catalog-ocp
+  IBM_INT_TEST_PY_SUBDIR: testing/catalog_test_ibm
+  IBM_INT_TEST_PY_FILE: run_test.py
 
 include:
   - project: 'osdu/platform/ci-cd-pipelines'
@@ -24,3 +27,6 @@ include:
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/aws.yml"
+
+  - project: "osdu/platform/ci-cd-pipelines"
+    file: "cloud-providers/ibm.yml"
