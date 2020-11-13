@@ -13,7 +13,7 @@ image:
   branch: #{ENVIRONMENT_NAME}#
   tag: #{Build.SourceVersion}#
 
-catalog:
-  repository: #{container-registry}#.azurecr.io/crs-catalog-data
-  tag: v2
-  pullPolicy: Always  
+#catalog:
+  #repository: #{container-registry}#.azurecr.io/crs-catalog-data
+  #tag: v2
+  #pullPolicy: Always  

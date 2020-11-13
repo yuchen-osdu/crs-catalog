@@ -8,6 +8,13 @@ variables:
   IBM_INT_TEST_PY_SUBDIR: testing/catalog_test_ibm
   IBM_INT_TEST_PY_FILE: run_test.py
 
+  #azure
+  AZURE_SERVICE: crs_catalog
+  AZURE_BUILD_SUBDIR: provider/crs-catalog-azure/crs-catalog-aks
+  AZURE_TEST_SUBDIR: testing/catalog_test_azure
+  AZURE_TEST_TYPE: python
+  SHARE_NAME: crs
+
 include:
   - project: 'osdu/platform/ci-cd-pipelines'
     ref: 'master'
@@ -30,3 +37,6 @@ include:
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/ibm.yml"
+
+  - project: "osdu/platform/ci-cd-pipelines"
+    file: "cloud-providers/azure.yml"

@@ -22,14 +22,8 @@ spec:
           volumeAttributes:
             secretProviderClass: azure-keyvault
       - name: shared-data
-        emptyDir: {}
-      initContainers:
-      - name: "init-crs-catalog"
-        image: "{{ .Values.catalog.repository }}:{{ .Values.catalog.tag }}"
-        imagePullPolicy: {{ .Values.catalog.pullPolicy }}
-        volumeMounts:
-        - name: shared-data
-          mountPath: /mnt/crs_catalogs              
+        persistentVolumeClaim:
+          claimName: crs-pvc        
       containers:
       - name: {{ .Chart.Name }}
         image: {{ .Values.image.repository }}/{{ .Chart.Name }}-{{ .Values.image.branch }}:{{ .Values.image.tag | default .Chart.AppVersion }}

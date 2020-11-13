@@ -2,13 +2,6 @@ global:
   replicaCount: 1
 
 image:
-  repository: ${CONTAINER_REGISTRY_NAME}.azurecr.io/crs-catalog-app
+  repository: community.opengroup.org:5555/osdu/platform/system/reference/crs-catalog-service
   tag: latest
   pullPolicy: Always
-
-catalog:
-  repository: ${CONTAINER_REGISTRY_NAME}.azurecr.io/crs-catalog-data
-  tag: v2
-  pullPolicy: Always
-
-
