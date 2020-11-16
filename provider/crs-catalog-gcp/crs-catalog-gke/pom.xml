@@ -9,6 +9,7 @@
         <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
         <artifactId>crs-catalog-service</artifactId>
         <version>1.0.0</version>
+        <relativePath>../../../pom.xml</relativePath>
     </parent>
 
     <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
@@ -17,24 +18,6 @@
     <packaging>jar</packaging>
     <name>crs-catalog-gke</name>
     <description>CRS Catalog service Google Kubernetes Engine deployment</description>
-
-    <repositories>
-        <repository>
-            <id>${gitlab-server}</id>
-            <url>https://community.opengroup.org/api/v4/groups/17/-/packages/maven</url>
-        </repository>
-    </repositories>
-
-    <distributionManagement>
-        <repository>
-            <id>${gitlab-server}</id>
-            <url>https://community.opengroup.org/api/v4/projects/21/packages/maven</url>
-        </repository>
-        <snapshotRepository>
-            <id>${gitlab-server}</id>
-            <url>https://community.opengroup.org/api/v4/projects/21/packages/maven</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <properties>
         <app.version>1</app.version>
@@ -154,7 +137,25 @@
                      -->
                 </configuration>
             </plugin>
-
+            <plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.7.201606060606</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
         </plugins>
     </build>
 
