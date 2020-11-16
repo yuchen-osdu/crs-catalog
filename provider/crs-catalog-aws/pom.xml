@@ -23,6 +23,7 @@
         <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
         <artifactId>crs-catalog-service</artifactId>
         <version>1.0.0</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
@@ -92,23 +93,4 @@
 
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>${gitlab-server}</id>
-            <url>https://community.opengroup.org/api/v4/groups/17/-/packages/maven</url>
-        </repository>
-    </repositories>
-
-    <distributionManagement>
-        <repository>
-            <id>${gitlab-server}</id>
-            <url>https://community.opengroup.org/api/v4/projects/21/packages/maven</url>
-        </repository>
-        <snapshotRepository>
-            <id>${gitlab-server}</id>
-            <url>https://community.opengroup.org/api/v4/projects/21/packages/maven</url>
-        </snapshotRepository>
-    </distributionManagement>
-
 </project>
