@@ -54,4 +54,5 @@ include:
     file: "cloud-providers/azure.yml"
 
 osdu-gcp-test-python:
-  allow_failure: true
+  variables:
+    VIRTUAL_SERVICE_HOST_NAME: $OSDU_GCP_CRS_CATALOG_HOSTNAME
