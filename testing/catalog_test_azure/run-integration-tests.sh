@@ -15,10 +15,14 @@ python3 run_test.py
 
 TEST_STATUS=$?
 
-python3 -m pip freeze > requirements.txt
-python3 -m pip uninstall -r requirements.txt -y
-deactivate
-rm -rf env/
+# Uninstall Environment if not on ADO Pipelines
+if [ -z ${AGENT_POOL+x}  ]; then
+  python3 -m pip freeze > requirements.txt
+  python3 -m pip uninstall -r requirements.txt -y
+  deactivate
+  rm -rf env/
+fi
+
 
 if [ $TEST_STATUS -ne 0 ]
 then
