@@ -5,10 +5,10 @@ import sys
 
 def get_id_token():
     # Generate valid Token for given tenant.
-    tenant_id = os.environ["AZURE_DEPLOY_TENANT"]
-    resource_id = os.environ["AZURE_AD_APP_RESOURCE_ID"]
-    client_id =  os.environ["AZURE_DEPLOY_CLIENT_ID"]
-    client_secret = os.environ["AZURE_DEPLOY_CLIENT_SECRET"]
+    tenant_id = os.getenv('AZURE_AD_TENANT_ID')
+    resource_id = os.getenv('AZURE_AD_APP_RESOURCE_ID')
+    client_id = os.getenv('INTEGRATION_TESTER')
+    client_secret = os.getenv('AZURE_TESTER_SERVICEPRINCIPAL_SECRET')
     authority_host_uri = 'https://login.microsoftonline.com'
     authority_uri = urllib.parse.urljoin(authority_host_uri, tenant_id)
     scopes = [resource_id + '/.default']
