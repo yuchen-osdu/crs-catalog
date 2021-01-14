@@ -18,6 +18,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <os-core-common.version>0.3.8</os-core-common.version>
         <snakeyaml.version>1.26</snakeyaml.version>
+        <jackson.version>2.11.2</jackson.version>
+        <nimbus-jose-jwt.version>7.9</nimbus-jose-jwt.version>
     </properties>
 
     <licenses>
@@ -91,6 +93,21 @@
                 <groupId>org.opengroup.osdu</groupId>
                 <artifactId>os-core-common</artifactId>
                 <version>${os-core-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.nimbusds</groupId>
+                <artifactId>nimbus-jose-jwt</artifactId>
+                <version>${nimbus-jose-jwt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
