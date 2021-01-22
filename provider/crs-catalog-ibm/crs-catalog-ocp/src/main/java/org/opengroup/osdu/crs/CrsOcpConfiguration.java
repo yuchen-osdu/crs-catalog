@@ -1,3 +1,6 @@
+/* Licensed Materials - Property of IBM              */
+/* (c) Copyright IBM Corp. 2020. All Rights Reserved.*/
+
 package org.opengroup.osdu.crs;
 
 import org.opengroup.osdu.crs.model.CatalogImpl;
