@@ -14,6 +14,7 @@
 
 package org.opengroup.osdu.crs.api;
 
+import org.opengroup.osdu.crs.logging.AuditLogger;
 import org.opengroup.osdu.crs.model.request.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -53,6 +54,9 @@ public class CrsCatalogApiTestMock {
 
 	@Mock
 	private static Catalog	catalogMock;
+
+	@Mock
+	private AuditLogger auditLogger;
 
 	@InjectMocks
     private static CrsCatalogApi crsCatalogApi;
@@ -499,7 +503,7 @@ public class CrsCatalogApiTestMock {
             assertEquals(offset, results.getOffset());
             assertEquals(CRSes.size(), results.getCount());
             assertEquals(totalCount, results.getTotalCount());
-            
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail();

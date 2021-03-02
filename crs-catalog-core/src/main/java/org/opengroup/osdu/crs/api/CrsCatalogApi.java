@@ -20,10 +20,14 @@
 package org.opengroup.osdu.crs.api;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.inject.Inject;
+import org.opengroup.osdu.crs.logging.AuditLogger;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,11 +57,14 @@ import org.opengroup.osdu.crs.model.search.*;
 @RequestMapping(path= "/v2")
 public class CrsCatalogApi {
 
-	private Catalog catalog = null;		
+	private Catalog catalog = null;
 
-    private static final Logger log = Logger.getLogger(CrsCatalogApi.class.getName());
+	@Inject
+	private AuditLogger auditLogger;
 
-    public CrsCatalogApi(Catalog catalog) {
+	private static final Logger log = Logger.getLogger(CrsCatalogApi.class.getName());
+
+	public CrsCatalogApi(Catalog catalog) {
 		this.catalog = catalog;
 	}
 
@@ -78,7 +85,7 @@ public class CrsCatalogApi {
 	public CatalogAttributes getCatalogAttributes() {
    		return catalog.getAttributes();
 	}
-    
+
     /**
      * get a list of AreasOfUses in the catalog
      * @param offset  Offset of the first item in the AreasOfUses. It is optional and is 0 by default.
@@ -88,7 +95,7 @@ public class CrsCatalogApi {
      */
 	@GetMapping("/area")
 	public AreaOfUseResults getAreasOfUse(
-		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset, 
+		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
 		@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
@@ -99,26 +106,31 @@ public class CrsCatalogApi {
 			if(list != null) {
 				if ((offset < 0) || ((list.size() > 0) && (offset >= list.size())))
 					throw new IndexOutOfBoundsException("The start index is out of the range");
-			
+
 				if ((limit < 0) || (limit > list.size() - offset))
 					limit = list.size() - offset;
-						
+
 				if (limit >= 0) {
 					ArrayList<AreaOfUse> list2 = new ArrayList<>();
 					for (int i = offset; i < offset + limit; i++) {
 						list2.add(list.get(i).convert(mode));
 					}
 					results = new AreaOfUseResults(list2, offset, list.size());
-				}		
+				}
 			}
 		}
 		catch(Exception ex) {
 			log.log(Level.WARNING, ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
+		if (Objects.nonNull(results)) {
+			this.auditLogger.readAreaSuccess(Collections.singletonList(results.toString()));
+		} else {
+			this.auditLogger.readAreaSuccess(Collections.singletonList("AreaOfUseResults is null"));
+		}
 		return results;
 	}
-    
+
     /**
      * get the AreaOfUse by essence
      * @param request AreaOfUseRequest
@@ -146,9 +158,14 @@ public class CrsCatalogApi {
 			log.log(Level.WARNING, ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
+		if (Objects.nonNull(aou)) {
+			this.auditLogger.readAreaByEssenceSuccess(Collections.singletonList(aou.toString()));
+		} else {
+			this.auditLogger.readAreaByEssenceSuccess(Collections.singletonList("AreaOfUse is null"));
+		}
 		return aou;
 	}
-    
+
     /**
      * get a list of CRSes in the catalog
      * @param offset  Offset of the first item in the crs. It is optional and is 0 by default.
@@ -158,37 +175,42 @@ public class CrsCatalogApi {
      */
 	@GetMapping("/crs")
 	public CRSResults getAllCRSes(
-		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset, 
+		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
 		@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
-		CRSResults	results = null;	
+		CRSResults	results = null;
 		try {
 			RepresentationMode mode = RepresentationMode.getRepresentationMode(reprMode);
 			List<CRS> list = catalog.getAllCRSes();
 			if(list != null) {
 				if ((offset < 0) || ((list.size() > 0) && (offset >= list.size())))
 					throw new IndexOutOfBoundsException("The start index is out of the range");
-		
+
 				if ((limit < 0) || (limit > list.size() - offset))
 					limit = list.size() - offset;
-					
+
 				if (limit >= 0) {
 					ArrayList<CRS> list2 = new ArrayList<>();
 					for (int i = offset; i < offset + limit; i++) {
 						list2.add((CRS)list.get(i).convert(mode));
 					}
 					results = new CRSResults(list2, offset, list.size());
-				}	
+				}
 			}
     	}
         catch(Exception ex) {
             log.log(Level.WARNING, ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
+		if (Objects.nonNull(results)) {
+			this.auditLogger.readCrsSuccess(Collections.singletonList(results.toString()));
+		} else {
+			this.auditLogger.readCrsSuccess(Collections.singletonList("CRSResults is null"));
+		}
 		return results;
 	}
-    
+
     /**
      * get the CRS by essence
      * @param request The CRSRequest object for the CRS
@@ -217,9 +239,14 @@ public class CrsCatalogApi {
             log.log(Level.WARNING, ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
+		if (Objects.nonNull(crs)) {
+			this.auditLogger.readCrsByEssenceSuccess(Collections.singletonList(crs.toString()));
+		} else {
+			this.auditLogger.readCrsByEssenceSuccess(Collections.singletonList("CRS is null"));
+		}
 		return crs;
 	}
-    
+
     /**
      * get a list of LateBoundCRSes in the catalog
      * @param offset  Offset of the first item in the LateBoundCRSes. It is optional and is 0 by default.
@@ -229,7 +256,7 @@ public class CrsCatalogApi {
      */
 	@GetMapping("/lateboundcrs")
 	public LateBoundCRSResults getLateBoundCRSes(
-		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset, 
+		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
 		@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
@@ -240,26 +267,31 @@ public class CrsCatalogApi {
 			if(list != null) {
 				if ((offset < 0) || ((list.size() > 0) && (offset >= list.size())))
 					throw new IndexOutOfBoundsException("The start index is out of the range");
-		
+
 				if ((limit < 0) || (limit > list.size() - offset))
 					limit = list.size() - offset;
-					
+
 				if (limit >= 0) {
 					ArrayList<LateBoundCRS> list2 = new ArrayList<>();
 					for (int i = offset; i < offset + limit; i++) {
 						list2.add(list.get(i).convert(mode));
 					}
 					results = new LateBoundCRSResults(list2, offset, list.size());
-				}		
+				}
 			}
     	}
         catch(Exception ex) {
             log.log(Level.WARNING, ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
+		if (Objects.nonNull(results)) {
+			this.auditLogger.readLateBoundCrsSuccess(Collections.singletonList(results.toString()));
+		} else {
+			this.auditLogger.readLateBoundCrsSuccess(Collections.singletonList("LateBoundCRSResults is null"));
+		}
 		return results;
 	}
-    
+
     /**
      * get the LateBoundCRS by essence
      * @param request LateBoundCRSRequest
@@ -288,9 +320,14 @@ public class CrsCatalogApi {
             log.log(Level.WARNING, ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
+		if (Objects.nonNull(crs)) {
+			this.auditLogger.readLateBoundCrsByEssenceSuccess(Collections.singletonList(crs.toString()));
+		} else {
+			this.auditLogger.readLateBoundCrsByEssenceSuccess(Collections.singletonList("LateBoundCRS is null"));
+		}
 		return crs;
 	}
-    
+
     /**
      * get a list of the EarlyBoundCRSes in the catalog
      * @param offset  Offset of the first item in the EarlyBoundCRSes. It is optional and is 0 by default.
@@ -300,7 +337,7 @@ public class CrsCatalogApi {
      */
 	@GetMapping("/earlyboundcrs")
 	public EarlyBoundCRSResults getEarlyBoundCRSes(
-		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset, 
+		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
 		@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
@@ -311,26 +348,31 @@ public class CrsCatalogApi {
 			if(list != null) {
 				if ((offset < 0) || ((list.size() > 0) && (offset >= list.size())))
 					throw new IndexOutOfBoundsException("The start index is out of the range");
-			
+
 				if ((limit < 0) || (limit > list.size() - offset))
 					limit = list.size() - offset;
-						
+
 				if (limit >= 0) {
 					ArrayList<EarlyBoundCRS> list2 = new ArrayList<>();
 					for (int i = offset; i < offset + limit; i++) {
 						list2.add(list.get(i).convert(mode));
 					}
 					results =  new EarlyBoundCRSResults(list2, offset, list.size());
-				}		
+				}
 			}
     	}
         catch(Exception ex) {
             log.log(Level.WARNING, ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
+		if (Objects.nonNull(results)) {
+			this.auditLogger.readEarlyBoundCrsSuccess(Collections.singletonList(results.toString()));
+		} else {
+			this.auditLogger.readEarlyBoundCrsSuccess(Collections.singletonList("EarlyBoundCRSResults is null"));
+		}
 		return results;
 	}
-    
+
     /**
      * get the EarlyBoundCRS by essence
      * @param request EarlyBoundCRSRequest
@@ -341,7 +383,7 @@ public class CrsCatalogApi {
 	public EarlyBoundCRS getEarlyBoundCRS(@RequestBody EarlyBoundCRSRequest request,
 										  @RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		EarlyBoundCRSEssence essence = null;
-		EarlyBoundCRS crs = null;	
+		EarlyBoundCRS crs = null;
 		try {
 			RepresentationMode mode = RepresentationMode.getRepresentationMode(reprMode);
 			essence = request.getEarlyBoundCRSEssence();
@@ -358,9 +400,14 @@ public class CrsCatalogApi {
             log.log(Level.WARNING, ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
+		if (Objects.nonNull(crs)) {
+			this.auditLogger.readEarlyBoundCrsByEssenceSuccess(Collections.singletonList(crs.toString()));
+		} else {
+			this.auditLogger.readEarlyBoundCrsByEssenceSuccess(Collections.singletonList("EarlyBoundCRS is null"));
+		}
 		return crs;
 	}
-    
+
     /**
      * get a list of the CompoundCRSes in the catalog
      * @param offset  Offset of the first item in the CompoundCRSes. It is optional and is 0 by default.
@@ -370,7 +417,7 @@ public class CrsCatalogApi {
      */
 	@GetMapping("/compoundcrs")
 	public CompoundCRSResults getCompoundCRSes(
-		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset, 
+		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
 		@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
@@ -381,26 +428,31 @@ public class CrsCatalogApi {
 			if(list != null) {
 				if ((offset < 0) || ((list.size() > 0) && (offset >= list.size())))
 					throw new IndexOutOfBoundsException("The start index is out of the range");
-			
+
 				if ((limit < 0) || (limit > list.size() - offset))
 					limit = list.size() - offset;
-						
+
 				if (limit >= 0) {
 					ArrayList<CompoundCRS> list2 = new ArrayList<>();
 					for (int i = offset; i < offset + limit; i++) {
 						list2.add(list.get(i).convert(mode));
 					}
 					results = new CompoundCRSResults(list2, offset, list.size());
-				}		
+				}
 			}
     	}
         catch(Exception ex) {
             log.log(Level.WARNING, ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
+		if (Objects.nonNull(results)) {
+			this.auditLogger.readCompoundCrsSuccess(Collections.singletonList(results.toString()));
+		} else {
+			this.auditLogger.readCompoundCrsSuccess(Collections.singletonList("CompoundCRSResults is null"));
+		}
 		return results;
 	}
-    
+
     /**
      * get the CompoundCRS by essence
      * @param request CompoundCRSRequest
@@ -412,7 +464,7 @@ public class CrsCatalogApi {
 									  @RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		CompoundCRSEssence essence = null;
 		CompoundCRS crs = null;
-		try {	
+		try {
 			RepresentationMode mode = RepresentationMode.getRepresentationMode(reprMode);
 			essence = request.getCompoundCRSEssence();
 			if (essence == null) {
@@ -428,9 +480,14 @@ public class CrsCatalogApi {
             log.log(Level.WARNING, ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
+		if (Objects.nonNull(crs)) {
+			this.auditLogger.readCompoundCrsByEssenceSuccess(Collections.singletonList(crs.toString()));
+		} else {
+			this.auditLogger.readCompoundCrsByEssenceSuccess(Collections.singletonList("CompoundCRS is null"));
+		}
 		return crs;
 	}
-    
+
     /**
      * get a list of cartographic transforms (CTs) in the catalog
      * @param offset  Offset of the first item in the cartographic transforms. It is optional and is 0 by default.
@@ -440,7 +497,7 @@ public class CrsCatalogApi {
      */
 	@GetMapping("/ct")
 	public CTResults getAllCTs(
-		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset, 
+		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
 		@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
@@ -451,26 +508,31 @@ public class CrsCatalogApi {
 			if(list != null) {
 				if ((offset < 0) || ((list.size() > 0) && (offset >= list.size())))
 					throw new IndexOutOfBoundsException("The start index is out of the range");
-			
+
 				if ((limit < 0) || (limit > list.size() - offset))
 					limit = list.size() - offset;
-						
+
 				if (limit >= 0) {
 					ArrayList<CT> list2 = new ArrayList<>();
 					for (int i = offset; i < offset + limit; i++) {
 						list2.add((CT)list.get(i).convert(mode));
 					}
 					results = new CTResults(list2, offset, list.size());
-				}		
+				}
 			}
     	}
         catch(Exception ex) {
             log.log(Level.WARNING, ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
+		if (Objects.nonNull(results)) {
+			this.auditLogger.readCtSuccess(Collections.singletonList(results.toString()));
+		} else {
+			this.auditLogger.readCtSuccess(Collections.singletonList("CTResults is null"));
+		}
 		return results;
 	}
-    
+
     /**
      * get the CT by essence
      * @param request CTRequest
@@ -499,9 +561,14 @@ public class CrsCatalogApi {
             log.log(Level.WARNING, ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
+		if (Objects.nonNull(ct)) {
+			this.auditLogger.readCtByEssenceSuccess(Collections.singletonList(ct.toString()));
+		} else {
+			this.auditLogger.readCtByEssenceSuccess(Collections.singletonList("CTResults is null"));
+		}
 		return ct;
 	}
-    
+
     /**
      * get a list of SingleCTs in the catalog
      * @param offset  Offset of the first item in the SingleCTs. It is optional and is 0 by default.
@@ -511,7 +578,7 @@ public class CrsCatalogApi {
      */
 	@GetMapping("/singlect")
 	public SingleCTResults getSingleCTs(
-		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset, 
+		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
 		@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
@@ -522,26 +589,31 @@ public class CrsCatalogApi {
 			if(list != null) {
 				if ((offset < 0) || ((list.size() > 0) && (offset >= list.size())))
 					throw new IndexOutOfBoundsException("The start index is out of the range");
-			
+
 				if ((limit < 0) || (limit > list.size() - offset))
 					limit = list.size() - offset;
-						
+
 				if (limit >= 0) {
 					ArrayList<SingleCT> list2 = new ArrayList<>();
 					for (int i = offset; i < offset + limit; i++) {
 						list2.add(list.get(i).convert(mode));
 					}
 					results = new SingleCTResults(list2, offset, list.size());
-				}		
+				}
 			}
     	}
         catch(Exception ex) {
             log.log(Level.WARNING, ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
+		if (Objects.nonNull(results)) {
+			this.auditLogger.readSingleCtSuccess(Collections.singletonList(results.toString()));
+		} else {
+			this.auditLogger.readSingleCtSuccess(Collections.singletonList("SingleCTResults is null"));
+		}
 		return results;
 	}
-    
+
     /**
      * get the SingleCT by essence
      * @param request SingleCTRequest
@@ -553,7 +625,7 @@ public class CrsCatalogApi {
 								@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		SingleCTEssence essence = null;
 		SingleCT	ct = null;
-		try {	
+		try {
 			RepresentationMode mode = RepresentationMode.getRepresentationMode(reprMode);
 			essence = request.getSingleCTEssence();
 			if (essence == null) {
@@ -569,9 +641,14 @@ public class CrsCatalogApi {
             log.log(Level.WARNING, ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
+		if (Objects.nonNull(ct)) {
+			this.auditLogger.readSingleCtByEssenceSuccess(Collections.singletonList(ct.toString()));
+		} else {
+			this.auditLogger.readSingleCtByEssenceSuccess(Collections.singletonList("SingleCT is null"));
+		}
 		return ct;
 	}
-    
+
     /**
      * get a list of CompoundCTs in the catalog
      * @param offset  Offset of the first item in the CompoundCTs. It is optional and is 0 by default.
@@ -581,7 +658,7 @@ public class CrsCatalogApi {
      */
 	@GetMapping("/compoundct")
 	public CompoundCTResults getCompoundCTs(
-		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset, 
+		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
 		@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
@@ -592,26 +669,31 @@ public class CrsCatalogApi {
 			if(list != null) {
 				if ((offset < 0) || ((list.size() > 0) && (offset >= list.size())))
 					throw new IndexOutOfBoundsException("The start index is out of the range");
-			
+
 				if ((limit < 0) || (limit > list.size() - offset))
 					limit = list.size() - offset;
-						
+
 				if (limit >= 0) {
 					ArrayList<CompoundCT> list2 = new ArrayList<>();
 					for (int i = offset; i < offset + limit; i++) {
 						list2.add(list.get(i).convert(mode));
 					}
 					results = new CompoundCTResults(list2, offset, list.size());
-				}		
+				}
 			}
     	}
         catch(Exception ex) {
             log.log(Level.WARNING, ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
+		if (Objects.nonNull(results)) {
+			this.auditLogger.readCompoundCtSuccess(Collections.singletonList(results.toString()));
+		} else {
+			this.auditLogger.readCompoundCtSuccess(Collections.singletonList("CompoundCTResults is null"));
+		}
 		return results;
 	}
-    
+
    /**
     * get the CompoundCT by essence
     * @param request CompoundCTRequest
@@ -623,7 +705,7 @@ public class CrsCatalogApi {
 									@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		CompoundCTEssence essence = null;
 		CompoundCT ct = null;
-		try {	
+		try {
 			RepresentationMode mode = RepresentationMode.getRepresentationMode(reprMode);
 			essence = request.getCompoundCTEssence();
 			if (essence == null) {
@@ -637,6 +719,11 @@ public class CrsCatalogApi {
 		catch (Exception ex) {
             log.log(Level.WARNING, ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
+		}
+		if (Objects.nonNull(ct)) {
+			this.auditLogger.readCompoundCtByEssenceSuccess(Collections.singletonList(ct.toString()));
+		} else {
+			this.auditLogger.readCompoundCtByEssenceSuccess(Collections.singletonList("CompoundCT is null"));
 		}
 		return ct;
 	}
@@ -665,12 +752,14 @@ public class CrsCatalogApi {
 											 @RequestParam(name = "latitudeUpper", required = false, defaultValue = "90") double latitudeUpper,
 											 @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 											 @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
-											 @RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {												 
+											 @RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
 		try{
 			RepresentationMode mode = RepresentationMode.getRepresentationMode(reprMode);
 			SphericalBoundingBox boundingBox = new SphericalBoundingBoxImpl(longitudeLeft, latitudeLower, longitudeRight, latitudeUpper);
-			return catalog.searchAreasOfUse(request, boundingBox, offset, limit, mode);
+			AreaOfUseResults results = catalog.searchAreasOfUse(request, boundingBox, offset, limit, mode);
+			this.auditLogger.searchAreaSuccess(Collections.singletonList(results.toString()));
+			return results;
     	}
         catch(Exception ex) {
             log.log(Level.WARNING, ex.toString(), ex);
@@ -703,7 +792,9 @@ public class CrsCatalogApi {
 		try {
 			RepresentationMode mode = RepresentationMode.getRepresentationMode(reprMode);
 			SphericalBoundingBox boundingBox = new SphericalBoundingBoxImpl(longitudeLeft, latitudeLower, longitudeRight, latitudeUpper);
-			return catalog.searchCRSes(request, boundingBox, offset, limit, mode);
+			CRSResults results = catalog.searchCRSes(request, boundingBox, offset, limit, mode);
+			this.auditLogger.searchCrsSuccess(Collections.singletonList(results.toString()));
+			return results;
 		}
         catch(Exception ex) {
             log.log(Level.WARNING, ex.toString(), ex);
@@ -736,7 +827,9 @@ public class CrsCatalogApi {
 		try {
 			RepresentationMode mode = RepresentationMode.getRepresentationMode(reprMode);
 			SphericalBoundingBox boundingBox = new SphericalBoundingBoxImpl(longitudeLeft, latitudeLower, longitudeRight, latitudeUpper);
-			return catalog.searchCTs(request, boundingBox, offset, limit, mode);
+			CTResults results = catalog.searchCTs(request, boundingBox, offset, limit, mode);
+			this.auditLogger.searchCtSuccess(Collections.singletonList(results.toString()));
+			return results;
     	}
         catch(Exception ex) {
 			log.log(Level.WARNING, ex.toString(), ex);
@@ -751,7 +844,7 @@ public class CrsCatalogApi {
 
         if(limit < -1)
             stringBuilder.append("'-1' is the only valid negative value and means all. Other negative values for limit is invalid.");
-        
+
         if(stringBuilder.length() > 0)
             throw AppException.createBadRequest(stringBuilder.toString());
     }
