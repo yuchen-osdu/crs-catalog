@@ -65,6 +65,6 @@ spec:
               name: active-directory
               key: application-appid
         - name: ENTITLEMENT_URL
-          value: http://entitlements-azure/entitlements/v1
+          value: http://entitlements/api/entitlements/v2
         - name: azure_istioauth_enabled
           value: "true"
