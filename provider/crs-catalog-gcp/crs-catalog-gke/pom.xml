@@ -7,13 +7,13 @@
     <parent>
         <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
         <artifactId>crs-catalog-service</artifactId>
-        <version>0.6.0-SNAPSHOT</version>
+        <version>0.8.0-SNAPSHOT</version>
         <relativePath>../../../pom.xml</relativePath>
     </parent>
 
     <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
     <artifactId>crs-catalog-gke</artifactId>
-    <version>0.6.0-SNAPSHOT</version>
+    <version>0.8.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>crs-catalog-gke</name>
     <description>CRS Catalog service Google Kubernetes Engine deployment</description>
@@ -41,7 +41,7 @@
         <dependency>
             <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
             <artifactId>crs-catalog-core</artifactId>
-            <version>0.6.0-SNAPSHOT</version>
+            <version>0.8.0-SNAPSHOT</version>
         </dependency>
         <!-- Compile/runtime dependencies -->
         <dependency>
@@ -92,6 +92,17 @@
             <artifactId>cobertura-maven-plugin</artifactId>
             <version>2.7</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.opengroup.osdu</groupId>
+            <artifactId>core-lib-gcp</artifactId>
+            <version>0.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback.contrib</groupId>
+            <artifactId>logback-json-classic</artifactId>
+            <version>0.1.5</version>
         </dependency>
     </dependencies>
 
