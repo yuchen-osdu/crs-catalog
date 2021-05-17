@@ -78,6 +78,7 @@ The following software have components provided under the terms of this license:
 - Cobertura code coverage (from http://cobertura.sourceforge.net)
 - Commons Digester (from http://commons.apache.org/digester/)
 - Commons IO (from http://commons.apache.org/io/)
+- Commons IO (from http://commons.apache.org/io/)
 - Commons Lang (from http://commons.apache.org/lang/)
 - Converter: Jackson (from )
 - Doxia :: APT Module (from )
@@ -108,6 +109,7 @@ The following software have components provided under the terms of this license:
 - Guava InternalFutureFailureAccess and InternalFutures (from )
 - Guava ListenableFuture only (from )
 - Guava: Google Core Libraries for Java (from https://github.com/google/guava.git)
+- Guava: Google Core Libraries for Java (from https://github.com/google/guava.git)
 - HPPC Collections (from http://labs.carrotsearch.com)
 - Hibernate Validator Engine (from )
 - IBM COS Java SDK for Amazon S3 (from https://github.com/ibm/ibm-cos-sdk-java)
@@ -116,6 +118,7 @@ The following software have components provided under the terms of this license:
 - IBM COS SDK for Java - Core (from https://github.com/ibm/ibm-cos-sdk-java)
 - Identity and Access Management (IAM) API v1-rev247-1.23.0 (from )
 - IntelliJ IDEA Annotations (from http://www.jetbrains.org)
+- J2ObjC Annotations (from https://github.com/google/j2objc/)
 - J2ObjC Annotations (from https://github.com/google/j2objc/)
 - JBoss Logging 3 (from http://www.jboss.org)
 - JCIP Annotations under Apache License (from http://stephenc.github.com/jcip-annotations)
@@ -311,6 +314,7 @@ The following software have components provided under the terms of this license:
 - datastore-v1-proto-client (from )
 - elasticsearch-core (from https://github.com/elastic/elasticsearch)
 - error-prone annotations (from )
+- error-prone annotations (from )
 - io.grpc:grpc-alts (from https://github.com/grpc/grpc-java)
 - io.grpc:grpc-api (from https://github.com/grpc/grpc-java)
 - io.grpc:grpc-auth (from https://github.com/grpc/grpc-java)
@@ -382,7 +386,6 @@ The following software have components provided under the terms of this license:
 - GAX (Google Api eXtensions) (from https://github.com/googleapis)
 - Hamcrest (from http://hamcrest.org/JavaHamcrest/)
 - Hamcrest Core (from http://hamcrest.org/)
-- HdrHistogram (from http://hdrhistogram.github.io/HdrHistogram/)
 - Lucene Common Analyzers (from )
 - Plexus :: Default Container (from )
 - Plexus Common Utilities (from http://plexus.codehaus.org/plexus-utils)
@@ -414,7 +417,6 @@ The following software have components provided under the terms of this license:
 - Google Auth Library for Java - OAuth2 HTTP (from )
 - Hamcrest (from http://hamcrest.org/JavaHamcrest/)
 - Hamcrest Core (from http://hamcrest.org/)
-- HdrHistogram (from http://hdrhistogram.github.io/HdrHistogram/)
 - JDOM (from http://www.jdom.org)
 - JSch (from http://www.jcraft.com/jsch/)
 - JavaBeans Activation Framework API jar (from )
@@ -647,6 +649,7 @@ The following software have components provided under the terms of this license:
 - Azure Spring Boot AutoConfigure (from https://github.com/Microsoft/azure-spring-boot)
 - Azure Spring Boot Starter (from https://github.com/Microsoft/azure-spring-boot)
 - Checker Qual (from https://checkerframework.org)
+- Checker Qual (from https://checkerframework.org)
 - Extensions on Apache Proton-J library (from https://github.com/Azure/qpid-proton-j-extensions)
 - JOpt Simple (from http://pholser.github.io/jopt-simple)
 - JUL to SLF4J bridge (from http://www.slf4j.org)
@@ -737,6 +740,7 @@ SPL-1.0
 The following software have components provided under the terms of this license:
 
 - Checker Qual (from https://checkerframework.org)
+- Checker Qual (from https://checkerframework.org)
 
 ========================================================================
 W3C
@@ -761,7 +765,7 @@ The following software have components provided under the terms of this license:
 
 - Asynchronous Http Client (from )
 - Guava: Google Core Libraries for Java (from https://github.com/google/guava.git)
-- HdrHistogram (from http://hdrhistogram.github.io/HdrHistogram/)
+- Guava: Google Core Libraries for Java (from https://github.com/google/guava.git)
 - HdrHistogram (from http://hdrhistogram.github.io/HdrHistogram/)
 - Joda-Time (from http://www.joda.org/joda-time/)
 - LatencyUtils (from http://latencyutils.github.io/LatencyUtils/)
