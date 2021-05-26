@@ -47,7 +47,8 @@ In order to run the service locally or remotely, you will need to have the follo
  | `CRS_CATALOG_HOSTNAME` | ex `os-crs-catalog-dot-opendes.appspot.com` | CRS Catalog host| no | output of infrastructure deployment |
  | `AUDIENCES` | ex `*****.apps.googleusercontent.com` | Client ID for getting access to cloud resources | yes | https://console.cloud.google.com/apis/credentials |
  | `PROJECT_ID` | ex `opendes` | Google Cloud Project Id| no | output of infrastructure deployment |
-      
+ | `PARTITION_API` | ex `http://localhost:8081/api/partition/v1` | Partition service endpoint | no | - |
+  
 ### Run Locally
 Check that maven is installed:
 
