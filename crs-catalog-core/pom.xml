@@ -10,9 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
     <artifactId>crs-catalog-core</artifactId>
-    <version>0.9.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>crs-catalog-core</name>
     <description>CRS catalog service core</description>
@@ -45,11 +43,6 @@
             <version>1</version>
         </dependency>
         <dependency>
-            <groupId>com.auth0</groupId>
-            <artifactId>jwks-rsa</artifactId>
-            <version>0.11.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
         </dependency>
@@ -80,6 +73,15 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>${springfox-swagger2.version}</version>
+            <exclusions>
+                <exclusion>
+                    <!--
+                    Excluding com.google.guava:guava:jar:18.0, because it has security vulnerability
+                    -->
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
@@ -195,28 +197,6 @@
                 <version>2.21.0</version>
                 <configuration>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
-                    <!--
-                    <testFailureIgnore>true</testFailureIgnore>
-                     -->
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.whitesource</groupId>
-                <artifactId>whitesource-maven-plugin</artifactId>
-                <version>18.11.1</version>
-                <configuration>
-                    <orgToken>${orgToken}</orgToken>
-                    <wssUrl>https://app-eu.whitesourcesoftware.com/agent</wssUrl>
-                    <aggregateModules>true</aggregateModules>
-                    <product>DE</product>
-                    <aggregateProjectName>de-crs-catalog-service</aggregateProjectName>
-                    <forceCheckAllDependencies>true</forceCheckAllDependencies>
-                    <checkPolicies>false</checkPolicies>
-                    <forceUpdate>true</forceUpdate>
-                    <failOnError>false</failOnError>
-                    <excludes>
-                        <exclude>integration-tests</exclude>
-                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
