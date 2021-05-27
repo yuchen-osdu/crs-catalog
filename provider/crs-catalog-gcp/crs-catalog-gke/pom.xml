@@ -3,7 +3,6 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-
     <parent>
         <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
         <artifactId>crs-catalog-service</artifactId>
@@ -11,9 +10,7 @@
         <relativePath>../../../pom.xml</relativePath>
     </parent>
 
-    <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
     <artifactId>crs-catalog-gke</artifactId>
-    <version>0.9.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>crs-catalog-gke</name>
     <description>CRS Catalog service Google Kubernetes Engine deployment</description>
@@ -21,9 +18,7 @@
     <properties>
         <app.version>1</app.version>
         <app.id>crs-catalog-gke</app.id>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <objectify.version>5.1.22</objectify.version>
         <slf4j.version>1.7.25</slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -41,7 +36,7 @@
         <dependency>
             <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
             <artifactId>crs-catalog-core</artifactId>
-            <version>0.9.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <!-- Compile/runtime dependencies -->
         <dependency>

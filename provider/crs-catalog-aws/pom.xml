@@ -25,9 +25,7 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
     <artifactId>crs-catalog-aws</artifactId>
-    <version>0.9.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>crs-catalog-aws</name>
     <description>CRS Catalog service on AWS</description>
@@ -35,9 +33,7 @@
     <properties>
         <app.version>1</app.version>
         <app.id>crs-catalog-aws</app.id>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <objectify.version>5.1.22</objectify.version>
         <slf4j.version>1.7.25</slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -55,7 +51,7 @@
         <dependency>
             <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
             <artifactId>crs-catalog-core</artifactId>
-            <version>0.9.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
