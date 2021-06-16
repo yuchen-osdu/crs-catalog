@@ -3,6 +3,9 @@
 
 package org.opengroup.osdu.crs;
 
+import org.opengroup.osdu.core.common.logging.DefaultLogger;
+import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
+import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.crs.model.CatalogImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -43,4 +46,13 @@ public class CrsOcpConfiguration {
     	
     }
 
+    @Bean
+    public JaxRsDpsLog jaxRsDpsLog() {
+        return new JaxRsDpsLog(new DefaultLogger(), new DpsHeaders());
+    }
+
+    @Bean
+    public DpsHeaders getDpsHeaders() {
+        return new DpsHeaders();
+    }
 }

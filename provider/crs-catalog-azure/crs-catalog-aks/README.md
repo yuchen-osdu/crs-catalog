@@ -41,6 +41,13 @@ az keyvault secret show --vault-name $KEY_VAULT_NAME --name $KEY_VAULT_SECRET_NA
 | `ENTITLEMENT_URL` | ex `https://foo-entitlements.azurewebsites.net` | Entitlements API endpoint | no | output of infrastructure deployment |
 | `appinsights_key` | `********` | API Key for App Insights | yes | output of infrastructure deployment |
 | `osdu_crs_catalog_filename` | `data/crs_catalog_v2.json` | Flag to Disable AAD auth | no | -- |
+| `aad_client_id` | `********` | AAD client application ID | yes | output of infrastructure deployment |
+| `spring_application_name` | `crs-catalog-service` | Name of application. Needed by App Insights | no | -- |
+| `AZURE_CLIENT_ID` | `********` | Identity to run the service locally. This enables access to Azure resources. You only need this if running locally | yes | keyvault secret: `$KEYVAULT_URI/secrets/app-dev-sp-username` |
+| `server_port` | ex `8080` | Port of the server | no | -- |
+| `ACCEPT_HTTP` | `true` | TEMPORARY UNTIL HTTPS | no | -- |
+| `azure_istioauth_enabled` | `true` | Flag to Disable AAD auth | no | -- |
+| `server.servlet.contextPath` | `/api/crs/catalog/` | Servlet context path | no | - |
 
 **Required to run integration tests**
 

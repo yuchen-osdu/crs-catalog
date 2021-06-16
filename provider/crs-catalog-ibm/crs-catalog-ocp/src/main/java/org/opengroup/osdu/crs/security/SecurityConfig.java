@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.opengroup.osdu.crs.middleware.AuthenticationRequestFilter;
+import org.opengroup.osdu.crs.middleware.AuthenticationService;
 import org.opengroup.osdu.crs.util.AppError;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -51,8 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Acce
         "/api/crs/catalog/actuator/health",
     };
     
-    public SecurityConfig(@Value("${osdu.entitlement.url}") String entitlementsUrl, HandlerExceptionResolver handlerExceptionResolver) {
-        authFilter = new AuthenticationRequestFilter(entitlementsUrl, handlerExceptionResolver);
+    public SecurityConfig(AuthenticationService authenticationService) {
+        authFilter = new AuthenticationRequestFilter(authenticationService);
     }
    
     @Override

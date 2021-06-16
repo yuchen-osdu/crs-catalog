@@ -41,8 +41,6 @@ import org.opengroup.osdu.crs.model.*;
 import org.opengroup.osdu.crs.model.search.parser.SpatialUtility;
 
 public class Indexer {
-    private static final Logger log = Logger.getLogger(Indexer.class.getName());
-
     private Analyzer analyzer = null;
     private Directory indexDirectory = null;
     private IndexWriter indexWriter = null;

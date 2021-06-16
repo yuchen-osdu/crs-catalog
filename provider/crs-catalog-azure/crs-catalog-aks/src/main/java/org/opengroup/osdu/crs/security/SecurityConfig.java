@@ -3,6 +3,7 @@ package org.opengroup.osdu.crs.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.opengroup.osdu.core.common.model.http.AppError;
 import org.opengroup.osdu.crs.middleware.AuthenticationRequestFilter;
+import org.opengroup.osdu.crs.middleware.AuthenticationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -47,8 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  implements Acc
     };
 
     //AuthenticationRequestFilter is not a recognized bean, so construct it manually
-    public SecurityConfig(@Value("${ENTITLEMENT_URL}") String entitlementsUrl, HandlerExceptionResolver handlerExceptionResolver) {
-        authFilter = new AuthenticationRequestFilter(entitlementsUrl, handlerExceptionResolver);
+    public SecurityConfig(AuthenticationService authenticationService) {
+        authFilter = new AuthenticationRequestFilter(authenticationService);
     }
 
     @Override

@@ -17,6 +17,7 @@ package org.opengroup.osdu.crs.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.opengroup.osdu.crs.middleware.AuthenticationRequestFilter;
+import org.opengroup.osdu.crs.middleware.AuthenticationService;
 import org.opengroup.osdu.crs.util.AppError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -64,8 +65,8 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter implements 
 };
 
     //AuthenticationRequestFilter is not a recognized bean, so construct it manually
-    public AuthSecurityConfig(@Value("${osdu.entitlement.url}") String entitlementsUrl, HandlerExceptionResolver handlerExceptionResolver) {
-        authFilter = new AuthenticationRequestFilter(entitlementsUrl, handlerExceptionResolver);
+    public AuthSecurityConfig(AuthenticationService authenticationService) {
+        authFilter = new AuthenticationRequestFilter(authenticationService);
     }
 
     @Override
