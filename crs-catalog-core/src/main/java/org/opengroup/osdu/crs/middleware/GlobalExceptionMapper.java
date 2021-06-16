@@ -14,6 +14,8 @@
 
 package org.opengroup.osdu.crs.middleware;
 
+import io.swagger.jaxrs.config.JaxrsScanner;
+import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.opengroup.osdu.crs.util.AppError;
 import org.opengroup.osdu.crs.util.AppException;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +23,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.inject.Inject;
+
 import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
 public class GlobalExceptionMapper extends ResponseEntityExceptionHandler {
+
+    @Inject
+    private JaxRsDpsLog log;
 
     @ExceptionHandler(AppException.class)
     protected ResponseEntity<AppError> handleAppException(AppException e) {
@@ -39,7 +46,7 @@ public class GlobalExceptionMapper extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<AppError> getErrorResponse(AppException e) {
-        logger.error(e);
+        log.error(e.getMessage(), e);
         AppError appError = e.getError();
         return new ResponseEntity<>(appError, resolve(appError.getCode()));
     }

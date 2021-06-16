@@ -18,9 +18,9 @@
 package org.opengroup.osdu.crs.logging;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,7 +49,7 @@ public class AuditLoggerTest {
 
   @Before
   public void setup() {
-    when(this.headers.getUserEmail()).thenReturn("test_user@email.com");
+    lenient().when(this.headers.getUserEmail()).thenReturn("test_user@email.com");
     resources = Collections.singletonList("resources");
   }
 

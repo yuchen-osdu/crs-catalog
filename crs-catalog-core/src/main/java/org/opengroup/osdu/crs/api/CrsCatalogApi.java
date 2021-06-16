@@ -27,6 +27,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
+
+import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.opengroup.osdu.crs.logging.AuditLogger;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,8 +63,8 @@ public class CrsCatalogApi {
 
 	@Inject
 	private AuditLogger auditLogger;
-
-	private static final Logger log = Logger.getLogger(CrsCatalogApi.class.getName());
+	@Inject
+	private JaxRsDpsLog log;
 
 	public CrsCatalogApi(Catalog catalog) {
 		this.catalog = catalog;
@@ -120,7 +122,7 @@ public class CrsCatalogApi {
 			}
 		}
 		catch(Exception ex) {
-			log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(results)) {
@@ -155,7 +157,7 @@ public class CrsCatalogApi {
 			}
 		}
 		catch (Exception ex) {
-			log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(aou)) {
@@ -200,7 +202,7 @@ public class CrsCatalogApi {
 			}
     	}
         catch(Exception ex) {
-            log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(results)) {
@@ -236,7 +238,7 @@ public class CrsCatalogApi {
 			}
 		}
 		catch(Exception ex) {
-            log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(crs)) {
@@ -281,7 +283,7 @@ public class CrsCatalogApi {
 			}
     	}
         catch(Exception ex) {
-            log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(results)) {
@@ -317,7 +319,7 @@ public class CrsCatalogApi {
 			}
 		}
 		catch (Exception ex) {
-            log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(crs)) {
@@ -362,7 +364,7 @@ public class CrsCatalogApi {
 			}
     	}
         catch(Exception ex) {
-            log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(results)) {
@@ -397,7 +399,7 @@ public class CrsCatalogApi {
 			}
 		}
 		catch (Exception ex) {
-            log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(crs)) {
@@ -442,7 +444,7 @@ public class CrsCatalogApi {
 			}
     	}
         catch(Exception ex) {
-            log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(results)) {
@@ -477,7 +479,7 @@ public class CrsCatalogApi {
 			}
 		}
 		catch (Exception ex) {
-            log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(crs)) {
@@ -522,7 +524,7 @@ public class CrsCatalogApi {
 			}
     	}
         catch(Exception ex) {
-            log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(results)) {
@@ -558,7 +560,7 @@ public class CrsCatalogApi {
 			}
 		}
 		catch (Exception ex) {
-            log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(ct)) {
@@ -603,7 +605,7 @@ public class CrsCatalogApi {
 			}
     	}
         catch(Exception ex) {
-            log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(results)) {
@@ -638,7 +640,7 @@ public class CrsCatalogApi {
 			}
 		}
 		catch (Exception ex) {
-            log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(ct)) {
@@ -683,7 +685,7 @@ public class CrsCatalogApi {
 			}
     	}
         catch(Exception ex) {
-            log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(results)) {
@@ -717,7 +719,7 @@ public class CrsCatalogApi {
 				ct = ct.convert(mode);
 		}
 		catch (Exception ex) {
-            log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(ct)) {
@@ -762,7 +764,7 @@ public class CrsCatalogApi {
 			return results;
     	}
         catch(Exception ex) {
-            log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
     }
@@ -797,7 +799,7 @@ public class CrsCatalogApi {
 			return results;
 		}
         catch(Exception ex) {
-            log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
     }
@@ -832,7 +834,7 @@ public class CrsCatalogApi {
 			return results;
     	}
         catch(Exception ex) {
-			log.log(Level.WARNING, ex.toString(), ex);
+			log.warning(ex.toString(), ex);
             throw AppException.createBadRequest(ex.getMessage());
 		}
     }

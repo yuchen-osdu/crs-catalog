@@ -14,24 +14,29 @@
 
 package org.opengroup.osdu.crs;
 
-import org.opengroup.osdu.core.common.logging.DefaultLogger;
-import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
-import org.opengroup.osdu.core.common.model.http.DpsHeaders;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+
+import javax.inject.Named;
 
 @SpringBootApplication
+@ComponentScan({
+        "org.opengroup.osdu.crs",
+        "org.opengroup.osdu.core",
+        "org.opengroup.osdu.azure"
+})
 public class CrsAksApplication {
 
-    @Bean
-    public JaxRsDpsLog getJaxRsDpsLog() {
-        return new JaxRsDpsLog(new DefaultLogger(), new DpsHeaders());
-    }
+    @Value("${azure.keyvault.url}")
+    private String keyVaultURL;
 
     @Bean
-    public DpsHeaders getDpsHeaders() {
-        return new DpsHeaders();
+    @Named("KEY_VAULT_URL")
+    public String keyVaultURL() {
+        return keyVaultURL;
     }
       
     public static void main(String[] args) {
