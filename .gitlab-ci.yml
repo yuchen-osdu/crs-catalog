@@ -3,7 +3,7 @@ variables:
   OSDU_GCP_SERVICE: crs-catalog
   OSDU_GCP_VENDOR: gcp
   OSDU_GCP_APPLICATION_NAME: os-crs-catalog
-  OSDU_GCP_ENV_VARS: PROJECT_ID=$OSDU_GCP_PROJECT,ENTITLEMENT_URL=$OSDU_GCP_ENTITLEMENTS_URL,CRS_CATALOG_HOSTNAME=$OSDU_GCP_CRS_CATALOG_HOSTNAME,AUDIENCES=$GOOGLE_AUDIENCE
+  OSDU_GCP_ENV_VARS: PROJECT_ID=$OSDU_GCP_PROJECT,ENTITLEMENT_URL=$OSDU_GCP_ENTITLEMENTS_V2_URL,CRS_CATALOG_HOSTNAME=$OSDU_GCP_CRS_CATALOG_HOSTNAME,AUDIENCES=$GOOGLE_AUDIENCE
   OSDU_GCP_INT_TEST_TYPE: python
   OSDU_GCP_PYTHON_INT_TEST_SUBDIR: testing/catalog_test_gcp
   # --- end of osdu-gcp specific variables ---
@@ -26,26 +26,25 @@ variables:
 
 include:
   - project: "osdu/platform/ci-cd-pipelines"
-    ref: "master"
     file: "standard-setup.yml"
 
   - project: "osdu/platform/ci-cd-pipelines"
-    ref: "master"
     file: "build/maven.yml"
 
   - project: "osdu/platform/ci-cd-pipelines"
-    ref: "master"
-    file: "scanners/fossa.yml"
+    file: "scanners/fossa-maven.yml"
 
   - project: "osdu/platform/ci-cd-pipelines"
-    ref: "master"
     file: "scanners/gitlab-ultimate.yml"
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/osdu-gcp-cloudrun.yml"
 
   - project: "osdu/platform/ci-cd-pipelines"
-    file: "cloud-providers/aws.yml"
+    file: "cloud-providers/aws-global.yml"
+
+  - project: "osdu/platform/ci-cd-pipelines"
+    file: "cloud-providers/aws-maven.yml"
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/ibm-python-test.yml"
