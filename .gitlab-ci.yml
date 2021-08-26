@@ -13,6 +13,9 @@ variables:
   AWS_SERVICE: crs-catalog
   AWS_ENVIRONMENT: dev
   AWS_INT_TEST_TYPE: python
+  AWS_DEPLOY_TARGET: EKS
+  AWS_EKS_DEPLOYMENT_NAME: os-crs-catalog
+
   IBM_BUILD_SUBDIR: provider/crs-catalog-ibm/crs-catalog-ocp
   IBM_INT_TEST_PY_SUBDIR: testing/catalog_test_ibm
   IBM_INT_TEST_PY_FILE: run_test.py
