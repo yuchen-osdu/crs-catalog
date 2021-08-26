@@ -15,7 +15,7 @@ spec:
       labels:
         app: "{{ .Values.conf.app_name }}"
       annotations:
-        rollme: "{{ randAlphaNum 5 | quote }}"
+        rollme: {{ randAlphaNum 5 | quote }}
     spec:
       containers:
         - name: "{{ .Values.conf.app_name }}"
