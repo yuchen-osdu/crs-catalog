@@ -139,7 +139,7 @@ The following software have components provided under the terms of this license:
 - Jackson-dataformat-YAML (from https://github.com/FasterXML/jackson-dataformats-text)
 - Jackson-module-parameter-names (from https://repo1.maven.org/maven2/com/fasterxml/jackson/module/jackson-module-parameter-names)
 - Jakarta Bean Validation API (from https://beanvalidation.org)
-- Jakarta Expression Language Implementation (from https://projects.eclipse.org/projects/ee4j.el)
+- Jakarta Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
 - Jakarta Servlet (from https://projects.eclipse.org/projects/ee4j.servlet)
 - Java Native Access (from https://github.com/java-native-access/jna)
 - Java Native Access Platform (from https://github.com/java-native-access/jna)
@@ -526,7 +526,7 @@ The following software have components provided under the terms of this license:
 - JUnit Platform Commons (from https://junit.org/junit5/)
 - JUnit Platform Engine API (from https://junit.org/junit5/)
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
-- Jakarta Expression Language Implementation (from https://projects.eclipse.org/projects/ee4j.el)
+- Jakarta Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
 - Jakarta Servlet (from https://projects.eclipse.org/projects/ee4j.servlet)
 - Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket)
 - Jetty :: Asynchronous HTTP Client (from https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-client)
@@ -573,7 +573,7 @@ The following software have components provided under the terms of this license:
 - JUnit Platform Commons (from https://junit.org/junit5/)
 - JUnit Platform Engine API (from https://junit.org/junit5/)
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
-- Jakarta Expression Language Implementation (from https://projects.eclipse.org/projects/ee4j.el)
+- Jakarta Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
 - Jakarta Servlet (from https://projects.eclipse.org/projects/ee4j.servlet)
 - Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket)
 
@@ -604,7 +604,7 @@ The following software have components provided under the terms of this license:
 - Checker Qual (from https://checkerframework.org)
 - Cobertura (from http://cobertura.sourceforge.net)
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
-- Jakarta Expression Language Implementation (from https://projects.eclipse.org/projects/ee4j.el)
+- Jakarta Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
 - Jakarta Servlet (from https://projects.eclipse.org/projects/ee4j.servlet)
 - Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket)
 - JavaBeans Activation Framework (from )
@@ -616,7 +616,7 @@ GPL-3.0-only
 The following software have components provided under the terms of this license:
 
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
-- Jakarta Expression Language Implementation (from https://projects.eclipse.org/projects/ee4j.el)
+- Jakarta Expression Language 3.0 (from https://projects.eclipse.org/projects/ee4j.el)
 - Jakarta Servlet (from https://projects.eclipse.org/projects/ee4j.servlet)
 - Project Lombok (from https://projectlombok.org)
 
