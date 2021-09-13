@@ -19,3 +19,5 @@ image:
   #repository: #{container-registry}#.azurecr.io/crs-catalog-data
   #tag: v2
   #pullPolicy: Always  
+
+istioDnsHost: #{ISTIO_DNS_HOST}#
