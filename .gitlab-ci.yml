@@ -6,6 +6,7 @@ variables:
   OSDU_GCP_ENV_VARS: PROJECT_ID=$OSDU_GCP_PROJECT,ENTITLEMENT_URL=$OSDU_GCP_ENTITLEMENTS_V2_URL,CRS_CATALOG_HOSTNAME=$OSDU_GCP_CRS_CATALOG_HOSTNAME,AUDIENCES=$GOOGLE_AUDIENCE
   OSDU_GCP_INT_TEST_TYPE: python
   OSDU_GCP_PYTHON_INT_TEST_SUBDIR: testing/catalog_test_gcp
+  OSDU_GCP_HELM_PACKAGE_CHARTS: "devops/gcp/deploy devops/gcp/configmap"
   # --- end of osdu-gcp specific variables ---
 
   AWS_BUILD_SUBDIR: provider/crs-catalog-aws/build-aws
