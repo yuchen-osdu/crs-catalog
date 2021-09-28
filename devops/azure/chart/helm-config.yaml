@@ -21,3 +21,10 @@ image:
   #pullPolicy: Always  
 
 istioDnsHost: #{ISTIO_DNS_HOST}#
+
+env: #{ENVIRONMENT_NAME}#
+
+featureFlag:
+  resourceLimits:
+    enabledEnvs:
+      - demo
