@@ -9,3 +9,10 @@ image:
   pullPolicy: Always
 
 istioDnsHost: ""
+
+env: demo
+
+featureFlag:
+  resourceLimits:
+    enabledEnvs:
+      - demo
