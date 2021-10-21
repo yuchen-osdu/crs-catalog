@@ -4,7 +4,10 @@ metadata:
   name: {{ .Release.Name }}
   namespace: osdu
 spec:
+  {{- if has .Values.env .Values.featureFlag.hpa.enabledEnvs }}
+  {{- else }}
   replicas: {{ .Values.global.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
       app: {{ .Chart.Name }}
@@ -34,6 +37,15 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 80
+        {{- if has .Values.env .Values.featureFlag.resourceLimits.enabledEnvs }}
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "500Mi"
+          limits:
+            cpu: "1000m"
+            memory: "1Gi"
+        {{- end }}
         readinessProbe:
           httpGet:
             path: /api/crs/catalog/swagger-ui.html

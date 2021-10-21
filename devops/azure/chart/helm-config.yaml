@@ -3,6 +3,8 @@ global:
 
   # Service(s) Replica Count
   replicaCount: 2
+  maxReplicaCount: 20
+  minReplicaCount: 2
   nodepool: services
   isAutoscalingEnabled: false
 
@@ -19,3 +21,14 @@ image:
   #repository: #{container-registry}#.azurecr.io/crs-catalog-data
   #tag: v2
   #pullPolicy: Always  
+
+istioDnsHost: #{ISTIO_DNS_HOST}#
+
+env: #{ENVIRONMENT_NAME}#
+
+featureFlag:
+  resourceLimits:
+    enabledEnvs:
+    - demo
+  hpa:
+    enabledEnvs: []
