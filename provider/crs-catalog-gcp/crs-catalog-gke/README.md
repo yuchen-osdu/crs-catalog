@@ -44,10 +44,6 @@ In order to run the service locally or remotely, you will need to have the follo
  | `SERVER_SERVLET_CONTEXPATH` | `/api/crs/catalog/` | CRS Catalog service context path | no | - |
  | `osdu.entitlement.url` | ex `https://entitlements.com/entitlements/v1` | Entitlements API endpoint | no | output of infrastructure deployment |
  | `osdu.crs.catalog.filename` | ex `C:\\osdu-delfi\\os-crs-catalog-service\\data\\crs_catalog_v2.json` | Crs Catalog V2 file | no | output of infrastructure deployment |
- | `CRS_CATALOG_HOSTNAME` | ex `os-crs-catalog-dot-opendes.appspot.com` | CRS Catalog host| no | output of infrastructure deployment |
- | `AUDIENCES` | ex `*****.apps.googleusercontent.com` | Client ID for getting access to cloud resources | yes | https://console.cloud.google.com/apis/credentials |
- | `PROJECT_ID` | ex `opendes` | Google Cloud Project Id| no | output of infrastructure deployment |
- | `PARTITION_API` | ex `http://localhost:8081/api/partition/v1` | Partition service endpoint | no | - |
   
 ### Run Locally
 Check that maven is installed:
