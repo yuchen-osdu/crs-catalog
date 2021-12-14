@@ -10,7 +10,7 @@ image:
   tag: latest
   pullPolicy: Always
 
-istioDnsHost: ""
+istioDnsHost: "contoso.com"
 
 env: demo
 
