@@ -10,4 +10,4 @@ ENV PORT $PORT
 COPY data/crs_catalog_v2.json /mnt/crs_catalogs/crs_catalog_v2.json
 COPY provider/crs-catalog-${PROVIDER_NAME}/crs-catalog-gke/target/crs-catalog-gke-*.jar crs-catalog-${PROVIDER_NAME}.jar
 # Run the web service on container startup.
-CMD java -Djava.security.egd=file:/dev/./urandom -Dserver.port=${PORT} -jar /app/crs-catalog-${PROVIDER_NAME}.jar
+CMD java -Djava.security.egd=file:/dev/./urandom -Dserver.port=${PORT} -Dlog4j.formatMsgNoLookups=true -jar /app/crs-catalog-${PROVIDER_NAME}.jar
