@@ -38,18 +38,8 @@
             <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
             <artifactId>crs-catalog-core</artifactId>
             <version>${project.version}</version>
-            <exclusions>
-            	<exclusion>
-            		<groupId>org.apache.lucene</groupId>
-            		<artifactId>lucene-core</artifactId>
-            	</exclusion>
-            </exclusions>
         </dependency>
-        <dependency>
-        	<groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-core</artifactId>
-            <version>8.10.0</version>
-        </dependency>
+
         <!-- Compile/runtime dependencies -->
         <dependency>
             <groupId>javax.jdo</groupId>
