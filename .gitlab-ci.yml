@@ -12,6 +12,7 @@ variables:
   OSDU_GCP_HELM_CONFIG_SERVICE: crs-catalog-config
   OSDU_GCP_HELM_DEPLOYMENT_SERVICE: crs-catalog-deploy
   OSDU_GCP_HELM_CONFIG_SERVICE_VARS: "--set data.project_id=$OSDU_GCP_PROJECT --set data.audiences=$GOOGLE_AUDIENCE --set data.google_audiences=$GOOGLE_AUDIENCE"
+  OSDU_GCP_HELM_CONFIG_SERVICE_VARS_DEV2: "--set data.project_id=$OSDU_GCP_PROJECT --set data.audiences=$GOOGLE_AUDIENCE --set data.google_audiences=$GOOGLE_AUDIENCE"
   OSDU_GCP_HELM_DEPLOYMENT_SERVICE_VARS: "--set data.image=$CI_REGISTRY_IMAGE/osdu-gcp:$CI_COMMIT_SHORT_SHA --set data.serviceAccountName=$OSDU_GCP_SERVICE-k8s"
   # --- end of osdu-gcp specific variables ---
 
@@ -65,5 +66,7 @@ include:
 osdu-gcp-test-python:
   variables:
     VIRTUAL_SERVICE_HOST_NAME: $OSDU_GCP_CRS_CATALOG_HOSTNAME
-  when: delayed
-  start_in: 3 minutes
+
+osdu-gcp-dev2-test-python:
+  variables:
+    VIRTUAL_SERVICE_HOST_NAME: $OSDU_GCP_CRS_CATALOG_HOSTNAME
