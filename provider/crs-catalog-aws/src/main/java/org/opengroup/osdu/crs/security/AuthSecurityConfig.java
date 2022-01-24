@@ -79,7 +79,6 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter implements 
                 .and()
                 .authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
-                .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
     }
