@@ -13,6 +13,7 @@
         <snakeyaml.version>1.26</snakeyaml.version>
         <nimbus-jose-jwt.version>7.9</nimbus-jose-jwt.version>
         <springfox.version>3.0.0</springfox.version>
+        <lucene.version>8.0.0</lucene.version>
     </properties>
 
     <licenses>
