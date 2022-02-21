@@ -1,11 +1,8 @@
 data:
   log_level: "INFO"
-  project_id: ""
   entitlement_url: "http://entitlements/api/entitlements/v2/"
   crs_catalog_host_name: "crs-catalog"
-  audiences: ""
   partition_api: "http://partition/api/partition/v1/"
-  google_audiences: ""
 conf:
   configmap: "crs-catalog-config"
   app_name: "crs-catalog"

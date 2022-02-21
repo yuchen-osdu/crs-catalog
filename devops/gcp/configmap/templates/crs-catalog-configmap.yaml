@@ -7,9 +7,6 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
 data:
   LOG_LEVEL: "{{ .Values.data.log_level }}"
-  PROJECT_ID: "{{ .Values.data.project_id }}"
   ENTITLEMENT_URL: "{{ .Values.data.entitlement_url }}"
   CRS_CATALOG_HOSTNAME: "{{ .Values.data.crs_catalog_host_name }}"
-  AUDIENCES: "{{ .Values.data.audiences }}"
   PARTITION_API: "{{ .Values.data.partition_api }}"
-  GOOGLE_AUDIENCES: "{{ .Values.data.google_audiences }}"
