@@ -48,8 +48,18 @@ spec:
         {{- end }}
         readinessProbe:
           httpGet:
-            path: /api/crs/catalog/swagger-ui/
-            port: 80
+            path: /actuator/health
+            port: 8081
+          initialDelaySeconds: 15
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8081
+          initialDelaySeconds: 250
+          periodSeconds: 10
         volumeMounts:
         - name: azure-keyvault
           mountPath: "/mnt/azure-keyvault"
@@ -99,3 +109,5 @@ spec:
           value: http://entitlements/api/entitlements/v2
         - name: azure_istioauth_enabled
           value: "true"
+        - name: SPRING_CONFIG_NAME
+          value: "common,application"
