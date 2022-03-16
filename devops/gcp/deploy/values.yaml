@@ -4,9 +4,10 @@ data:
   limits_cpu: "1"
   limits_memory: "1G"
   serviceAccountName: ""
-  imagePullPolicy: "IfNotPresent"
   image: ""
+  imagePullPolicy: "IfNotPresent"
 
 conf:
   configmap: "crs-catalog-config"
   app_name: "crs-catalog"
+  on_prem_enabled: false
