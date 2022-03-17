@@ -40,6 +40,53 @@
     "application/json"
   ],
   "paths": {
+    "/info": {
+      "get": {
+        "tags": [
+          "Info Api"
+        ],
+        "summary": "info",
+        "operationId": "infoUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "data-partition-id",
+            "in": "header",
+            "description": "tenant",
+            "required": true,
+            "type": "string",
+            "default": "opendes"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/VersionInfo"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Bearer Authorization": []
+          }
+        ]
+      }
+    },
     "/catalog": {
       "get": {
         "tags": [
@@ -1533,7 +1580,9 @@
           "type": "string",
           "title": "Item Type.",
           "enum": [
-            "LBC", "EBC", "CC"
+            "LBC",
+            "EBC",
+            "CC"
           ],
           "example": "LBC",
           "description": "The type identifier."
@@ -1768,7 +1817,8 @@
           "type": "string",
           "title": "Item Type.",
           "enum": [
-            "ST", "CT"
+            "ST",
+            "CT"
           ],
           "example": "ST",
           "description": "The type identifier, either 'ST' or 'CT'."
@@ -2518,7 +2568,7 @@
         }
       }
     },
-    "AreaOfUseRequest" : {
+    "AreaOfUseRequest": {
       "type": "object",
       "description": "Request to get area of use",
       "properties": {
@@ -2531,37 +2581,37 @@
           "$ref": "#/definitions/AreaOfUseEssence",
           "example": {
             "authCode": {
-              "auth": "EPSG", 
+              "auth": "EPSG",
               "code": "3958"
-            }, 
+            },
             "boundBox": {
-              "latMin": 7.75, 
-              "latMax": 9.32, 
-              "lonMin": 116.89, 
+              "latMin": 7.75,
+              "latMax": 9.32,
+              "lonMin": 116.89,
               "lonMax": 118.0
-            }, 
+            },
             "type": "AOU"
           }
         }
       },
-      "example":{
+      "example": {
         "persistableReference": "{\"boundBox\":{\"lonMin\":116.89,\"latMin\":7.75,\"lonMax\":118.0,\"latMax\":9.32},\"authCode\":{\"auth\":\"EPSG\",\"code\":\"3958\"},\"type\":\"AOU\"}",
-        "essence":  {
+        "essence": {
           "authCode": {
-            "auth": "EPSG", 
+            "auth": "EPSG",
             "code": "3958"
-          }, 
+          },
           "boundBox": {
-            "latMin": 7.75, 
-            "latMax": 9.32, 
-            "lonMin": 116.89, 
+            "latMin": 7.75,
+            "latMax": 9.32,
+            "lonMin": 116.89,
             "lonMax": 118.0
-          }, 
+          },
           "type": "AOU"
         }
       }
     },
-    "CRSRequest" : {
+    "CRSRequest": {
       "type": "object",
       "description": "Request to get one CRS (any sub-type) given its 'persistableReference' (serialized essence) or 'essence' structure. Only one, persistableReference or essence must be provided. If both are provided, essence takes precedence. If both are provided, essence takes precedence.",
       "properties": {
@@ -2590,7 +2640,7 @@
         }
       }
     },
-    "EarlyBoundCRSRequest" : {
+    "EarlyBoundCRSRequest": {
       "type": "object",
       "description": "Request to get one EarlyBoundCRS given its 'persistableReference' (serialized essence) or 'essence' structure. Only one, persistableReference or essence must be provided. If both are provided, essence takes precedence.",
       "properties": {
@@ -2603,69 +2653,69 @@
           "$ref": "#/definitions/EarlyBoundCRSEssence",
           "example": {
             "authCode": {
-              "auth": "SLB", 
+              "auth": "SLB",
               "code": "23031024"
-            }, 
+            },
             "lateBoundCRS": {
               "authCode": {
-                "auth": "EPSG", 
+                "auth": "EPSG",
                 "code": "23031"
-              }, 
-              "name": "ED_1950_UTM_Zone_31N", 
-              "type": "LBC", 
-              "ver": "PE_10_3_1", 
+              },
+              "name": "ED_1950_UTM_Zone_31N",
+              "type": "LBC",
+              "ver": "PE_10_3_1",
               "wkt": "PROJCS[\"ED_1950_UTM_Zone_31N\",GEOGCS[\"GCS_European_1950\",DATUM[\"D_European_1950\",SPHEROID[\"International_1924\",6378388.0,297.0]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",500000.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",3.0],PARAMETER[\"Scale_Factor\",0.9996],PARAMETER[\"Latitude_Of_Origin\",0.0],UNIT[\"Meter\",1.0],AUTHORITY[\"EPSG\",23031]]"
-            }, 
-            "name": "ED50 * EPSG-Nor S62 2001 / UTM zone 31N [23031,1613]", 
+            },
+            "name": "ED50 * EPSG-Nor S62 2001 / UTM zone 31N [23031,1613]",
             "singleCT": {
               "authCode": {
-                "auth": "EPSG", 
+                "auth": "EPSG",
                 "code": "1613"
-              }, 
-              "name": "ED_1950_To_WGS_1984_24", 
-              "type": "ST", 
-              "ver": "PE_10_3_1", 
+              },
+              "name": "ED_1950_To_WGS_1984_24",
+              "type": "ST",
+              "ver": "PE_10_3_1",
               "wkt": "GEOGTRAN[\"ED_1950_To_WGS_1984_24\",GEOGCS[\"GCS_European_1950\",DATUM[\"D_European_1950\",SPHEROID[\"International_1924\",6378388.0,297.0]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],METHOD[\"Position_Vector\"],PARAMETER[\"X_Axis_Translation\",-90.365],PARAMETER[\"Y_Axis_Translation\",-101.13],PARAMETER[\"Z_Axis_Translation\",-123.384],PARAMETER[\"X_Axis_Rotation\",0.333],PARAMETER[\"Y_Axis_Rotation\",0.077],PARAMETER[\"Z_Axis_Rotation\",0.894],PARAMETER[\"Scale_Difference\",1.994],AUTHORITY[\"EPSG\",1613]]"
-            }, 
-            "type": "EBC", 
+            },
+            "type": "EBC",
             "ver": "PE_10_3_1"
-          } 
+          }
         }
       },
-      "example":{
+      "example": {
         "persistableReference": "{\"lateBoundCRS\":{\"wkt\":\"PROJCS[\\\"ED_1950_UTM_Zone_31N\\\",GEOGCS[\\\"GCS_European_1950\\\",DATUM[\\\"D_European_1950\\\",SPHEROID[\\\"International_1924\\\",6378388.0,297.0]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],PROJECTION[\\\"Transverse_Mercator\\\"],PARAMETER[\\\"False_Easting\\\",500000.0],PARAMETER[\\\"False_Northing\\\",0.0],PARAMETER[\\\"Central_Meridian\\\",3.0],PARAMETER[\\\"Scale_Factor\\\",0.9996],PARAMETER[\\\"Latitude_Of_Origin\\\",0.0],UNIT[\\\"Meter\\\",1.0],AUTHORITY[\\\"EPSG\\\",23031]]\",\"ver\":\"PE_10_3_1\",\"name\":\"ED_1950_UTM_Zone_31N\",\"authCode\":{\"auth\":\"EPSG\",\"code\":\"23031\"},\"type\":\"LBC\"},\"singleCT\":{\"wkt\":\"GEOGTRAN[\\\"ED_1950_To_WGS_1984_24\\\",GEOGCS[\\\"GCS_European_1950\\\",DATUM[\\\"D_European_1950\\\",SPHEROID[\\\"International_1924\\\",6378388.0,297.0]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],GEOGCS[\\\"GCS_WGS_1984\\\",DATUM[\\\"D_WGS_1984\\\",SPHEROID[\\\"WGS_1984\\\",6378137.0,298.257223563]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],METHOD[\\\"Position_Vector\\\"],PARAMETER[\\\"X_Axis_Translation\\\",-90.365],PARAMETER[\\\"Y_Axis_Translation\\\",-101.13],PARAMETER[\\\"Z_Axis_Translation\\\",-123.384],PARAMETER[\\\"X_Axis_Rotation\\\",0.333],PARAMETER[\\\"Y_Axis_Rotation\\\",0.077],PARAMETER[\\\"Z_Axis_Rotation\\\",0.894],PARAMETER[\\\"Scale_Difference\\\",1.994],AUTHORITY[\\\"EPSG\\\",1613]]\",\"ver\":\"PE_10_3_1\",\"name\":\"ED_1950_To_WGS_1984_24\",\"authCode\":{\"auth\":\"EPSG\",\"code\":\"1613\"},\"type\":\"ST\"},\"ver\":\"PE_10_3_1\",\"name\":\"ED50 * EPSG-Nor S62 2001 / UTM zone 31N [23031,1613]\",\"authCode\":{\"auth\":\"SLB\",\"code\":\"23031024\"},\"type\":\"EBC\"}",
         "essence": {
           "authCode": {
-            "auth": "SLB", 
+            "auth": "SLB",
             "code": "23031024"
-          }, 
+          },
           "lateBoundCRS": {
             "authCode": {
-              "auth": "EPSG", 
+              "auth": "EPSG",
               "code": "23031"
-            }, 
-            "name": "ED_1950_UTM_Zone_31N", 
-            "type": "LBC", 
-            "ver": "PE_10_3_1", 
+            },
+            "name": "ED_1950_UTM_Zone_31N",
+            "type": "LBC",
+            "ver": "PE_10_3_1",
             "wkt": "PROJCS[\"ED_1950_UTM_Zone_31N\",GEOGCS[\"GCS_European_1950\",DATUM[\"D_European_1950\",SPHEROID[\"International_1924\",6378388.0,297.0]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",500000.0],PARAMETER[\"False_Northing\",0.0],PARAMETER[\"Central_Meridian\",3.0],PARAMETER[\"Scale_Factor\",0.9996],PARAMETER[\"Latitude_Of_Origin\",0.0],UNIT[\"Meter\",1.0],AUTHORITY[\"EPSG\",23031]]"
-          }, 
-          "name": "ED50 * EPSG-Nor S62 2001 / UTM zone 31N [23031,1613]", 
+          },
+          "name": "ED50 * EPSG-Nor S62 2001 / UTM zone 31N [23031,1613]",
           "singleCT": {
             "authCode": {
-              "auth": "EPSG", 
+              "auth": "EPSG",
               "code": "1613"
-            }, 
-            "name": "ED_1950_To_WGS_1984_24", 
-            "type": "ST", 
-            "ver": "PE_10_3_1", 
+            },
+            "name": "ED_1950_To_WGS_1984_24",
+            "type": "ST",
+            "ver": "PE_10_3_1",
             "wkt": "GEOGTRAN[\"ED_1950_To_WGS_1984_24\",GEOGCS[\"GCS_European_1950\",DATUM[\"D_European_1950\",SPHEROID[\"International_1924\",6378388.0,297.0]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],METHOD[\"Position_Vector\"],PARAMETER[\"X_Axis_Translation\",-90.365],PARAMETER[\"Y_Axis_Translation\",-101.13],PARAMETER[\"Z_Axis_Translation\",-123.384],PARAMETER[\"X_Axis_Rotation\",0.333],PARAMETER[\"Y_Axis_Rotation\",0.077],PARAMETER[\"Z_Axis_Rotation\",0.894],PARAMETER[\"Scale_Difference\",1.994],AUTHORITY[\"EPSG\",1613]]"
-          }, 
-          "type": "EBC", 
+          },
+          "type": "EBC",
           "ver": "PE_10_3_1"
         }
       }
     },
-    "LateBoundCRSRequest" : {
+    "LateBoundCRSRequest": {
       "type": "object",
       "description": "Request to get one LateBoundCRS given its 'persistableReference' (serialized essence) or 'essence' structure. Only one, persistableReference or essence must be provided. If both are provided, essence takes precedence.",
       "properties": {
@@ -2676,14 +2726,14 @@
         "essence": {
           "description": "The essence for the LateBoundCRS. Either the essence or persistableReference must be non-null.",
           "$ref": "#/definitions/LateBoundCRSEssence",
-          "example":  {
+          "example": {
             "authCode": {
-              "auth": "EPSG", 
+              "auth": "EPSG",
               "code": "4267"
-            }, 
-            "name": "GCS_North_American_1927", 
-            "type": "LBC", 
-            "ver": "PE_10_3_1", 
+            },
+            "name": "GCS_North_American_1927",
+            "type": "LBC",
+            "ver": "PE_10_3_1",
             "wkt": "GEOGCS[\"GCS_North_American_1927\",DATUM[\"D_North_American_1927\",SPHEROID[\"Clarke_1866\",6378206.4,294.9786982]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433],AUTHORITY[\"EPSG\",4267]]"
           }
         }
@@ -2702,7 +2752,7 @@
         }
       }
     },
-    "CompoundCRSRequest" : {
+    "CompoundCRSRequest": {
       "type": "object",
       "description": "Request to get one CompoundCRS given its 'persistableReference' (serialized essence) or 'essence' structure. Only one, persistableReference or essence must be provided. If both are provided, essence takes precedence.",
       "properties": {
@@ -2744,7 +2794,7 @@
           }
         }
       },
-      "example":{
+      "example": {
         "persistableReference": "{\"horzLateBoundCRS\":{\"wkt\":\"PROJCS[\\\"WGS_1984_UTM_Zone_35N\\\",GEOGCS[\\\"GCS_WGS_1984\\\",DATUM[\\\"D_WGS_1984\\\",SPHEROID[\\\"WGS_1984\\\",6378137.0,298.257223563]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],PROJECTION[\\\"Transverse_Mercator\\\"],PARAMETER[\\\"False_Easting\\\",500000.0],PARAMETER[\\\"False_Northing\\\",0.0],PARAMETER[\\\"Central_Meridian\\\",27.0],PARAMETER[\\\"Scale_Factor\\\",0.9996],PARAMETER[\\\"Latitude_Of_Origin\\\",0.0],UNIT[\\\"Meter\\\",1.0],AUTHORITY[\\\"EPSG\\\",32635]]\",\"ver\":\"PE_10_3_1\",\"name\":\"WGS_1984_UTM_Zone_35N\",\"authCode\":{\"auth\":\"EPSG\",\"code\":\"32635\"},\"type\":\"LBC\"},\"vertLateBoundCRS\":{\"wkt\":\"VERTCS[\\\"EGM96_Geoid\\\",VDATUM[\\\"EGM96_Geoid\\\"],PARAMETER[\\\"Vertical_Shift\\\",0.0],PARAMETER[\\\"Direction\\\",1.0],UNIT[\\\"Meter\\\",1.0],AUTHORITY[\\\"EPSG\\\",5773]]\",\"ver\":\"PE_10_3_1\",\"name\":\"EGM96_Geoid\",\"authCode\":{\"auth\":\"EPSG\",\"code\":\"5773\"},\"type\":\"LBC\"},\"ver\":\"PE_10_3_1\",\"name\":\"WGS 84 / UTM zone 35N + EGM96 height\",\"authCode\":{\"auth\":\"SLB\",\"code\":\"326355773\"},\"type\":\"CC\"}",
         "essence": {
           "authCode": {
@@ -2777,7 +2827,7 @@
         }
       }
     },
-    "CTRequest" : {
+    "CTRequest": {
       "type": "object",
       "description": "Request to get one cartographic transformation given its 'persistableReference' (serialized essence) or 'essence' structure. Only one, persistableReference or essence must be provided. If both are provided, essence takes precedence.",
       "properties": {
@@ -2792,7 +2842,7 @@
           "example": "{\r\n    \"authCode\": {\r\n     \"auth\": \"EPSG\", \r\n     \"code\": \"1133\"\r\n    }, \r\n    \"name\": \"ED_1950_To_WGS_1984_1\", \r\n    \"type\": \"ST\", \r\n    \"ver\": \"PE_10_3_1\", \r\n    \"wkt\": \"GEOGTRAN[\\\"ED_1950_To_WGS_1984_1\\\",GEOGCS[\\\"GCS_European_1950\\\",DATUM[\\\"D_European_1950\\\",SPHEROID[\\\"International_1924\\\",6378388.0,297.0]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],GEOGCS[\\\"GCS_WGS_1984\\\",DATUM[\\\"D_WGS_1984\\\",SPHEROID[\\\"WGS_1984\\\",6378137.0,298.257223563]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],METHOD[\\\"Geocentric_Translation\\\"],PARAMETER[\\\"X_Axis_Translation\\\",-87.0],PARAMETER[\\\"Y_Axis_Translation\\\",-98.0],PARAMETER[\\\"Z_Axis_Translation\\\",-121.0],AUTHORITY[\\\"EPSG\\\",1133]]\"\r\n}"
         }
       },
-      "example":{
+      "example": {
         "persistableReference": "{\"wkt\":\"GEOGTRAN[\\\"ED_1950_To_WGS_1984_1\\\",GEOGCS[\\\"GCS_European_1950\\\",DATUM[\\\"D_European_1950\\\",SPHEROID[\\\"International_1924\\\",6378388.0,297.0]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],GEOGCS[\\\"GCS_WGS_1984\\\",DATUM[\\\"D_WGS_1984\\\",SPHEROID[\\\"WGS_1984\\\",6378137.0,298.257223563]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],METHOD[\\\"Geocentric_Translation\\\"],PARAMETER[\\\"X_Axis_Translation\\\",-87.0],PARAMETER[\\\"Y_Axis_Translation\\\",-98.0],PARAMETER[\\\"Z_Axis_Translation\\\",-121.0],AUTHORITY[\\\"EPSG\\\",1133]]\",\"ver\":\"PE_10_3_1\",\"name\":\"ED_1950_To_WGS_1984_1\",\"authCode\":{\"auth\":\"EPSG\",\"code\":\"1133\"},\"type\":\"ST\"}",
         "essence": {
           "authCode": {
@@ -2806,7 +2856,7 @@
         }
       }
     },
-    "SingleCTRequest" : {
+    "SingleCTRequest": {
       "type": "object",
       "description": "Request to get one SingleCT given its 'persistableReference' (serialized essence) or 'essence' structure. Only one, persistableReference or essence must be provided. If both are provided, essence takes precedence.",
       "properties": {
@@ -2819,31 +2869,31 @@
           "$ref": "#/definitions/SingleCTEssence",
           "example": {
             "authCode": {
-            "auth": "EPSG", 
-            "code": "1133"
-            }, 
-            "name": "ED_1950_To_WGS_1984_1", 
-            "type": "ST", 
-            "ver": "PE_10_3_1", 
+              "auth": "EPSG",
+              "code": "1133"
+            },
+            "name": "ED_1950_To_WGS_1984_1",
+            "type": "ST",
+            "ver": "PE_10_3_1",
             "wkt": "GEOGTRAN[\"ED_1950_To_WGS_1984_1\",GEOGCS[\"GCS_European_1950\",DATUM[\"D_European_1950\",SPHEROID[\"International_1924\",6378388.0,297.0]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],METHOD[\"Geocentric_Translation\"],PARAMETER[\"X_Axis_Translation\",-87.0],PARAMETER[\"Y_Axis_Translation\",-98.0],PARAMETER[\"Z_Axis_Translation\",-121.0],AUTHORITY[\"EPSG\",1133]]"
           }
         }
       },
-      "example":{
+      "example": {
         "persistableReference": "{\"wkt\":\"GEOGTRAN[\\\"ED_1950_To_WGS_1984_1\\\",GEOGCS[\\\"GCS_European_1950\\\",DATUM[\\\"D_European_1950\\\",SPHEROID[\\\"International_1924\\\",6378388.0,297.0]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],GEOGCS[\\\"GCS_WGS_1984\\\",DATUM[\\\"D_WGS_1984\\\",SPHEROID[\\\"WGS_1984\\\",6378137.0,298.257223563]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],METHOD[\\\"Geocentric_Translation\\\"],PARAMETER[\\\"X_Axis_Translation\\\",-87.0],PARAMETER[\\\"Y_Axis_Translation\\\",-98.0],PARAMETER[\\\"Z_Axis_Translation\\\",-121.0],AUTHORITY[\\\"EPSG\\\",1133]]\",\"ver\":\"PE_10_3_1\",\"name\":\"ED_1950_To_WGS_1984_1\",\"authCode\":{\"auth\":\"EPSG\",\"code\":\"1133\"},\"type\":\"ST\"}",
         "essence": {
           "authCode": {
-            "auth": "EPSG", 
+            "auth": "EPSG",
             "code": "1133"
-          }, 
-          "name": "ED_1950_To_WGS_1984_1", 
-          "type": "ST", 
-          "ver": "PE_10_3_1", 
+          },
+          "name": "ED_1950_To_WGS_1984_1",
+          "type": "ST",
+          "ver": "PE_10_3_1",
           "wkt": "GEOGTRAN[\"ED_1950_To_WGS_1984_1\",GEOGCS[\"GCS_European_1950\",DATUM[\"D_European_1950\",SPHEROID[\"International_1924\",6378388.0,297.0]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],METHOD[\"Geocentric_Translation\"],PARAMETER[\"X_Axis_Translation\",-87.0],PARAMETER[\"Y_Axis_Translation\",-98.0],PARAMETER[\"Z_Axis_Translation\",-121.0],AUTHORITY[\"EPSG\",1133]]"
-        } 
+        }
       }
     },
-    "CompoundCTRequest" : {
+    "CompoundCTRequest": {
       "type": "object",
       "description": "Request to get one CompoundCT given its 'persistableReference' (serialized essence) or 'essence' structure. Only one, persistableReference or essence must be provided. If both are provided, essence takes precedence.",
       "properties": {
@@ -2856,70 +2906,70 @@
           "$ref": "#/definitions/CompoundCTEssence",
           "example": {
             "authCode": {
-              "auth": "SLB", 
+              "auth": "SLB",
               "code": "158511693"
-            }, 
-            "name": "Fallback NAD27 to WGS 84 (79)/NAD27 to WGS 84 (33)", 
-            "policy": "Fallback", 
-            "type": "CT", 
+            },
+            "name": "Fallback NAD27 to WGS 84 (79)/NAD27 to WGS 84 (33)",
+            "policy": "Fallback",
+            "type": "CT",
             "cts": [
               {
                 "authCode": {
-                  "auth": "EPSG", 
+                  "auth": "EPSG",
                   "code": "15851"
-                }, 
-                "name": "NAD_1927_To_WGS_1984_79_CONUS", 
-                "type": "ST", 
-                "ver": "PE_10_3_1", 
+                },
+                "name": "NAD_1927_To_WGS_1984_79_CONUS",
+                "type": "ST",
+                "ver": "PE_10_3_1",
                 "wkt": "GEOGTRAN[\"NAD_1927_To_WGS_1984_79_CONUS\",GEOGCS[\"GCS_North_American_1927\",DATUM[\"D_North_American_1927\",SPHEROID[\"Clarke_1866\",6378206.4,294.9786982]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],METHOD[\"NADCON\"],PARAMETER[\"Dataset_conus\",0.0],AUTHORITY[\"EPSG\",15851]]"
-              }, 
+              },
               {
                 "authCode": {
-                  "auth": "EPSG", 
+                  "auth": "EPSG",
                   "code": "1693"
-                }, 
-                "name": "NAD_1927_To_WGS_1984_33", 
-                "type": "ST", 
-                "ver": "PE_10_3_1", 
+                },
+                "name": "NAD_1927_To_WGS_1984_33",
+                "type": "ST",
+                "ver": "PE_10_3_1",
                 "wkt": "GEOGTRAN[\"NAD_1927_To_WGS_1984_33\",GEOGCS[\"GCS_North_American_1927\",DATUM[\"D_North_American_1927\",SPHEROID[\"Clarke_1866\",6378206.4,294.9786982]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],METHOD[\"NTv2\"],PARAMETER[\"Dataset_canada/Ntv2_0\",0.0],AUTHORITY[\"EPSG\",1693]]"
               }
-            ], 
+            ],
             "ver": "PE_10_3_1"
           }
         }
       },
-      "example":{
+      "example": {
         "persistableReference": "{\"policy\":\"Fallback\",\"cts\":[{\"wkt\":\"GEOGTRAN[\\\"NAD_1927_To_WGS_1984_79_CONUS\\\",GEOGCS[\\\"GCS_North_American_1927\\\",DATUM[\\\"D_North_American_1927\\\",SPHEROID[\\\"Clarke_1866\\\",6378206.4,294.9786982]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],GEOGCS[\\\"GCS_WGS_1984\\\",DATUM[\\\"D_WGS_1984\\\",SPHEROID[\\\"WGS_1984\\\",6378137.0,298.257223563]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],METHOD[\\\"NADCON\\\"],PARAMETER[\\\"Dataset_conus\\\",0.0],AUTHORITY[\\\"EPSG\\\",15851]]\",\"ver\":\"PE_10_3_1\",\"name\":\"NAD_1927_To_WGS_1984_79_CONUS\",\"authCode\":{\"auth\":\"EPSG\",\"code\":\"15851\"},\"type\":\"ST\"},{\"wkt\":\"GEOGTRAN[\\\"NAD_1927_To_WGS_1984_33\\\",GEOGCS[\\\"GCS_North_American_1927\\\",DATUM[\\\"D_North_American_1927\\\",SPHEROID[\\\"Clarke_1866\\\",6378206.4,294.9786982]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],GEOGCS[\\\"GCS_WGS_1984\\\",DATUM[\\\"D_WGS_1984\\\",SPHEROID[\\\"WGS_1984\\\",6378137.0,298.257223563]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],METHOD[\\\"NTv2\\\"],PARAMETER[\\\"Dataset_canada/Ntv2_0\\\",0.0],AUTHORITY[\\\"EPSG\\\",1693]]\",\"ver\":\"PE_10_3_1\",\"name\":\"NAD_1927_To_WGS_1984_33\",\"authCode\":{\"auth\":\"EPSG\",\"code\":\"1693\"},\"type\":\"ST\"}],\"ver\":\"PE_10_3_1\",\"name\":\"Fallback NAD27 to WGS 84 (79)/NAD27 to WGS 84 (33)\",\"authCode\":{\"auth\":\"SLB\",\"code\":\"158511693\"},\"type\":\"CT\"}",
         "essence": {
           "authCode": {
-            "auth": "SLB", 
+            "auth": "SLB",
             "code": "158511693"
-          }, 
-          "name": "Fallback NAD27 to WGS 84 (79)/NAD27 to WGS 84 (33)", 
-          "policy": "Fallback", 
-          "type": "CT", 
+          },
+          "name": "Fallback NAD27 to WGS 84 (79)/NAD27 to WGS 84 (33)",
+          "policy": "Fallback",
+          "type": "CT",
           "cts": [
             {
               "authCode": {
-                "auth": "EPSG", 
+                "auth": "EPSG",
                 "code": "15851"
-              }, 
-              "name": "NAD_1927_To_WGS_1984_79_CONUS", 
-              "type": "ST", 
-              "ver": "PE_10_3_1", 
+              },
+              "name": "NAD_1927_To_WGS_1984_79_CONUS",
+              "type": "ST",
+              "ver": "PE_10_3_1",
               "wkt": "GEOGTRAN[\"NAD_1927_To_WGS_1984_79_CONUS\",GEOGCS[\"GCS_North_American_1927\",DATUM[\"D_North_American_1927\",SPHEROID[\"Clarke_1866\",6378206.4,294.9786982]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],METHOD[\"NADCON\"],PARAMETER[\"Dataset_conus\",0.0],AUTHORITY[\"EPSG\",15851]]"
-            }, 
+            },
             {
               "authCode": {
-                "auth": "EPSG", 
+                "auth": "EPSG",
                 "code": "1693"
-              }, 
-              "name": "NAD_1927_To_WGS_1984_33", 
-              "type": "ST", 
-              "ver": "PE_10_3_1", 
+              },
+              "name": "NAD_1927_To_WGS_1984_33",
+              "type": "ST",
+              "ver": "PE_10_3_1",
               "wkt": "GEOGTRAN[\"NAD_1927_To_WGS_1984_33\",GEOGCS[\"GCS_North_American_1927\",DATUM[\"D_North_American_1927\",SPHEROID[\"Clarke_1866\",6378206.4,294.9786982]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],METHOD[\"NTv2\"],PARAMETER[\"Dataset_canada/Ntv2_0\",0.0],AUTHORITY[\"EPSG\",1693]]"
             }
-          ], 
+          ],
           "ver": "PE_10_3_1"
         }
       }
@@ -3203,6 +3253,52 @@
       },
       "example": {
         "query": "description:*America*"
+      }
+    },
+    "VersionInfo": {
+      "type": "object",
+      "properties": {
+        "artifactId": {
+          "type": "string"
+        },
+        "branch": {
+          "type": "string"
+        },
+        "buildTime": {
+          "type": "string"
+        },
+        "commitId": {
+          "type": "string"
+        },
+        "commitMessage": {
+          "type": "string"
+        },
+        "connectedOuterServices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConnectedOuterService"
+          }
+        },
+        "groupId": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "ConnectedOuterService": {
+      "type": "object",
+      "description": "Connected outer service information.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Connected outer service name."
+        },
+        "version": {
+          "type": "string",
+          "description": "Connected outer service version."
+        }
       }
     }
   }
