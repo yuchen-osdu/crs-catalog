@@ -92,7 +92,7 @@ The following software have components provided under the terms of this license:
 - J2ObjC Annotations (from https://github.com/google/j2objc/)
 - JBoss Logging 3 (from http://www.jboss.org)
 - JCIP Annotations under Apache License (from http://stephenc.github.com/jcip-annotations)
-- JDO API
+- JDO API (from https://repo1.maven.org/maven2/javax/jdo/jdo-api)
 - JDOM
 - JSON Small and Fast Parser (from https://repo1.maven.org/maven2/net/minidev/json-smart, https://urielch.github.io/)
 - JSON Web Token support for the JVM (from https://repo1.maven.org/maven2/io/jsonwebtoken/jjwt)
