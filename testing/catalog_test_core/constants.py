@@ -17,4 +17,6 @@ if VENDOR == 'ibm':
 else:
     ROOT_URL = os.getenv("VIRTUAL_SERVICE_HOST_NAME")
 MY_TENANT = os.getenv("MY_TENANT")
+ACL_DOMAIN = os.getenv("ACL_DOMAIN")
+LOCAL_MODE = os.getenv("LOCAL_MODE", "false")
 

@@ -28,6 +28,11 @@ if [[ "$OSTYPE" == "msys" ]]; then
   V2_TEST_STATUS=$?
   echo ***FINISHED CRS Catalog API V2 TESTS***
 
+  echo ***RUNNING CRS Catalog API V3 TESTS***
+  python run_test_api_v3.py
+  V3_TEST_STATUS=$?
+  echo ***FINISHED CRS Catalog API V3 TESTS***
+
   # python -m pip freeze > requirements.txt
   python -m pip uninstall -r requirements.txt -y
 
@@ -48,6 +53,11 @@ else
   V2_TEST_STATUS=$?
   echo ***FINISHED CRS Catalog API V2 TESTS***
 
+  echo ***RUNNING CRS Catalog API V3 TESTS***
+  python3 run_test_api_v3.py
+  V3_TEST_STATUS=$?
+  echo ***FINISHED CRS Catalog API V3 TESTS***
+
   # python3 -m pip freeze > requirements.txt
   python3 -m pip uninstall -r requirements.txt -y
 
@@ -56,7 +66,7 @@ fi
 deactivate
 rm -rf env/
 
-if [ $V2_TEST_STATUS -ne 0 ]
+if [ $V2_TEST_STATUS -ne 0 ] || [ $V3_TEST_STATUS -ne 0 ]
 then
     exit 1
 fi
