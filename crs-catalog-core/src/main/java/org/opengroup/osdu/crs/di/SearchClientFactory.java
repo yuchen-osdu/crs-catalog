@@ -16,7 +16,7 @@ public class SearchClientFactory extends AbstractFactoryBean<ISearchFactory> {
 
 	private final HttpResponseBodyMapper bodyMapper;
 
-	@Value("${SEARCH_API}")
+	@Value("${SEARCH_API:NOT_FOUND}")
 	private String SEARCH_API;
 
 	@Override
