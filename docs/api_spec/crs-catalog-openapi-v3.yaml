@@ -1,0 +1,302 @@
+# Copyright © Amazon
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http:#www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+swagger: '2.0'
+info:
+  version: 2.0.0
+  title: CRS Catalog Service API
+  description: Coordinate Reference System (CRS) Catalog Service
+host: ROOT_URL
+x-google-allow: all
+tags:
+  - name: Coordinate Transformations
+  - name: Coordinate Reference Systems
+  - name: Area of Use
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /coordinate-transformation:
+    get:
+      tags:
+        - Coordinate Transformations
+      parameters:
+        - in: header
+          name: data-partition-id
+          type: string
+          required: false
+        - name: dataId
+          in: query
+          required: false
+          type: string
+          description: Searches on data.ID for CT records
+        - name: recordId
+          in: query
+          required: false
+          type: string
+          description: Searches on id for CT records
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            $ref: '#/definitions/SearchResponse'
+    post:
+      tags:
+        - Coordinate Transformations
+      parameters:
+        - in: header
+          name: data-partition-id
+          type: string
+          required: false
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/CoordinateTransformationSearch'
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            $ref: '#/definitions/SearchResponse'
+
+  /coordinate-reference-system:
+    get:
+      tags:
+        - Coordinate Reference Systems
+      parameters:
+        - in: header
+          name: data-partition-id
+          type: string
+          required: false
+        - name: dataId
+          in: query
+          required: false
+          type: string
+          description: Searches on data.ID for CT records
+        - name: recordId
+          in: query
+          required: false
+          type: string
+          description: Searches on id for CT records
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            $ref: '#/definitions/SearchResponse'
+    post:
+      tags:
+        - Coordinate Reference Systems
+      parameters:
+        - in: header
+          name: data-partition-id
+          type: string
+          required: false
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/CoordinateReferenceSystemSearch'
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            $ref: '#/definitions/SearchResponse'
+
+  /area-of-use:
+    post:
+      tags:
+        - Area of Use
+      parameters:
+        - in: header
+          name: data-partition-id
+          type: string
+          required: false
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/AreaOfUseSearch'
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            $ref: '#/definitions/AreaOfUseResponse'
+
+definitions:
+  AreaOfUseSearch:
+    description: Body for checking points against Area of use
+    properties:
+      recordId:
+        type: string
+        description: Record of CRS or CT to check points against
+      points:
+        type: array
+        description: List of points to check against CRS or CT polygon
+        items:
+          $ref: '#/definitions/Point'
+  AreaOfUseResponse:
+    properties:
+      successfulPoints:
+        type: array
+        description: List of points that are in the record polygon
+        items:
+          $ref: '#/definitions/Point'
+      failedPoints:
+        type: array
+        description: List of failed points, ones that aren't in polygon
+        items:
+          $ref: '#/definitions/FailedPoint'
+      maxDistKmOutside:
+        type: number
+        description: Point distance with highest km outside polygon
+  FailedPoint:
+    description: A point that didn't land in polygon for area of use search
+    properties:
+      point:
+        $ref: '#/definitions/Point'
+      approximateKmDistanceOutside:
+        type: number
+        description: Kilometers outside the record's polygon
+      degreeDistanceOutside:
+        type: number
+        description: Degrees outside the record's polygon
+  Point:
+    description: Lat, long point
+    properties:
+      latitude:
+        type: number
+      longitude:
+        type: number
+  CoordinateTransformationSearch:
+    description: Body for searching on CTs
+    properties:
+      includeHorizontal:
+        type: boolean
+        description: Whether to just include horizontal CTs
+      includeVertical:
+        type: boolean
+        description: Whether to just include vertical CTs
+      codeSpace:
+        type: string
+        description: Corresponds to CodeSpace field on CT records
+      name:
+        type: string
+        description: Corresponds to Name field on CT records
+      sourceCRS:
+        type: string
+        description: Corresponds to SourceCRS field on CT records
+      targetCRS:
+        type: string
+        description: Corresponds to TargetCRS field on CT records
+      latitude:
+        type: number
+        description: Latitude point for searching on CT polygon
+      longitude:
+        type: number
+        description: Longitude point for searching on CT polygon
+      offset:
+        type: integer
+        description: Corresponds to offset on search service
+      limit:
+        type: integer
+        description: Corresponds to limit on search service
+
+  CoordinateReferenceSystemSearch:
+    description: Body for searching on CRSs
+    properties:
+      codeSpace:
+        type: string
+        description: Corresponds to CodeSpace field on CT records
+      name:
+        type: string
+        description: Corresponds to Name field on CT records
+      id:
+        type: string
+        description: Corresponds to ID field on CRS records
+      code:
+        type: string
+        description: Corresponds to Code field on CRS records
+      kind:
+        type: string
+        description: Corresponds to Kind field on CRS records
+      baseCRS:
+        $ref: "#/definitions/BaseCRS"
+      datum:
+        $ref: "#/definitions/Datum"
+      extent:
+        $ref: "#/definitions/Extent"
+      coordinateReferenceSystemType:
+        type: string
+        description: Type of CRS i.e. GeodeticCRS
+      latitude:
+        type: number
+        description: Latitude point for searching on CT polygon
+      longitude:
+        type: number
+        description: Longitude point for searching on CT polygon
+      offset:
+        type: integer
+        description: Corresponds to offset on search service
+      limit:
+        type: integer
+        description: Corresponds to limit on search service
+
+  BaseCRS:
+    properties:
+      id:
+        type: string
+        description: Record Id of parent CRS
+      name:
+        type: string
+        description: Name of parent CRS
+
+  Datum:
+    properties:
+      code:
+        type: string
+        description: Code of datum
+      name:
+        type: string
+        description: Name of datum
+      codeSpace:
+        type: string
+        description: Codespace of datum
+
+  Extent:
+    properties:
+      name:
+        type: string
+        description: Name of extent
+
+  SearchResponse:
+    description: Results for most V3 endpoints
+    properties:
+      searchResults:
+        $ref: '#/definitions/QueryResponse'
+      query:
+        type: string
+        description: Query string used against Search service
+
+  QueryResponse:
+    description: Results from Search service
+    properties:
+      results:
+        type: object
+        description: Results like in Search service results
+      aggregations:
+        type: object
+        description: Aggregations used like in Search service results
+      totalCount:
+        type: integer
+        description: Total count of search results

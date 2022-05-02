@@ -9,7 +9,7 @@
         <docker.image.prefix>org.opengroup.osdu</docker.image.prefix>
         <powermock.version>2.0.6</powermock.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <os-core-common.version>0.14.0</os-core-common.version>
+        <os-core-common.version>0.15.0-SNAPSHOT</os-core-common.version>
         <snakeyaml.version>1.26</snakeyaml.version>
         <nimbus-jose-jwt.version>7.9</nimbus-jose-jwt.version>
         <springfox.version>3.0.0</springfox.version>
@@ -106,6 +106,16 @@
       			<artifactId>springfox-boot-starter</artifactId>
       			<version>${springfox.version}</version>
     		</dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${springfox.version}</version>
+            </dependency>
     	</dependencies>
 
     <build>

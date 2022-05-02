@@ -1,0 +1,9 @@
+{
+  "codeSpace": "EPSG",
+  "name": "Saudi Arabia",
+  "sourceCRS": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4204:",
+  "targetCRS": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4326:",
+  "includeHorizontal": "true",
+  "latitude": 17.5,
+  "longitude": 40.56
+}
