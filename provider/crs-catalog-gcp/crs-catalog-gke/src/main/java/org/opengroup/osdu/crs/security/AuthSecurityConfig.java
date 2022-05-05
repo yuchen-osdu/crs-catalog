@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.opengroup.osdu.crs.middleware.AuthenticationRequestFilter;
 import org.opengroup.osdu.crs.middleware.AuthenticationService;
 import org.opengroup.osdu.crs.util.AppError;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -38,12 +37,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AuthSecurityConfig extends WebSecurityConfigurerAdapter implements AccessDeniedHandler, AuthenticationEntryPoint {
-      
+
     private AuthenticationRequestFilter authFilter;
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -65,7 +63,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter implements 
         "/api/crs/catalog/actuator",
         "/api/crs/catalog/actuator/**",
         "/api/crs/catalog/actuator/health",
-};
+    };
 
     //AuthenticationRequestFilter is not a recognized bean, so construct it manually
     public AuthSecurityConfig(AuthenticationService authenticationService) {
@@ -74,14 +72,15 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter implements 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
-                .and()
-                .authorizeRequests()
-                .antMatchers(AUTH_WHITELIST).permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
+        http.csrf()
+            .disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
+            .and()
+            .authorizeRequests()
+            .antMatchers(AUTH_WHITELIST).permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
@@ -101,10 +100,10 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter implements 
 
     private static void writeUnauthorizedError(HttpServletResponse response) throws IOException {
         AppError appError = AppError.builder()
-                .code(HttpStatus.UNAUTHORIZED.value())
-                .message("The user is not authorized to perform this action")
-                .reason("Unauthorized")
-                .build();
+            .code(HttpStatus.UNAUTHORIZED.value())
+            .message("The user is not authorized to perform this action")
+            .reason("Unauthorized")
+            .build();
         String body = OBJECT_MAPPER.writeValueAsString(appError);
 
         PrintWriter out = response.getWriter();
