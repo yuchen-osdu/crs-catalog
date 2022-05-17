@@ -11,3 +11,4 @@ conf:
   configmap: "crs-catalog-config"
   app_name: "crs-catalog"
   on_prem_enabled: false
+  domain: ""
