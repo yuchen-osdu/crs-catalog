@@ -18,8 +18,8 @@ import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.opengroup.osdu.core.common.model.search.Point;
 import org.opengroup.osdu.core.common.model.search.Polygon;
 import org.opengroup.osdu.crs.model.request.InPolygonQuery;
-import org.opengroup.osdu.crs.model.response.AreaOfUseSearchPoint;
-import org.opengroup.osdu.crs.model.response.AreaOfUseSearchResult;
+import org.opengroup.osdu.crs.model.response.PointsInAouSearchPoint;
+import org.opengroup.osdu.crs.model.response.PointsInAouSearchResult;
 import org.opengroup.osdu.crs.model.response.SearchResponse;
 import org.opengroup.osdu.crs.model.geometry.*;
 import org.opengroup.osdu.crs.util.AppException;
@@ -46,28 +46,28 @@ public class AreaOfUseService {
 
 	private final static int DECIMAL_PLACES = 3;
 
-	public AreaOfUseSearchResult searchAou(InPolygonQuery inPolygonQuery) {
+	public PointsInAouSearchResult searchAou(InPolygonQuery inPolygonQuery) {
 		Polygon polygon = getRecordPolygon(inPolygonQuery);
 
 		double maxDistanceOutDegrees = 0;
-		AreaOfUseSearchResult areaOfUseSearchResult = new AreaOfUseSearchResult();
+		PointsInAouSearchResult pointsInAouSearchResult = new PointsInAouSearchResult();
 		for(Point testPoint : inPolygonQuery.getPoints()){
 			Double degreeDistance = determineDistance(testPoint, polygon.getPoints());
 			if (degreeDistance > 0){
 				logger.debug(String.format("Point outside polygon: %s, %s", testPoint.toString(), degreeDistance));
-				addFailedPoint(testPoint, degreeDistance, areaOfUseSearchResult);
+				addFailedPoint(testPoint, degreeDistance, pointsInAouSearchResult);
 				if(degreeDistance > maxDistanceOutDegrees){
 					maxDistanceOutDegrees = degreeDistance;
 				}
 			} else {
 				logger.debug(String.format("Point inside polygon: %s", testPoint.toString()));
-				areaOfUseSearchResult.addSuccessfulPoint(testPoint);
+				pointsInAouSearchResult.addSuccessfulPoint(testPoint);
 			}
 		}
 
-		setMaxDistanceOutKm(maxDistanceOutDegrees, areaOfUseSearchResult);
+		setMaxDistanceOutKm(maxDistanceOutDegrees, pointsInAouSearchResult);
 
-		return areaOfUseSearchResult;
+		return pointsInAouSearchResult;
 	}
 
 	// Found here: https://stackoverflow.com/questions/5254838/calculating-distance-between-a-point-and-a-rectangular-box-nearest-point
@@ -84,16 +84,16 @@ public class AreaOfUseService {
 		return distance;
 	}
 
-	private void setMaxDistanceOutKm(double maxDistanceOutDegrees, AreaOfUseSearchResult areaOfUseSearchResult){
-		areaOfUseSearchResult.setMaxDistKmOutside(roundDouble(maxDistanceOutDegrees * DEGREE_TO_KM_RATIO));
+	private void setMaxDistanceOutKm(double maxDistanceOutDegrees, PointsInAouSearchResult pointsInAouSearchResult){
+		pointsInAouSearchResult.setMaxDistKmOutside(roundDouble(maxDistanceOutDegrees * DEGREE_TO_KM_RATIO));
 	}
 
-	private void addFailedPoint(Point failedPoint, Double degreeDistance, AreaOfUseSearchResult areaOfUseSearchResult){
-		AreaOfUseSearchPoint areaOfUseSearchPoint = new AreaOfUseSearchPoint();
-		areaOfUseSearchPoint.setPoint(failedPoint);
-		areaOfUseSearchPoint.setDegreeDistanceOutside(roundDouble(degreeDistance));
-		areaOfUseSearchPoint.setApproximateKmDistanceOutside(convertDegreeToKm(degreeDistance));
-		areaOfUseSearchResult.addFailedPoint(areaOfUseSearchPoint);
+	private void addFailedPoint(Point failedPoint, Double degreeDistance, PointsInAouSearchResult pointsInAouSearchResult){
+		PointsInAouSearchPoint pointsInAouSearchPoint = new PointsInAouSearchPoint();
+		pointsInAouSearchPoint.setPoint(failedPoint);
+		pointsInAouSearchPoint.setDegreeDistanceOutside(roundDouble(degreeDistance));
+		pointsInAouSearchPoint.setApproximateKmDistanceOutside(convertDegreeToKm(degreeDistance));
+		pointsInAouSearchResult.addFailedPoint(pointsInAouSearchPoint);
 	}
 
 	private Double convertDegreeToKm(Double degree){

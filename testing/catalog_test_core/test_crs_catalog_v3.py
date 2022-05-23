@@ -184,12 +184,12 @@ class TestCrsCatalog(unittest.TestCase):
             assert response.status_code == 200
             assert len(response_body["searchResults"]["results"]) == 1
 
-    def test_check_area_of_use(self):
-        with open(f'{self.path}v3/CheckAreaOfUse.json') as test_data_file:
+    def test_check_points_in_aou(self):
+        with open(f'{self.path}v3/CheckPointsInAou.json') as test_data_file:
             test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
             test_data_obj = json.loads(test_data)
 
-            response = self.client.make_request('POST', f'/api/crs/catalog/v3/area-of-use', test_data)
+            response = self.client.make_request('POST', f'/api/crs/catalog/v3/points-in-aou', test_data)
             response_body = json.loads(response.content)
             assert response.status_code == 200
             assert len(response_body["successfulPoints"]) == 1

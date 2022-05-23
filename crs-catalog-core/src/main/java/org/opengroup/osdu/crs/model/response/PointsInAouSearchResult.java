@@ -21,17 +21,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class AreaOfUseSearchResult {
+public class PointsInAouSearchResult {
 	private List<Point> successfulPoints;
-	private List<AreaOfUseSearchPoint> failedPoints;
+	private List<PointsInAouSearchPoint> failedPoints;
 	private Double maxDistKmOutside;
 
-	public AreaOfUseSearchResult(){
+	public PointsInAouSearchResult(){
 		failedPoints = new ArrayList<>();
 		successfulPoints = new ArrayList<>();
 	}
 
-	public void addFailedPoint(AreaOfUseSearchPoint failedPoint){
+	public void addFailedPoint(PointsInAouSearchPoint failedPoint){
 		failedPoints.add(failedPoint);
 	}
 

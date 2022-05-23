@@ -10,7 +10,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.opengroup.osdu.core.common.model.search.Point;
 import org.opengroup.osdu.core.common.model.search.QueryResponse;
-import org.opengroup.osdu.crs.model.response.AreaOfUseSearchResult;
+import org.opengroup.osdu.crs.model.response.PointsInAouSearchResult;
 import org.opengroup.osdu.crs.model.request.InPolygonQuery;
 import org.opengroup.osdu.crs.model.response.SearchResponse;
 
@@ -64,7 +64,7 @@ public class AreaOfUseServiceTest {
 				.thenReturn(searchResponse);
 
 		// act
-		AreaOfUseSearchResult result = areaOfUseService.searchAou(inPolygonQuery);
+		PointsInAouSearchResult result = areaOfUseService.searchAou(inPolygonQuery);
 
 		// assert
 		Assert.assertEquals(1, result.getFailedPoints().size());
@@ -125,7 +125,7 @@ public class AreaOfUseServiceTest {
 				.thenReturn(searchResponse);
 
 		// act
-		AreaOfUseSearchResult result = areaOfUseService.searchAou(inPolygonQuery);
+		PointsInAouSearchResult result = areaOfUseService.searchAou(inPolygonQuery);
 
 		// assert
 		Assert.assertEquals(3, result.getFailedPoints().size());

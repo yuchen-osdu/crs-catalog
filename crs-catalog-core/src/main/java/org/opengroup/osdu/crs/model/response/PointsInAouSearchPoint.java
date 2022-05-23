@@ -18,7 +18,7 @@ import lombok.Data;
 import org.opengroup.osdu.core.common.model.search.Point;
 
 @Data
-public class AreaOfUseSearchPoint {
+public class PointsInAouSearchPoint {
 	private Point point;
 	private Double approximateKmDistanceOutside;
 	private Double degreeDistanceOutside;
