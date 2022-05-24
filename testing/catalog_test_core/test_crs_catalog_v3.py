@@ -76,7 +76,7 @@ class TestCrsCatalog(unittest.TestCase):
             found = False
             max_checks = 20
             checks = 0
-            while found == False:
+            while not found:
                 if checks >= max_checks:
                     raise Exception(f"Could not find records indexed against search after {max_checks} checks")
                     break
@@ -108,6 +108,11 @@ class TestCrsCatalog(unittest.TestCase):
             assert len(response_body["searchResults"]["results"]) == 1
             assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
             assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
+            for property in ('kind', 'version', 'acl', 'legal', 'namespace'):
+                assert property in response_body["searchResults"]["results"][0]
+            for property in ('Code', 'Kind', 'PreferredUsage.Name', 'PreferredUsage.Extent.Description',
+                             'PreferredUsage.Extent.Name', 'PersistableReference', 'CoordinateTransformationType'):
+                assert property in response_body["searchResults"]["results"][0]['data']
 
     def test_get_coordinate_transformation_recordId(self):
         with open(f'{self.path}v3/GetCoordinateTransformationTestData.json') as test_data_file:
@@ -141,6 +146,12 @@ class TestCrsCatalog(unittest.TestCase):
             assert len(response_body["searchResults"]["results"]) == 1
             assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
             assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
+            for property in ('kind', 'version', 'acl', 'legal', 'namespace'):
+                assert property in response_body["searchResults"]["results"][0]
+            for property in ('Code', 'Kind', 'VerticalCRS.Name', 'PreferredUsage.Name', 'PreferredUsage.Extent.Description',
+                             'PreferredUsage.Extent.Name', 'PersistableReference', 'CoordinateReferenceSystemType'):
+                assert property in response_body["searchResults"]["results"][0]['data']
+
 
     def test_get_coordinate_reference_system_recordId(self):
         with open(f'{self.path}v3/GetCoordinateReferenceSystemTestData.json') as test_data_file:
@@ -167,17 +178,15 @@ class TestCrsCatalog(unittest.TestCase):
     def test_search_coordinate_transformations(self):
         with open(f'{self.path}v3/SearchCoordinateTransformations.json') as test_data_file:
             test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
-            test_data_obj = json.loads(test_data)
 
             response = self.client.make_request('POST', f'/api/crs/catalog/v3/coordinate-transformation', test_data)
             response_body = json.loads(response.content)
             assert response.status_code == 200
             assert len(response_body["searchResults"]["results"]) == 1
 
-    def test_search_coordinate_transformations(self):
-        with open(f'{self.path}v3/SearchCoordinateTransformations.json') as test_data_file:
+    def test_search_coordinate_reference_systems(self):
+        with open(f'{self.path}v3/SearchCoordinateReferenceSystems.json') as test_data_file:
             test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
-            test_data_obj = json.loads(test_data)
 
             response = self.client.make_request('POST', f'/api/crs/catalog/v3/coordinate-reference-system', test_data)
             response_body = json.loads(response.content)
@@ -187,7 +196,6 @@ class TestCrsCatalog(unittest.TestCase):
     def test_check_points_in_aou(self):
         with open(f'{self.path}v3/CheckPointsInAou.json') as test_data_file:
             test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
-            test_data_obj = json.loads(test_data)
 
             response = self.client.make_request('POST', f'/api/crs/catalog/v3/points-in-aou', test_data)
             response_body = json.loads(response.content)
