@@ -85,12 +85,12 @@ paths:
           in: query
           required: false
           type: string
-          description: Searches on data.ID for CT records
+          description: Searches on data.ID for CRS records
         - name: recordId
           in: query
           required: false
           type: string
-          description: Searches on id for CT records
+          description: Searches on id for CRS records
       responses:
         '200':
           description: A successful response
@@ -217,10 +217,10 @@ definitions:
     properties:
       codeSpace:
         type: string
-        description: Corresponds to CodeSpace field on CT records
+        description: Corresponds to CodeSpace field on CRS records
       name:
         type: string
-        description: Corresponds to Name field on CT records
+        description: Corresponds to Name field on CRS records
       id:
         type: string
         description: Corresponds to ID field on CRS records
@@ -241,10 +241,10 @@ definitions:
         description: Type of CRS i.e. GeodeticCRS
       latitude:
         type: number
-        description: Latitude point for searching on CT polygon
+        description: Latitude point for searching on CRS polygon
       longitude:
         type: number
-        description: Longitude point for searching on CT polygon
+        description: Longitude point for searching on CRS polygon
       offset:
         type: integer
         description: Corresponds to offset on search service
