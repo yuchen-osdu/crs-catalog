@@ -239,6 +239,12 @@ definitions:
       coordinateReferenceSystemType:
         type: string
         description: Type of CRS i.e. GeodeticCRS
+      horizontalAxisUnitId:
+        type: string
+        description: Corresponds to CoordinateSystem.HorizontalAxisUnitID field on CRS records
+      verticalAxisUnitId:
+        type: string
+        description: Corresponds to CoordinateSystem.VerticalAxisUnitID field on CRS records
       latitude:
         type: number
         description: Latitude point for searching on CRS polygon
