@@ -23,7 +23,7 @@ import org.opengroup.osdu.crs.model.request.CoordinateTransformationsQuery;
 import org.opengroup.osdu.crs.model.request.InPolygonQuery;
 import org.opengroup.osdu.crs.model.response.PointsInAouSearchResult;
 import org.opengroup.osdu.crs.model.response.SearchResponse;
-import org.opengroup.osdu.crs.service.AreaOfUseService;
+import org.opengroup.osdu.crs.service.PointsInAouService;
 import org.opengroup.osdu.crs.service.SearchWrapperService;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +51,7 @@ public class CrsCatalogApiV3 {
 	private SearchWrapperService searchWrapperService;
 
 	@Inject
-	private AreaOfUseService areaOfUseService;
+	private PointsInAouService pointsInAouService;
 
 	@GetMapping("/coordinate-transformation")
 	public SearchResponse getCoordinateTransformation(
@@ -87,7 +87,7 @@ public class CrsCatalogApiV3 {
 	public PointsInAouSearchResult getAouInfo(
 			@RequestBody InPolygonQuery inPolygonQuery
 			) {
-		return areaOfUseService.searchAou(inPolygonQuery);
+		return pointsInAouService.searchAou(inPolygonQuery);
 	}
 
 }

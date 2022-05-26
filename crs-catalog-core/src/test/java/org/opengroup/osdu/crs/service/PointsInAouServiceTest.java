@@ -17,10 +17,10 @@ import org.opengroup.osdu.crs.model.response.SearchResponse;
 import java.util.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AreaOfUseServiceTest {
+public class PointsInAouServiceTest {
 
 	@InjectMocks
-	private AreaOfUseService areaOfUseService;
+	private PointsInAouService pointsInAouService;
 
 	@Mock
 	private SearchWrapperService searchWrapperService;
@@ -64,7 +64,7 @@ public class AreaOfUseServiceTest {
 				.thenReturn(searchResponse);
 
 		// act
-		PointsInAouSearchResult result = areaOfUseService.searchAou(inPolygonQuery);
+		PointsInAouSearchResult result = pointsInAouService.searchAou(inPolygonQuery);
 
 		// assert
 		Assert.assertEquals(1, result.getFailedPoints().size());
@@ -125,7 +125,7 @@ public class AreaOfUseServiceTest {
 				.thenReturn(searchResponse);
 
 		// act
-		PointsInAouSearchResult result = areaOfUseService.searchAou(inPolygonQuery);
+		PointsInAouSearchResult result = pointsInAouService.searchAou(inPolygonQuery);
 
 		// assert
 		Assert.assertEquals(3, result.getFailedPoints().size());

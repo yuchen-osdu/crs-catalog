@@ -33,7 +33,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class AreaOfUseService {
+public class PointsInAouService {
 
 	@Inject
 	private SearchWrapperService searchWrapperService;
