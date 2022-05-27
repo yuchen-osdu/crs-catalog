@@ -20,6 +20,6 @@ import org.opengroup.osdu.core.common.model.search.Point;
 @Data
 public class PointsInAouSearchPoint {
 	private Point point;
-	private Double approximateKmDistanceOutside;
-	private Double degreeDistanceOutside;
+	private Integer index;
+	private Integer approximateKmDistanceOutside;
 }

@@ -147,30 +147,25 @@ definitions:
           $ref: '#/definitions/Point'
   PointsInAOUResponse:
     properties:
-      successfulPoints:
-        type: array
-        description: List of points that are in the record polygon
-        items:
-          $ref: '#/definitions/Point'
-      failedPoints:
+      bboxFailedPoint:
         type: array
         description: List of failed points, ones that aren't in polygon
         items:
-          $ref: '#/definitions/FailedPoint'
-      maxDistKmOutside:
+          $ref: '#/definitions/bboxFailedPoint'
+      maxDistKmOutsideBBox:
         type: number
         description: Point distance with highest km outside polygon
-  FailedPoint:
+  bboxFailedPoint:
     description: A point that didn't land in polygon for area of use search
     properties:
       point:
         $ref: '#/definitions/Point'
+      index:
+        type: number
+        description: A zero-based index of the point in the input "points" array
       approximateKmDistanceOutside:
         type: number
         description: Kilometers outside the record's polygon
-      degreeDistanceOutside:
-        type: number
-        description: Degrees outside the record's polygon
   Point:
     description: Lat, long point
     properties:
@@ -283,7 +278,7 @@ definitions:
     properties:
       name:
         type: string
-        description: Name of extent
+        description: Name of exent. Corresponds to PreferredUsage.Extent.Name in the record.
 
   SearchResponse:
     description: Results for most V3 endpoints

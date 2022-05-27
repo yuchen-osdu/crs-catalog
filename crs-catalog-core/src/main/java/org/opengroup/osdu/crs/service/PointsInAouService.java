@@ -41,71 +41,69 @@ public class PointsInAouService {
 	@Inject
 	private JaxRsDpsLog logger;
 
-	// approximation taken from here: https://en.wikipedia.org/wiki/Latitude
-	private final static double DEGREE_TO_KM_RATIO = 110.574;
+	private final static int DECIMAL_PLACES = 0;
 
-	private final static int DECIMAL_PLACES = 3;
+	public PointsInAouSearchResult searchPointsInAou(InPolygonQuery inPolygonQuery) {
+		List<Polygon> polygons = getRecordPolygons(inPolygonQuery);
 
-	public PointsInAouSearchResult searchAou(InPolygonQuery inPolygonQuery) {
-		Polygon polygon = getRecordPolygon(inPolygonQuery);
-
-		double maxDistanceOutDegrees = 0;
+		double maxDistanceOutKm = 0;
+		int index = 0;
 		PointsInAouSearchResult pointsInAouSearchResult = new PointsInAouSearchResult();
 		for(Point testPoint : inPolygonQuery.getPoints()){
-			Double degreeDistance = determineDistance(testPoint, polygon.getPoints());
-			if (degreeDistance > 0){
-				logger.debug(String.format("Point outside polygon: %s, %s", testPoint.toString(), degreeDistance));
-				addFailedPoint(testPoint, degreeDistance, pointsInAouSearchResult);
-				if(degreeDistance > maxDistanceOutDegrees){
-					maxDistanceOutDegrees = degreeDistance;
+			Double kmDistance = Double.POSITIVE_INFINITY;
+			for (Polygon polygon : polygons){
+				Double dist = determineDistance(testPoint, polygon.getPoints());
+				if (dist < kmDistance){
+					kmDistance = dist;
+				}
+			}
+			if (kmDistance > 0.5){ // Not using zero as the threshold because the error is roughly 1 km
+				logger.debug(String.format("Point outside polygon: %s, %s", testPoint.toString(), kmDistance));
+				addFailedPoint(index, testPoint, kmDistance, pointsInAouSearchResult);
+				if(kmDistance > maxDistanceOutKm){
+					maxDistanceOutKm = kmDistance;
 				}
 			} else {
 				logger.debug(String.format("Point inside polygon: %s", testPoint.toString()));
-				pointsInAouSearchResult.addSuccessfulPoint(testPoint);
 			}
+			index++;
 		}
 
-		setMaxDistanceOutKm(maxDistanceOutDegrees, pointsInAouSearchResult);
+		setMaxDistanceOutKm(maxDistanceOutKm, pointsInAouSearchResult);
 
 		return pointsInAouSearchResult;
 	}
 
-	// Found here: https://stackoverflow.com/questions/5254838/calculating-distance-between-a-point-and-a-rectangular-box-nearest-point
 	// Could be extended to work with polygons with these considerations: calculate distance to edge (if v=xy then n=(-y,x)), calculate distances to vertices,
 	// and then do it for each edge since a polygon's points could make complex shapes.
 	// Keeping rectangle assumption for now because it's a bit faster and no requirement for polygon distance yet.
 	private Double determineDistance(Point test, List<Point> polygon) {
 		Rectangle rectangle = new Rectangle(polygon);
 
-		double dx = Collections.max(Arrays.asList(rectangle.getMin().getLongitude() - test.getLongitude(), 0d, test.getLongitude() - rectangle.getMax().getLongitude()));
-		double dy = Collections.max(Arrays.asList(rectangle.getMin().getLatitude() - test.getLatitude(), 0d, test.getLatitude() - rectangle.getMax().getLatitude()));
-		double distance = Math.sqrt(dx * dx + dy * dy);
-
+		double deltaLongitude = Collections.max(Arrays.asList(rectangle.getMin().getLongitude() - test.getLongitude(), 0d, test.getLongitude() - rectangle.getMax().getLongitude()));
+		double deltaLatitude = Collections.max(Arrays.asList(rectangle.getMin().getLatitude() - test.getLatitude(), 0d, test.getLatitude() - rectangle.getMax().getLatitude()));
+		double distance = Math.sqrt(Math.pow(110.0 * deltaLatitude, 2.0) + Math.pow(110.0 * deltaLongitude * Math.cos(Math.toRadians(test.getLatitude())), 2.0));
 		return distance;
 	}
 
-	private void setMaxDistanceOutKm(double maxDistanceOutDegrees, PointsInAouSearchResult pointsInAouSearchResult){
-		pointsInAouSearchResult.setMaxDistKmOutside(roundDouble(maxDistanceOutDegrees * DEGREE_TO_KM_RATIO));
+	private void setMaxDistanceOutKm(Double maxDistanceOutKm, PointsInAouSearchResult pointsInAouSearchResult){
+		pointsInAouSearchResult.setMaxDistKmOutsideBBox(roundDouble(maxDistanceOutKm));
 	}
 
-	private void addFailedPoint(Point failedPoint, Double degreeDistance, PointsInAouSearchResult pointsInAouSearchResult){
+	private void addFailedPoint(int indexFailedPoint, Point failedPoint, Double kmDistance, PointsInAouSearchResult pointsInAouSearchResult){
 		PointsInAouSearchPoint pointsInAouSearchPoint = new PointsInAouSearchPoint();
 		pointsInAouSearchPoint.setPoint(failedPoint);
-		pointsInAouSearchPoint.setDegreeDistanceOutside(roundDouble(degreeDistance));
-		pointsInAouSearchPoint.setApproximateKmDistanceOutside(convertDegreeToKm(degreeDistance));
-		pointsInAouSearchResult.addFailedPoint(pointsInAouSearchPoint);
+		pointsInAouSearchPoint.setIndex(indexFailedPoint);
+		pointsInAouSearchPoint.setApproximateKmDistanceOutside(roundDouble(kmDistance));
+		pointsInAouSearchResult.addBboxFailedPoint(pointsInAouSearchPoint);
 	}
 
-	private Double convertDegreeToKm(Double degree){
-		return roundDouble(degree * DEGREE_TO_KM_RATIO);
-	}
-
-	private Double roundDouble(double value){
+	private Integer roundDouble(double value){
 		BigDecimal bd = new BigDecimal(value).setScale(DECIMAL_PLACES, RoundingMode.HALF_EVEN);
-		return bd.doubleValue();
+		return bd.intValue();
 	}
 
-	private Polygon getRecordPolygon(InPolygonQuery inPolygonQuery){
+	private List<Polygon> getRecordPolygons(InPolygonQuery inPolygonQuery){
 		SearchResponse searchResponse = searchWrapperService.search(inPolygonQuery, SearchWrapperService.CT_AND_CRS_KIND);
 		List<Map<String, Object>> searchResults = searchResponse.getSearchResults().getResults();
 		if(searchResults.size() != 1) {
@@ -114,7 +112,8 @@ public class PointsInAouService {
 					, searchResults.size(), searchResponse.getQuery()));
 		}
 
-		List<List<List<Double>>> coordinates;
+		String geometryType;
+		Map<String, Object> geometry;
 		try {
 			Map<String, Object> searchResult = searchResults.get(0);
 			Map<String, Object> searchResultData = (Map) searchResult.get("data");
@@ -125,32 +124,56 @@ public class PointsInAouService {
 						"Record Wgs84Coordinates should only have one feature for polygon. Query: %s"
 						, searchResponse.getQuery()));
 			}
-			Map<String, Object> geometry = (Map) geometries.get(0);
-			coordinates = (List) geometry.get("coordinates");
+			geometry = (Map) geometries.get(0);
+			geometryType = (String) geometry.get("type");
 		} catch(ClassCastException e){
 			logger.error("Failed to deserialize search result", e);
 			throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to deserialize search result, see logs", e.getMessage());
 		}
 
 		// manifests store coordinates in nested lists, for our purpose there is no reason for it
-		List<List<Double>> coordinatesList = coordinates.stream()
-												.flatMap(List::stream).collect(Collectors.toList());
+		List<Polygon> polygons = new ArrayList<>();
 
-		logger.debug(String.format("Successfully retrieved polygon"));
+		if (geometryType.equals("polygon")) {
+			List<List<List<Double>>> coordinates = (List) geometry.get("coordinates");
+			List<List<Double>> coordinatesList = coordinates.stream()
+															.flatMap(List::stream).collect(Collectors.toList());
 
-		List<Point> points = new ArrayList<>();
-		for(List<Double> coordinate : coordinatesList){
-			if(coordinate.size() != 2){
-				throw AppException.createBadRequest(String.format(
-						"Record has coordinate value with invalid amount of points. Query: %s"
-						, searchResponse.getQuery()));
+			logger.debug(String.format("Successfully retrieved polygon"));
+
+			List<Point> points = new ArrayList<>();
+			for (List<Double> coordinate : coordinatesList) {
+				if (coordinate.size() != 2) {
+					throw AppException.createBadRequest(String.format(
+							"Record has coordinate value with invalid amount of points. Query: %s"
+							, searchResponse.getQuery()));
+				}
+				logger.debug(String.format("Polygon coordinate: %s, %s", coordinate.get(1), coordinate.get(0)));
+
+				points.add(new Point(coordinate.get(1), coordinate.get(0)));
 			}
-			logger.debug(String.format("Polygon coordinate: %s, %s", coordinate.get(1), coordinate.get(0)));
+			polygons.add(new Polygon(points));
+		} else{
+			List<List<List<List<Double>>>> multiCoordinatesList = (List) geometry.get("coordinates");
 
-			points.add(new Point(coordinate.get(1), coordinate.get(0)));
+			logger.debug(String.format("Successfully retrieved polygon"));
+
+			for (List<List<Double>> coordinatesList: multiCoordinatesList.get(0)){
+				List<Point> points = new ArrayList<>();
+				for (List<Double> coordinate : coordinatesList) {
+					if (coordinate.size() != 2) {
+						throw AppException.createBadRequest(String.format(
+								"Record has coordinate value with invalid amount of points. Query: %s"
+								, searchResponse.getQuery()));
+					}
+					logger.debug(String.format("Polygon coordinate: %s, %s", coordinate.get(1), coordinate.get(0)));
+
+					points.add(new Point(coordinate.get(1), coordinate.get(0)));
+				}
+				polygons.add(new Polygon(points));
+			}
 		}
-
-		return new Polygon(points);
+		return polygons;
 	}
 
 }

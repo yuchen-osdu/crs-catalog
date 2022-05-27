@@ -88,11 +88,12 @@ class TestCrsCatalog(unittest.TestCase):
                 if search_response.status_code != 200:
                     raise Exception(f"Could not search. received {search_response.status_code} from search service")
                 search_response_body = json.loads(search_response.content)
+                print(f"Found {search_response_body['totalCount']} records")
                 if search_response_body["totalCount"] == len(records_obj):
                     found = True
                 else:
                     checks += 1
-                    print(f"Didn't find records after {checks} checks. Waiting a bit to let records index")
+                    print(f"Didn't find all records after {checks} checks. Waiting a bit to let records index")
                     time.sleep(5)
 
             # Some timing issues still persist without waiting a bit longer
@@ -245,7 +246,7 @@ class TestCrsCatalog(unittest.TestCase):
         response = self.client.make_request('POST', f'/api/crs/catalog/v3/coordinate-reference-system', test_data)
         response_body = json.loads(response.content)
         assert response.status_code == 200
-        assert len(response_body["searchResults"]["results"]) == 4
+        assert len(response_body["searchResults"]["results"]) == 5
 
     def test_check_points_in_aou(self):
         with open(f'{self.path}v3/CheckPointsInAou.json') as test_data_file:
@@ -254,23 +255,39 @@ class TestCrsCatalog(unittest.TestCase):
             response = self.client.make_request('POST', f'/api/crs/catalog/v3/points-in-aou', test_data)
             response_body = json.loads(response.content)
             assert response.status_code == 200
-            assert len(response_body["successfulPoints"]) == 1
-            assert len(response_body["failedPoints"]) == 3
-            assert response_body["successfulPoints"][0]["latitude"] == 16.5
-            assert response_body["successfulPoints"][0]["longitude"] == 35.8
-            assert response_body["failedPoints"][0]["point"]["latitude"] == 16.0
-            assert response_body["failedPoints"][0]["point"]["longitude"] == 34.0
-            assert response_body["failedPoints"][0]["approximateKmDistanceOutside"] == 69.67
-            assert response_body["failedPoints"][0]["degreeDistanceOutside"] == 0.63
-            assert response_body["failedPoints"][1]["point"]["latitude"] == 16.5
-            assert response_body["failedPoints"][1]["point"]["longitude"] == 34.1
-            assert response_body["failedPoints"][1]["approximateKmDistanceOutside"] == 45.335
-            assert response_body["failedPoints"][1]["degreeDistanceOutside"] == 0.41
-            assert response_body["failedPoints"][2]["point"]["latitude"] == 80.1
-            assert response_body["failedPoints"][2]["point"]["longitude"] == 90.0
-            assert response_body["failedPoints"][2]["approximateKmDistanceOutside"] == 6519.922
-            assert response_body["failedPoints"][2]["degreeDistanceOutside"] == 58.964
-            assert response_body["maxDistKmOutside"] == 6519.922
+            assert "bboxFailedPoints" in response_body
+            failed_points = response_body["bboxFailedPoints"]
+            assert len(failed_points) == 3
+            assert failed_points[0]["point"]["latitude"] == 16.0
+            assert failed_points[0]["point"]["longitude"] == 34.0
+            assert failed_points[0]["index"] == 0
+            assert failed_points[0]["approximateKmDistanceOutside"] == 68
+            assert failed_points[1]["point"]["latitude"] == 16.5
+            assert failed_points[1]["point"]["longitude"] == 34.1
+            assert failed_points[1]["index"] == 1
+            assert failed_points[1]["approximateKmDistanceOutside"] == 43
+            assert failed_points[2]["point"]["latitude"] == 80.1
+            assert failed_points[2]["point"]["longitude"] == 90.0
+            assert failed_points[2]["index"] == 3
+            assert failed_points[2]["approximateKmDistanceOutside"] == 5313
+            assert response_body["maxDistKmOutsideBBox"] == 5313
+
+
+    def test_check_points_in_aou_acrss_antimeridian(self):  # There will be multiple polygons
+        with open(f'{self.path}v3/CheckPointsInAouAntimeridian.json') as test_data_file:
+            test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
+
+            response = self.client.make_request('POST', f'/api/crs/catalog/v3/points-in-aou', test_data)
+            response_body = json.loads(response.content)
+            assert response.status_code == 200
+            assert "bboxFailedPoints" in response_body
+            failed_points = response_body["bboxFailedPoints"]
+            assert len(failed_points) == 2
+            assert failed_points[0]["index"] == 2
+            assert failed_points[0]["approximateKmDistanceOutside"] == 63
+            assert failed_points[1]["index"] == 3
+            assert failed_points[1]["approximateKmDistanceOutside"] == 84
+            assert response_body["maxDistKmOutsideBBox"] == 84
 
     @classmethod
     def tearDownClass(cls):

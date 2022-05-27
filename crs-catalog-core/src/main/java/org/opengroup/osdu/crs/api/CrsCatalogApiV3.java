@@ -87,7 +87,7 @@ public class CrsCatalogApiV3 {
 	public PointsInAouSearchResult getAouInfo(
 			@RequestBody InPolygonQuery inPolygonQuery
 			) {
-		return pointsInAouService.searchAou(inPolygonQuery);
+		return pointsInAouService.searchPointsInAou(inPolygonQuery);
 	}
 
 }

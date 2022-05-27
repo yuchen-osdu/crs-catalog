@@ -22,20 +22,14 @@ import java.util.List;
 
 @Data
 public class PointsInAouSearchResult {
-	private List<Point> successfulPoints;
-	private List<PointsInAouSearchPoint> failedPoints;
-	private Double maxDistKmOutside;
+	private List<PointsInAouSearchPoint> bboxFailedPoints;
+	private Integer maxDistKmOutsideBBox;
 
 	public PointsInAouSearchResult(){
-		failedPoints = new ArrayList<>();
-		successfulPoints = new ArrayList<>();
+		bboxFailedPoints = new ArrayList<>();
 	}
 
-	public void addFailedPoint(PointsInAouSearchPoint failedPoint){
-		failedPoints.add(failedPoint);
-	}
-
-	public void addSuccessfulPoint(Point point){
-		successfulPoints.add(point);
+	public void addBboxFailedPoint(PointsInAouSearchPoint failedPoint){
+		bboxFailedPoints.add(failedPoint);
 	}
 }
