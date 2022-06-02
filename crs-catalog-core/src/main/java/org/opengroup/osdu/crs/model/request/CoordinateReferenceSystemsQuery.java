@@ -61,7 +61,7 @@ public class CoordinateReferenceSystemsQuery implements ISearchQuery {
 			byWithinPolygon.setPoints(points);
 			spatialFilter.setByWithinPolygon(byWithinPolygon);
 		} else if((latitude != null && longitude == null) || (latitude == null && longitude != null)){
-			throw AppException.createBadRequest(String.format("Must supply both latitude and longitude when specifying either one"));
+			throw AppException.createBadRequest("Must supply both latitude and longitude when specifying either one");
 		}
 
 		return spatialFilter;
@@ -87,15 +87,15 @@ public class CoordinateReferenceSystemsQuery implements ISearchQuery {
 		} else if (code != null && (returnBoundProjectedAndProjectedBasedOnWgs84 || returnBoundGeographic2DAndWgs84)) {
 			query = appendQuery(query, String.format("(data.Code: %s OR data.Code: 4326)", code));
 		} else if (code == null && (returnBoundProjectedAndProjectedBasedOnWgs84 || returnBoundGeographic2DAndWgs84)) {
-			query = appendQuery(query, String.format("(data.Code: 4326 OR data.PreferredUsage.Extent.AuthorityCode.Authority: EPSG)"));
+			query = appendQuery(query, "(data.Code: 4326 OR data.PreferredUsage.Extent.AuthorityCode.Authority: EPSG)");
 		}
 
 		if(returnBoundProjectedAndProjectedBasedOnWgs84 && returnBoundGeographic2DAndWgs84){
-			query = appendQuery(query, String.format("(data.Kind: BoundGeographic2d OR data.Kind: BoundProjected)"));
+			query = appendQuery(query, "(data.Kind: BoundGeographic2d OR data.Kind: BoundProjected)");
 		} else if(returnBoundProjectedAndProjectedBasedOnWgs84) {
-			query = appendQuery(query, String.format("(data.Kind: BoundProjected)"));
+			query = appendQuery(query, "(data.Kind: BoundProjected)");
 		} else if(returnBoundGeographic2DAndWgs84) {
-			query = appendQuery(query, String.format("(data.Kind: BoundGeographic2d)"));
+			query = appendQuery(query, "(data.Kind: BoundGeographic2d)");
 		}
 
 		return query;

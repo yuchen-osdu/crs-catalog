@@ -103,8 +103,8 @@ public class PointsInAouServiceTest {
 		inPolygonQuery.setRecordId("test-record-id");
 
 		List<Double> coor1 = Arrays.asList(100.00, 20.78);
-		List<Double> coor2 = Arrays.asList(-9.11, 20.78);
-		List<Double> coor3 = Arrays.asList(-9.11, -6.01);
+		List<Double> coor2 = Arrays.asList(9.11, 20.78);
+		List<Double> coor3 = Arrays.asList(9.11, -6.01);
 		List<Double> coor4 = Arrays.asList(100.00, -6.01);
 		List<Double> coor5 = Arrays.asList(100.00, 20.78);
 		List<List<Double>> coordinates = Arrays.asList(coor1, coor2, coor3, coor4, coor5);
@@ -130,12 +130,14 @@ public class PointsInAouServiceTest {
 		PointsInAouSearchResult result = pointsInAouService.searchPointsInAou(inPolygonQuery);
 
 		// assert
-		Assert.assertEquals(2, result.getBboxFailedPoints().size());
+		Assert.assertEquals(3, result.getBboxFailedPoints().size());
 		Assert.assertEquals(1, result.getBboxFailedPoints().get(0).getIndex().intValue());
-		Assert.assertEquals(7511, result.getBboxFailedPoints().get(0).getApproximateKmDistanceOutside().intValue());
-		Assert.assertEquals(3, result.getBboxFailedPoints().get(1).getIndex().intValue());
-		Assert.assertEquals(8160, result.getBboxFailedPoints().get(1).getApproximateKmDistanceOutside().intValue());
-		Assert.assertEquals(8160, result.getMaxDistKmOutsideBBox().intValue());
+		Assert.assertEquals(7506, result.getBboxFailedPoints().get(0).getApproximateKmDistanceOutside().intValue());
+		Assert.assertEquals(2, result.getBboxFailedPoints().get(1).getIndex().intValue());
+		Assert.assertEquals(1002, result.getBboxFailedPoints().get(1).getApproximateKmDistanceOutside().intValue());
+		Assert.assertEquals(3, result.getBboxFailedPoints().get(2).getIndex().intValue());
+		Assert.assertEquals(8285, result.getBboxFailedPoints().get(2).getApproximateKmDistanceOutside().intValue());
+		Assert.assertEquals(8285, result.getMaxDistKmOutsideBBox().intValue());
 	}
 
 

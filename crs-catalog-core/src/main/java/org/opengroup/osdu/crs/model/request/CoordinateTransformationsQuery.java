@@ -75,7 +75,7 @@ public class CoordinateTransformationsQuery implements ISearchQuery {
 			byWithinPolygon.setPoints(points);
 			spatialFilter.setByWithinPolygon(byWithinPolygon);
 		} else if((latitude != null && longitude == null) || (latitude == null && longitude != null)){
-			throw AppException.createBadRequest(String.format("Must supply both latitude and longitude when specifying either one"));
+			throw AppException.createBadRequest("Must supply both latitude and longitude when specifying either one");
 		}
 
 		return spatialFilter;

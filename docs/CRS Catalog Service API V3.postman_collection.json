@@ -72,14 +72,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{osduonaws_base_url}}/api/crs/catalog/v3/coordinate-transformation?dataId=EPSG::1166",
+							"raw": "{{base_url}}/v3/coordinate-transformation?dataId=EPSG::1166",
 							"host": [
-								"{{osduonaws_base_url}}"
+								"{{base_url}}"
 							],
 							"path": [
-								"api",
-								"crs",
-								"catalog",
 								"v3",
 								"coordinate-transformation"
 							],
