@@ -61,13 +61,17 @@ public class CoordinateReferenceSystemsQuery implements ISearchQuery {
 			byWithinPolygon.setPoints(points);
 			spatialFilter.setByWithinPolygon(byWithinPolygon);
 		} else if((latitude != null && longitude == null) || (latitude == null && longitude != null)){
-			throw AppException.createBadRequest(String.format("Must supply both latitude and longitude when specifying either one"));
+			throw AppException.createBadRequest("Must supply both latitude and longitude when specifying either one");
 		}
 
 		return spatialFilter;
 	}
 
 	private String initQuery(){
+		if (codeSpace == null){
+			return "";
+		}
+
 		String query = String.format("(data.CodeSpace: %s)", codeSpace);
 
 		if(returnBoundProjectedAndProjectedBasedOnWgs84 || returnBoundGeographic2DAndWgs84){
@@ -81,17 +85,17 @@ public class CoordinateReferenceSystemsQuery implements ISearchQuery {
 		if(code != null && (!returnBoundProjectedAndProjectedBasedOnWgs84 && !returnBoundGeographic2DAndWgs84)) {
 			query = buildQueryExactSearch(query, "data.Code", code);
 		} else if (code != null && (returnBoundProjectedAndProjectedBasedOnWgs84 || returnBoundGeographic2DAndWgs84)) {
-			query = String.format("%s AND (data.Code: %s OR data.Code: 4326)", query, code);
+			query = appendQuery(query, String.format("(data.Code: %s OR data.Code: 4326)", code));
 		} else if (code == null && (returnBoundProjectedAndProjectedBasedOnWgs84 || returnBoundGeographic2DAndWgs84)) {
-			query =  String.format("%s AND (data.Code: 4326 OR data.PreferredUsage.Extent.AuthorityCode.Authority: EPSG)", query);
+			query = appendQuery(query, "(data.Code: 4326 OR data.PreferredUsage.Extent.AuthorityCode.Authority: EPSG)");
 		}
 
 		if(returnBoundProjectedAndProjectedBasedOnWgs84 && returnBoundGeographic2DAndWgs84){
-			query = String.format("%s AND (data.Kind: BoundGeographic2d OR data.Kind: BoundProjected)", query);
+			query = appendQuery(query, "(data.Kind: BoundGeographic2d OR data.Kind: BoundProjected)");
 		} else if(returnBoundProjectedAndProjectedBasedOnWgs84) {
-			query = String.format("%s AND (data.Kind: BoundProjected)", query);
+			query = appendQuery(query, "(data.Kind: BoundProjected)");
 		} else if(returnBoundGeographic2DAndWgs84) {
-			query = String.format("%s AND (data.Kind: BoundGeographic2d)", query);
+			query = appendQuery(query, "(data.Kind: BoundGeographic2d)");
 		}
 
 		return query;
@@ -102,6 +106,8 @@ public class CoordinateReferenceSystemsQuery implements ISearchQuery {
 		query = buildQuerySearch(query, "data.ID", id);
 		query = buildQuerySearch(query, "data.Kind", kind);
 		query = buildQuerySearch(query, "data.CoordinateReferenceSystemType", coordinateReferenceSystemType);
+		query = buildQuerySearch(query, "data.CoordinateSystem.HorizontalAxisUnitID", horizontalAxisUnitId);
+		query = buildQuerySearch(query, "data.CoordinateSystem.VerticalAxisUnitID", verticalAxisUnitId);
 
 		if(baseCRS != null) {
 			query = buildQuerySearch(query, "data.BaseCRS.BaseCRSID", baseCRS.getId());
@@ -122,16 +128,24 @@ public class CoordinateReferenceSystemsQuery implements ISearchQuery {
 	}
 
 	private String buildQueryExactSearch(String query, String recordBodyAttrName, Object attribute){
-		if(attribute != null){
-			query = String.format("%s AND (%s: \"%s\")", query, recordBodyAttrName, attribute);
+		if (attribute != null) {
+			query = appendQuery(query, String.format("(%s: \"%s\")", recordBodyAttrName, attribute));
 		}
 		return query;
 	}
 
 	private String buildQuerySearch(String query, String recordBodyAttrName, Object attribute){
-		if(attribute != null){
-			query = String.format("%s AND (%s: \"%s\"*)", query, recordBodyAttrName, attribute);
+		if (attribute != null) {
+			query = appendQuery(query, String.format("(%s: \"%s\")", recordBodyAttrName, attribute));
 		}
 		return query;
+	}
+
+	private String appendQuery(String query, String toAppend){
+		if (query.isEmpty()) {
+			return toAppend;
+		} else {
+			return String.format("%s AND %s", query, toAppend);
+		}
 	}
 }

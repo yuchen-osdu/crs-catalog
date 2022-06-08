@@ -64,7 +64,7 @@ public class SearchWrapperServiceTest {
 		coordinateReferenceSystemsQuery.setLongitude(10.2);
 		coordinateReferenceSystemsQuery.setLatitude(10.1);
 
-		String expectedQuery = "(data.CodeSpace: EPSG) AND (data.Code: \"4472\") AND (data.Name: \"Cadastre\"*) AND (data.ID: \"Geographic3D:EPSG::4472\"*) AND (data.Kind: \"geographic 3D\"*) AND (data.CoordinateReferenceSystemType: \"GeodeticCRS\"*) AND (data.BaseCRS.BaseCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Geocentric:EPSG::4473:\"*) AND (data.BaseCRS.Name: \"Cadastre\"*) AND (data.Datum.Name: \"Cadastre\"*) AND (data.Datum.AuthorityCode.Authority: \"EPSG\") AND (data.Datum.AuthorityCode.Code: \"1037\") AND (data.PreferredUsage.Extent.Name: \"Mayonette\"*)";
+		String expectedQuery = "(data.CodeSpace: EPSG) AND (data.Code: \"4472\") AND (data.Name: \"Cadastre\") AND (data.ID: \"Geographic3D:EPSG::4472\") AND (data.Kind: \"geographic 3D\") AND (data.CoordinateReferenceSystemType: \"GeodeticCRS\") AND (data.BaseCRS.BaseCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Geocentric:EPSG::4473:\") AND (data.BaseCRS.Name: \"Cadastre\") AND (data.Datum.Name: \"Cadastre\") AND (data.Datum.AuthorityCode.Authority: \"EPSG\") AND (data.Datum.AuthorityCode.Code: \"1037\") AND (data.PreferredUsage.Extent.Name: \"Mayonette\")";
 
 		SpatialFilter expectedSpatialFilter = new SpatialFilter();
 		SpatialFilter.ByWithinPolygon byWithinPolygon = new SpatialFilter.ByWithinPolygon();

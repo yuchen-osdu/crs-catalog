@@ -22,7 +22,7 @@ public class CoordinateTransformationsQueryTest {
 		coordinateTransformationsQuery.setSourceCRS("osdu:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG");
 		coordinateTransformationsQuery.setTargetCRS("osdu:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4326:");
 
-		String expectedQuery = "data.CodeSpace: EPSG AND (data.Name: \"Ain el\"*) AND (data.SourceCRS.SourceCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG\"*) AND (data.TargetCRS.TargetCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4326:\"*)";
+		String expectedQuery = "(data.CodeSpace: EPSG) AND (data.Name: \"Ain el\") AND (data.SourceCRS.SourceCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG\") AND (data.TargetCRS.TargetCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4326:\")";
 
 		// act
 		String query = coordinateTransformationsQuery.constructQuery();
@@ -37,7 +37,7 @@ public class CoordinateTransformationsQueryTest {
 		coordinateTransformationsQuery.setCodeSpace("EPSG");
 		coordinateTransformationsQuery.setIncludeVertical(true);
 
-		String expectedQuery = "data.CodeSpace: EPSG AND (data.SourceCRS.SourceCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Vertical:EPSG::*:\")";
+		String expectedQuery = "(data.CodeSpace: EPSG) AND (data.SourceCRS.SourceCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Vertical:EPSG::*:\")";
 
 		// act
 		String query = coordinateTransformationsQuery.constructQuery();

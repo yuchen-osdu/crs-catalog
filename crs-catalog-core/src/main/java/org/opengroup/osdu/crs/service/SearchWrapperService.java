@@ -73,11 +73,6 @@ public class SearchWrapperService {
 
 		QueryRequest queryRequest = new QueryRequest();
 
-		List<String> returnedFields = getReturnedFields(kind);
-		if(returnedFields.size() > 0){
-			queryRequest.setReturnedFields(returnedFields);
-		}
-
 		queryRequest.setQuery(query);
 		queryRequest.setKind(kind);
 

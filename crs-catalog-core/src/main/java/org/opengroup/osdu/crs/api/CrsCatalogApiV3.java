@@ -21,9 +21,9 @@ import org.opengroup.osdu.crs.logging.AuditLogger;
 import org.opengroup.osdu.crs.model.request.CoordinateReferenceSystemsQuery;
 import org.opengroup.osdu.crs.model.request.CoordinateTransformationsQuery;
 import org.opengroup.osdu.crs.model.request.InPolygonQuery;
-import org.opengroup.osdu.crs.model.response.AreaOfUseSearchResult;
+import org.opengroup.osdu.crs.model.response.PointsInAouSearchResult;
 import org.opengroup.osdu.crs.model.response.SearchResponse;
-import org.opengroup.osdu.crs.service.AreaOfUseService;
+import org.opengroup.osdu.crs.service.PointsInAouService;
 import org.opengroup.osdu.crs.service.SearchWrapperService;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +51,7 @@ public class CrsCatalogApiV3 {
 	private SearchWrapperService searchWrapperService;
 
 	@Inject
-	private AreaOfUseService areaOfUseService;
+	private PointsInAouService pointsInAouService;
 
 	@GetMapping("/coordinate-transformation")
 	public SearchResponse getCoordinateTransformation(
@@ -83,11 +83,11 @@ public class CrsCatalogApiV3 {
 		return searchWrapperService.search(coordinateReferenceSystemsQuery, SearchWrapperService.COORDINATE_REFERENCE_SYSTEM_KIND);
 	}
 
-	@PostMapping("/area-of-use")
-	public AreaOfUseSearchResult getAouInfo(
+	@PostMapping("/points-in-aou")
+	public PointsInAouSearchResult getAouInfo(
 			@RequestBody InPolygonQuery inPolygonQuery
 			) {
-		return areaOfUseService.searchAou(inPolygonQuery);
+		return pointsInAouService.searchPointsInAou(inPolygonQuery);
 	}
 
 }
