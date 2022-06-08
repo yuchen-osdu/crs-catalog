@@ -37,10 +37,10 @@ public class CoordinateTransformationsQuery implements ISearchQuery {
 	private Integer limit;
 
 	public String constructQuery(){
-		checkRequiredFields();
-
-		String query = String.format("data.CodeSpace: %s", codeSpace);
-
+		String query = "";
+		if(codeSpace != null) {
+			query = String.format("(data.CodeSpace: %s)", codeSpace);
+		}
 		query = buildQuerySearch(query, "data.Name", name);
 		query = buildQuerySearch(query, "data.SourceCRS.SourceCRSID", sourceCRS);
 		query = buildQuerySearch(query, "data.TargetCRS.TargetCRSID", targetCRS);
@@ -48,12 +48,17 @@ public class CoordinateTransformationsQuery implements ISearchQuery {
 		if(includeVertical && includeHorizontal){
 			throw AppException.createBadRequest("Cannot have both includeVertical and includeHorizontal set to true");
 		}
+
+		if((includeVertical || includeHorizontal) && codeSpace == null){
+			throw AppException.createBadRequest("Must provide CodeSpace when includeVertical or includeHorizontal is used");
+		}
+
 		if(includeVertical) {
-			query = String.format("%s AND (data.SourceCRS.SourceCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Vertical:%s::*:\")"
-				, query, codeSpace);
-		} else if(includeHorizontal) {
-			query = String.format("%s AND NOT (data.SourceCRS.SourceCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Vertical:%s::*:\")"
-					, query, codeSpace);
+			query = appendQuery(query, String.format("(data.SourceCRS.SourceCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Vertical:%s::*:\")"
+					, codeSpace));
+		} else if (includeHorizontal) {
+			query = appendQuery(query, String.format("NOT (data.SourceCRS.SourceCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Vertical:%s::*:\")"
+					, codeSpace));
 		}
 
 		return query;
@@ -70,29 +75,24 @@ public class CoordinateTransformationsQuery implements ISearchQuery {
 			byWithinPolygon.setPoints(points);
 			spatialFilter.setByWithinPolygon(byWithinPolygon);
 		} else if((latitude != null && longitude == null) || (latitude == null && longitude != null)){
-			throw AppException.createBadRequest(String.format("Must supply both latitude and longitude when specifying either one"));
+			throw AppException.createBadRequest("Must supply both latitude and longitude when specifying either one");
 		}
 
 		return spatialFilter;
 	}
 
-	private void checkRequiredFields(){
-		if (codeSpace == null){
-			throw AppException.createBadRequest(String.format("Missing required fields codeSpace"));
-		}
-	}
-
-	private String buildQueryExactSearch(String query, String recordBodyAttrName, Object attribute){
-		if(attribute != null){
-			query = String.format("%s AND (%s: \"%s\")", query, recordBodyAttrName, attribute);
-		}
-		return query;
-	}
-
 	private String buildQuerySearch(String query, String recordBodyAttrName, Object attribute){
-		if(attribute != null){
-			query = String.format("%s AND (%s: \"%s\"*)", query, recordBodyAttrName, attribute);
+		if (attribute != null) {
+			query = appendQuery(query, String.format("(%s: \"%s\")", recordBodyAttrName, attribute));
 		}
 		return query;
+	}
+
+	private String appendQuery(String query, String toAppend){
+		if (query.isEmpty()) {
+			return toAppend;
+		} else {
+			return String.format("%s AND %s", query, toAppend);
+		}
 	}
 }

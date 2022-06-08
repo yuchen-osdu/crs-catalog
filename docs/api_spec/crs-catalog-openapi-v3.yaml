@@ -85,12 +85,12 @@ paths:
           in: query
           required: false
           type: string
-          description: Searches on data.ID for CT records
+          description: Searches on data.ID for CRS records
         - name: recordId
           in: query
           required: false
           type: string
-          description: Searches on id for CT records
+          description: Searches on id for CRS records
       responses:
         '200':
           description: A successful response
@@ -114,7 +114,7 @@ paths:
           schema:
             $ref: '#/definitions/SearchResponse'
 
-  /area-of-use:
+  /points-in-aou:
     post:
       tags:
         - Area of Use
@@ -126,15 +126,15 @@ paths:
         - in: body
           name: body
           schema:
-            $ref: '#/definitions/AreaOfUseSearch'
+            $ref: '#/definitions/PointsInAOUSearch'
       responses:
         '200':
           description: A successful response
           schema:
-            $ref: '#/definitions/AreaOfUseResponse'
+            $ref: '#/definitions/PointsInAOUResponse'
 
 definitions:
-  AreaOfUseSearch:
+  PointsInAOUSearch:
     description: Body for checking points against Area of use
     properties:
       recordId:
@@ -145,32 +145,27 @@ definitions:
         description: List of points to check against CRS or CT polygon
         items:
           $ref: '#/definitions/Point'
-  AreaOfUseResponse:
+  PointsInAOUResponse:
     properties:
-      successfulPoints:
-        type: array
-        description: List of points that are in the record polygon
-        items:
-          $ref: '#/definitions/Point'
-      failedPoints:
+      bboxFailedPoint:
         type: array
         description: List of failed points, ones that aren't in polygon
         items:
-          $ref: '#/definitions/FailedPoint'
-      maxDistKmOutside:
+          $ref: '#/definitions/bboxFailedPoint'
+      maxDistKmOutsideBBox:
         type: number
         description: Point distance with highest km outside polygon
-  FailedPoint:
+  bboxFailedPoint:
     description: A point that didn't land in polygon for area of use search
     properties:
       point:
         $ref: '#/definitions/Point'
+      index:
+        type: number
+        description: A zero-based index of the point in the input "points" array
       approximateKmDistanceOutside:
         type: number
         description: Kilometers outside the record's polygon
-      degreeDistanceOutside:
-        type: number
-        description: Degrees outside the record's polygon
   Point:
     description: Lat, long point
     properties:
@@ -217,10 +212,10 @@ definitions:
     properties:
       codeSpace:
         type: string
-        description: Corresponds to CodeSpace field on CT records
+        description: Corresponds to CodeSpace field on CRS records
       name:
         type: string
-        description: Corresponds to Name field on CT records
+        description: Corresponds to Name field on CRS records
       id:
         type: string
         description: Corresponds to ID field on CRS records
@@ -239,12 +234,18 @@ definitions:
       coordinateReferenceSystemType:
         type: string
         description: Type of CRS i.e. GeodeticCRS
+      horizontalAxisUnitId:
+        type: string
+        description: Corresponds to CoordinateSystem.HorizontalAxisUnitID field on CRS records
+      verticalAxisUnitId:
+        type: string
+        description: Corresponds to CoordinateSystem.VerticalAxisUnitID field on CRS records
       latitude:
         type: number
-        description: Latitude point for searching on CT polygon
+        description: Latitude point for searching on CRS polygon
       longitude:
         type: number
-        description: Longitude point for searching on CT polygon
+        description: Longitude point for searching on CRS polygon
       offset:
         type: integer
         description: Corresponds to offset on search service
@@ -277,7 +278,7 @@ definitions:
     properties:
       name:
         type: string
-        description: Name of extent
+        description: Name of exent. Corresponds to PreferredUsage.Extent.Name in the record.
 
   SearchResponse:
     description: Results for most V3 endpoints

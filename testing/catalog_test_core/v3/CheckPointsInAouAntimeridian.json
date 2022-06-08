@@ -1,0 +1,21 @@
+{
+  "recordId": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:Projected:EPSG::3851",
+  "points": [
+    {
+      "latitude": -40,
+      "longitude": 175
+    },
+    {
+      "latitude": -40,
+      "longitude": -175
+    },
+    {
+      "latitude": -55,
+      "longitude": 159.6
+    },
+    {
+      "latitude": -40,
+      "longitude": -170.2
+    }
+  ]
+}

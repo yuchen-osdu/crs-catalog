@@ -14,23 +14,24 @@
 
 import sys
 import urllib3
-urllib3.disable_warnings()
 import json
 import time
+urllib3.disable_warnings()
 
-from catalog_test_core.v3.HttpClient import HttpClient
 
 def main(argv):
     pass
 
-# coding: utf-8
-"""Integration unit tests for crs-catalog service V2"""
-import unittest
-import jwt_client
-import catalog_test_core.constants as constants
 
 if __name__ == '__main__':
     main(sys.argv)
+
+# coding: utf-8
+"""Integration unit tests for crs-catalog service V3"""
+import unittest
+import jwt_client
+import catalog_test_core.constants as constants
+from catalog_test_core.v3.HttpClient import HttpClient
 
 legal_tag_name = "crs-catalog-int-test-legaltag"
 
@@ -76,10 +77,9 @@ class TestCrsCatalog(unittest.TestCase):
             found = False
             max_checks = 20
             checks = 0
-            while found == False:
+            while not found:
                 if checks >= max_checks:
                     raise Exception(f"Could not find records indexed against search after {max_checks} checks")
-                    break
                 search_response = cls.client.make_request('POST', '/api/search/v2/query', f"""
                     {{
                         "kind":"osdu:wks:reference-data--Coordinate*:1.1.0"
@@ -88,11 +88,12 @@ class TestCrsCatalog(unittest.TestCase):
                 if search_response.status_code != 200:
                     raise Exception(f"Could not search. received {search_response.status_code} from search service")
                 search_response_body = json.loads(search_response.content)
+                print(f"Found {search_response_body['totalCount']} records")
                 if search_response_body["totalCount"] == len(records_obj):
                     found = True
                 else:
                     checks += 1
-                    print(f"Didn't find records after {checks} checks. Waiting a bit to let records index")
+                    print(f"Didn't find all records after {checks} checks. Waiting a bit to let records index")
                     time.sleep(5)
 
             # Some timing issues still persist without waiting a bit longer
@@ -108,6 +109,11 @@ class TestCrsCatalog(unittest.TestCase):
             assert len(response_body["searchResults"]["results"]) == 1
             assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
             assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
+            for property in ('kind', 'version', 'acl', 'legal', 'namespace'):
+                assert property in response_body["searchResults"]["results"][0]
+            for property in ('Code', 'Kind', 'PreferredUsage.Name', 'PreferredUsage.Extent.Description',
+                             'PreferredUsage.Extent.Name', 'PersistableReference', 'CoordinateTransformationType'):
+                assert property in response_body["searchResults"]["results"][0]['data']
 
     def test_get_coordinate_transformation_recordId(self):
         with open(f'{self.path}v3/GetCoordinateTransformationTestData.json') as test_data_file:
@@ -141,6 +147,11 @@ class TestCrsCatalog(unittest.TestCase):
             assert len(response_body["searchResults"]["results"]) == 1
             assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
             assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
+            for property in ('kind', 'version', 'acl', 'legal', 'namespace'):
+                assert property in response_body["searchResults"]["results"][0]
+            for property in ('Code', 'Kind', 'VerticalCRS.Name', 'PreferredUsage.Name', 'PreferredUsage.Extent.Description',
+                             'PreferredUsage.Extent.Name', 'PersistableReference', 'CoordinateReferenceSystemType'):
+                assert property in response_body["searchResults"]["results"][0]['data']
 
     def test_get_coordinate_reference_system_recordId(self):
         with open(f'{self.path}v3/GetCoordinateReferenceSystemTestData.json') as test_data_file:
@@ -167,49 +178,116 @@ class TestCrsCatalog(unittest.TestCase):
     def test_search_coordinate_transformations(self):
         with open(f'{self.path}v3/SearchCoordinateTransformations.json') as test_data_file:
             test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
-            test_data_obj = json.loads(test_data)
 
             response = self.client.make_request('POST', f'/api/crs/catalog/v3/coordinate-transformation', test_data)
             response_body = json.loads(response.content)
             assert response.status_code == 200
             assert len(response_body["searchResults"]["results"]) == 1
 
-    def test_search_coordinate_transformations(self):
-        with open(f'{self.path}v3/SearchCoordinateTransformations.json') as test_data_file:
+    def test_search_coordinate_transformations_with_name(self):
+        with open(f'{self.path}v3/SearchCoordinateTransformationsWithName.json') as test_data:
+
+            response = self.client.make_request('POST', f'/api/crs/catalog/v3/coordinate-transformation', test_data)
+            response_body = json.loads(response.content)
+            assert response.status_code == 200
+            assert len(response_body["searchResults"]["results"]) == 1
+
+    def test_search_coordinate_transformations_with_partial_name(self):
+        with open(f'{self.path}v3/SearchCoordinateTransformationsWithPartialName.json') as test_data:
+
+            response = self.client.make_request('POST', f'/api/crs/catalog/v3/coordinate-transformation', test_data)
+            response_body = json.loads(response.content)
+            assert response.status_code == 200
+            assert len(response_body["searchResults"]["results"]) == 1
+
+    def test_search_coordinate_transformations_with_common_partial_name(self):
+        with open(f'{self.path}v3/SearchCoordinateTransformationsWithCommonPartialName.json') as test_data:
+
+            response = self.client.make_request('POST', f'/api/crs/catalog/v3/coordinate-transformation', test_data)
+            response_body = json.loads(response.content)
+            assert response.status_code == 200
+            assert len(response_body["searchResults"]["results"]) == 2
+
+    def test_search_coordinate_transformations_with_wrong_name(self):
+        with open(f'{self.path}v3/SearchCoordinateTransformationsWithWrongName.json') as test_data:
+
+            response = self.client.make_request('POST', f'/api/crs/catalog/v3/coordinate-transformation', test_data)
+            response_body = json.loads(response.content)
+            assert response.status_code == 200
+            assert len(response_body["searchResults"]["results"]) == 0
+
+    def test_search_coordinate_transformations_find_all(self):
+        test_data = "{}"
+        response = self.client.make_request('POST', f'/api/crs/catalog/v3/coordinate-transformation', test_data)
+        response_body = json.loads(response.content)
+        assert response.status_code == 200
+        assert len(response_body["searchResults"]["results"]) == 2
+
+    def test_search_coordinate_reference_systems(self):
+        with open(f'{self.path}v3/SearchCoordinateReferenceSystems.json') as test_data_file:
             test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
-            test_data_obj = json.loads(test_data)
 
             response = self.client.make_request('POST', f'/api/crs/catalog/v3/coordinate-reference-system', test_data)
             response_body = json.loads(response.content)
             assert response.status_code == 200
             assert len(response_body["searchResults"]["results"]) == 1
 
-    def test_check_area_of_use(self):
-        with open(f'{self.path}v3/CheckAreaOfUse.json') as test_data_file:
+    def test_search_coordinate_reference_systems_partial(self):
+        with open(f'{self.path}v3/SearchCoordinateReferenceSystemsPartial.json') as test_data_file:
             test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
-            test_data_obj = json.loads(test_data)
 
-            response = self.client.make_request('POST', f'/api/crs/catalog/v3/area-of-use', test_data)
+            response = self.client.make_request('POST', f'/api/crs/catalog/v3/coordinate-reference-system', test_data)
             response_body = json.loads(response.content)
             assert response.status_code == 200
-            assert len(response_body["successfulPoints"]) == 1
-            assert len(response_body["failedPoints"]) == 3
-            assert response_body["successfulPoints"][0]["latitude"] == 16.5
-            assert response_body["successfulPoints"][0]["longitude"] == 35.8
-            assert response_body["failedPoints"][0]["point"]["latitude"] == 16.0
-            assert response_body["failedPoints"][0]["point"]["longitude"] == 34.0
-            assert response_body["failedPoints"][0]["approximateKmDistanceOutside"] == 69.67
-            assert response_body["failedPoints"][0]["degreeDistanceOutside"] == 0.63
-            assert response_body["failedPoints"][1]["point"]["latitude"] == 16.5
-            assert response_body["failedPoints"][1]["point"]["longitude"] == 34.1
-            assert response_body["failedPoints"][1]["approximateKmDistanceOutside"] == 45.335
-            assert response_body["failedPoints"][1]["degreeDistanceOutside"] == 0.41
-            assert response_body["failedPoints"][2]["point"]["latitude"] == 80.1
-            assert response_body["failedPoints"][2]["point"]["longitude"] == 90.0
-            assert response_body["failedPoints"][2]["approximateKmDistanceOutside"] == 6519.922
-            assert response_body["failedPoints"][2]["degreeDistanceOutside"] == 58.964
-            assert response_body["maxDistKmOutside"] == 6519.922
+            assert len(response_body["searchResults"]["results"]) == 1
 
+    def test_search_coordinate_reference_systems_find_all(self):
+        test_data = "{}"
+        response = self.client.make_request('POST', f'/api/crs/catalog/v3/coordinate-reference-system', test_data)
+        response_body = json.loads(response.content)
+        assert response.status_code == 200
+        assert len(response_body["searchResults"]["results"]) == 5
+
+    def test_check_points_in_aou(self):
+        with open(f'{self.path}v3/CheckPointsInAou.json') as test_data_file:
+            test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
+
+            response = self.client.make_request('POST', f'/api/crs/catalog/v3/points-in-aou', test_data)
+            response_body = json.loads(response.content)
+            assert response.status_code == 200
+            assert "bboxFailedPoints" in response_body
+            failed_points = response_body["bboxFailedPoints"]
+            assert len(failed_points) == 3
+            assert failed_points[0]["point"]["latitude"] == 16.0
+            assert failed_points[0]["point"]["longitude"] == 34.0
+            assert failed_points[0]["index"] == 0
+            assert failed_points[0]["approximateKmDistanceOutside"] == 68
+            assert failed_points[1]["point"]["latitude"] == 16.5
+            assert failed_points[1]["point"]["longitude"] == 34.1
+            assert failed_points[1]["index"] == 1
+            assert failed_points[1]["approximateKmDistanceOutside"] == 43
+            assert failed_points[2]["point"]["latitude"] == 80.1
+            assert failed_points[2]["point"]["longitude"] == 90.0
+            assert failed_points[2]["index"] == 3
+            assert failed_points[2]["approximateKmDistanceOutside"] == 5313
+            assert response_body["maxDistKmOutsideBBox"] == 5313
+
+
+    def test_check_points_in_aou_acrss_antimeridian(self):  # There will be multiple polygons
+        with open(f'{self.path}v3/CheckPointsInAouAntimeridian.json') as test_data_file:
+            test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
+
+            response = self.client.make_request('POST', f'/api/crs/catalog/v3/points-in-aou', test_data)
+            response_body = json.loads(response.content)
+            assert response.status_code == 200
+            assert "bboxFailedPoints" in response_body
+            failed_points = response_body["bboxFailedPoints"]
+            assert len(failed_points) == 2
+            assert failed_points[0]["index"] == 2
+            assert failed_points[0]["approximateKmDistanceOutside"] == 63
+            assert failed_points[1]["index"] == 3
+            assert failed_points[1]["approximateKmDistanceOutside"] == 84
+            assert response_body["maxDistKmOutsideBBox"] == 84
 
     @classmethod
     def tearDownClass(cls):

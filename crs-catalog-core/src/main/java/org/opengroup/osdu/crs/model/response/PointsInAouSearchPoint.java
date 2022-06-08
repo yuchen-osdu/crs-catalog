@@ -17,25 +17,9 @@ package org.opengroup.osdu.crs.model.response;
 import lombok.Data;
 import org.opengroup.osdu.core.common.model.search.Point;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
-public class AreaOfUseSearchResult {
-	private List<Point> successfulPoints;
-	private List<AreaOfUseSearchPoint> failedPoints;
-	private Double maxDistKmOutside;
-
-	public AreaOfUseSearchResult(){
-		failedPoints = new ArrayList<>();
-		successfulPoints = new ArrayList<>();
-	}
-
-	public void addFailedPoint(AreaOfUseSearchPoint failedPoint){
-		failedPoints.add(failedPoint);
-	}
-
-	public void addSuccessfulPoint(Point point){
-		successfulPoints.add(point);
-	}
+public class PointsInAouSearchPoint {
+	private Point point;
+	private Integer index;
+	private Integer approximateKmDistanceOutside;
 }

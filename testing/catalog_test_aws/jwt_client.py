@@ -1,4 +1,3 @@
-
 # Copyright © 2020 Amazon Web Services
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,8 @@
 import os
 import boto3
 import jwt
+
+
 # export AWS_REGION=us-east-1
 # export AWS_COGNITO_CLIENT_ID=1frjn6q9a5itekric4ubcjivi8
 # export AWS_COGNITO_AUTH_FLOW=USER_PASSWORD_AUTH
@@ -30,18 +31,19 @@ def get_id_token():
     if region:
         client = boto3.client('cognito-idp', region_name=region)
     else:
-        client = boto3.client('cognito-idp', region_name=os.environ["AWS_REGION"])
+        client = boto3.client('cognito-idp',
+                              region_name=os.environ["AWS_REGION"])
     userAuth = client.initiate_auth(
-        ClientId= os.environ['AWS_COGNITO_CLIENT_ID'],
-        # UserPoolId= os.environ['AWS_COGNITO_USER_POOL_ID'],
-        AuthFlow= os.environ['AWS_COGNITO_AUTH_FLOW'],
-        AuthParameters= {
-            "USERNAME": os.environ['AWS_COGNITO_AUTH_PARAMS_USER'],
-            "PASSWORD": os.environ['AWS_COGNITO_AUTH_PARAMS_PASSWORD']
-        })
+            ClientId=os.environ['AWS_COGNITO_CLIENT_ID'],
+            AuthFlow=os.environ['AWS_COGNITO_AUTH_FLOW'],
+            AuthParameters={
+                "USERNAME": os.environ['AWS_COGNITO_AUTH_PARAMS_USER'],
+                "PASSWORD": os.environ['AWS_COGNITO_AUTH_PARAMS_PASSWORD']
+            })
 
     return userAuth['AuthenticationResult']['AccessToken']
 
+
 def get_invalid_token():
-    #generate a dummy jwt
+    # generate a dummy jwt
     return jwt.encode({'some': 'payload'}, 'secret', algorithm='HS256').decode("utf-8")

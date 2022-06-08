@@ -154,7 +154,6 @@
       ],
       "status": "compliant"
     },
-
     "id": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:Geographic3D:EPSG::4472"
   },
   {
@@ -587,6 +586,178 @@
     }
   },
   {
+    "id": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:Projected:EPSG::3851",
+    "kind": "osdu:wks:reference-data--CoordinateReferenceSystem:1.1.0",
+    "acl": {
+      "owners": [
+        "data.default.owners@{{acl_domain}}"
+      ],
+      "viewers": [
+        "data.default.viewers@{{acl_domain}}"
+      ]
+    },
+    "legal": {
+      "legaltags": [
+        "{{data_partition_id}}-crs-catalog-int-test-legaltag"
+      ],
+      "otherRelevantDataCountries": [
+        "US"
+      ]
+    },
+    "data": {
+      "BaseCRS": {
+        "AuthorityCode": {
+          "Authority": "EPSG",
+          "Code": 4167
+        },
+        "BaseCRSID": "{{{{data_partition_id}}}}:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4167:",
+        "Name": "NZGD2000"
+      },
+      "Code": "3851",
+      "CodeAsNumber": 3851,
+      "CodeSpace": "EPSG",
+      "CoordinateReferenceSystemType": "ProjectedCRS",
+      "CoordinateSystem": {
+        "AuthorityCode": {
+          "Authority": "EPSG",
+          "Code": 4500
+        },
+        "Name": "Cartesian 2D CS. Axes: northing, easting (N,E). Orientations: north, east. UoM: m.",
+        "HorizontalAxisUnitID": "{{{{data_partition_id}}}}:reference-data--UnitOfMeasure:m:"
+      },
+      "Datum": {},
+      "Description": "See WGS 84 / NIWA Albers (CRS code 9191) for oceanic data statistical analysis.",
+      "ID": "Projected:EPSG::3851",
+      "Kind": "projected",
+      "Name": "NZGD2000 / NZCS2000",
+      "PersistableReference": "{\"authCode\":{\"auth\":\"EPSG\",\"code\":\"3851\"},\"name\":\"NZGD_2000_NZ_Continental_Shelf_2000\",\"type\":\"LBC\",\"ver\":\"PE_10_9_1\",\"wkt\":\"PROJCS[\\\"NZGD_2000_NZ_Continental_Shelf_2000\\\",GEOGCS[\\\"GCS_NZGD_2000\\\",DATUM[\\\"D_NZGD_2000\\\",SPHEROID[\\\"GRS_1980\\\",6378137.0,298.257222101]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],PROJECTION[\\\"Lambert_Conformal_Conic\\\"],PARAMETER[\\\"False_Easting\\\",3000000.0],PARAMETER[\\\"False_Northing\\\",7000000.0],PARAMETER[\\\"Central_Meridian\\\",173.0],PARAMETER[\\\"Standard_Parallel_1\\\",-37.5],PARAMETER[\\\"Standard_Parallel_2\\\",-44.5],PARAMETER[\\\"Latitude_Of_Origin\\\",-41.0],UNIT[\\\"Meter\\\",1.0],AUTHORITY[\\\"EPSG\\\",3851]]\"}",
+      "PreferredUsage": {
+        "AuthorityCode": {
+          "Authority": "EPSG",
+          "Code": 2854
+        },
+        "Extent": {
+          "AuthorityCode": {
+            "Authority": "EPSG",
+            "Code": 3593
+          },
+          "BoundingBoxEastBoundLongitude": -171.2,
+          "BoundingBoxNorthBoundLatitude": -25.88,
+          "BoundingBoxSouthBoundLatitude": -55.95,
+          "BoundingBoxWestBoundLongitude": 160.6,
+          "Description": "New Zealand - offshore.",
+          "Name": "New Zealand - offshore"
+        },
+        "Name": "New Zealand - offshore",
+        "Scope": {
+          "AuthorityCode": {
+            "Authority": "EPSG",
+            "Code": 1026
+          },
+          "Name": "Spatial referencing."
+        }
+      },
+      "Projection": {
+        "AuthorityCode": {
+          "Authority": "EPSG",
+          "Code": 17964
+        },
+        "Name": "New Zealand Continental Shelf Lambert Conformal 2000"
+      },
+      "RevisionDate": "2019-09-17T00:00:00+00:00",
+      "Usages": [
+        {
+          "AuthorityCode": {
+            "Authority": "EPSG",
+            "Code": 2854
+          },
+          "Extent": {
+            "AuthorityCode": {
+              "Authority": "EPSG",
+              "Code": 3593
+            },
+            "BoundingBoxEastBoundLongitude": -171.2,
+            "BoundingBoxNorthBoundLatitude": -25.88,
+            "BoundingBoxSouthBoundLatitude": -55.95,
+            "BoundingBoxWestBoundLongitude": 160.6,
+            "Description": "New Zealand - offshore.",
+            "Name": "New Zealand - offshore"
+          },
+          "Name": "New Zealand - offshore",
+          "Scope": {
+            "AuthorityCode": {
+              "Authority": "EPSG",
+              "Code": 1026
+            },
+            "Name": "Spatial referencing."
+          }
+        }
+      ],
+      "Wgs84Coordinates": {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+              "type": "MultiPolygon",
+              "coordinates": [
+                [
+                  [
+                    [
+                      160.6,
+                      -55.95
+                    ],
+                    [
+                      180.0,
+                      -55.95
+                    ],
+                    [
+                      180.0,
+                      -25.88
+                    ],
+                    [
+                      160.6,
+                      -25.88
+                    ],
+                    [
+                      160.6,
+                      -55.95
+                    ]
+                  ],
+                  [
+                    [
+                      -180.0,
+                      -55.95
+                    ],
+                    [
+                      -171.2,
+                      -55.95
+                    ],
+                    [
+                      -171.2,
+                      -25.88
+                    ],
+                    [
+                      -180.0,
+                      -25.88
+                    ],
+                    [
+                      -180.0,
+                      -55.95
+                    ]
+                  ]
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateReferenceSystem.1.1.0.json; commit SHA a046fbd2.",
+      "CommitDate": "2022-04-02T14:45:12+02:00"
+    }
+  },
+  {
     "id": "{{data_partition_id}}:reference-data--CoordinateTransformation:EPSG::1111",
     "kind": "osdu:wks:reference-data--CoordinateTransformation:1.1.0",
     "acl": {
@@ -733,86 +904,43 @@
       "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateTransformation.1.1.0.json; commit SHA a046fbd2.",
       "CommitDate": "2022-04-02T14:45:12+02:00"
     }
-  },{
-  "id": "{{data_partition_id}}:reference-data--CoordinateTransformation:EPSG::5429",
-  "kind": "osdu:wks:reference-data--CoordinateTransformation:1.1.0",
-  "acl": {
-    "viewers": [
-      "data.default.viewers@{{acl_domain}}"
-    ],
-    "owners": [
-      "data.default.owners@{{acl_domain}}"
-    ]
   },
-  "legal": {
-    "legaltags": [
-      "{{data_partition_id}}-crs-catalog-int-test-legaltag"
-    ],
-    "otherRelevantDataCountries": [
-      "US"
-    ]
-  },
-  "data": {
-    "Accuracy": 0.1,
-    "Code": "5429",
-    "CodeAsNumber": 5429,
-    "CodeSpace": "EPSG",
-    "CoordinateTransformationType": "Transformation",
-    "CoordTfmVersion": "EuG-Esp",
-    "ID": "EPSG::5429",
-    "Method": {
-      "AuthorityCode": {
-        "Authority": "EPSG",
-        "Code": 1046
-      },
-      "Name": "Vertical Offset and Slope"
+  {
+    "id": "{{data_partition_id}}:reference-data--CoordinateTransformation:EPSG::5429",
+    "kind": "osdu:wks:reference-data--CoordinateTransformation:1.1.0",
+    "acl": {
+      "viewers": [
+        "data.default.viewers@{{acl_domain}}"
+      ],
+      "owners": [
+        "data.default.owners@{{acl_domain}}"
+      ]
     },
-    "Name": "Alicante height to EVRF2000 height (1)",
-    "PreferredUsage": {
-      "AuthorityCode": {
-        "Authority": "EPSG",
-        "Code": 9397
-      },
-      "Extent": {
+    "legal": {
+      "legaltags": [
+        "{{data_partition_id}}-crs-catalog-int-test-legaltag"
+      ],
+      "otherRelevantDataCountries": [
+        "US"
+      ]
+    },
+    "data": {
+      "Accuracy": 0.1,
+      "Code": "5429",
+      "CodeAsNumber": 5429,
+      "CodeSpace": "EPSG",
+      "CoordinateTransformationType": "Transformation",
+      "CoordTfmVersion": "EuG-Esp",
+      "ID": "EPSG::5429",
+      "Method": {
         "AuthorityCode": {
           "Authority": "EPSG",
-          "Code": 4188
+          "Code": 1046
         },
-        "BoundingBoxEastBoundLongitude": 3.39,
-        "BoundingBoxNorthBoundLatitude": 43.82,
-        "BoundingBoxSouthBoundLatitude": 35.95,
-        "BoundingBoxWestBoundLongitude": -9.37,
-        "Description": "Gibraltar - onshore; Spain - mainland onshore.",
-        "Name": "Spain and Gibraltar - onshore"
+        "Name": "Vertical Offset and Slope"
       },
-      "Name": "Spain and Gibraltar - onshore",
-      "Scope": {
-        "AuthorityCode": {
-          "Authority": "EPSG",
-          "Code": 1059
-        },
-        "Name": "Change of height to a different vertical reference surface."
-      }
-    },
-    "RevisionDate": "2020-03-14T00:00:00+00:00",
-    "SourceCRS": {
-      "AuthorityCode": {
-        "Authority": "EPSG",
-        "Code": 5782
-      },
-      "Name": "Alicante height",
-      "SourceCRSID": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:Vertical:EPSG::5782:"
-    },
-    "TargetCRS": {
-      "AuthorityCode": {
-        "Authority": "EPSG",
-        "Code": 5730
-      },
-      "Name": "EVRF2000 height",
-      "TargetCRSID": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:Vertical:EPSG::5730:"
-    },
-    "Usages": [
-      {
+      "Name": "Alicante height to EVRF2000 height (1)",
+      "PreferredUsage": {
         "AuthorityCode": {
           "Authority": "EPSG",
           "Code": 9397
@@ -837,47 +965,91 @@
           },
           "Name": "Change of height to a different vertical reference surface."
         }
-      }
-    ],
-    "Variant": 1,
-    "Wgs84Coordinates": {
-      "type": "FeatureCollection",
-      "features": [
+      },
+      "RevisionDate": "2020-03-14T00:00:00+00:00",
+      "SourceCRS": {
+        "AuthorityCode": {
+          "Authority": "EPSG",
+          "Code": 5782
+        },
+        "Name": "Alicante height",
+        "SourceCRSID": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:Vertical:EPSG::5782:"
+      },
+      "TargetCRS": {
+        "AuthorityCode": {
+          "Authority": "EPSG",
+          "Code": 5730
+        },
+        "Name": "EVRF2000 height",
+        "TargetCRSID": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:Vertical:EPSG::5730:"
+      },
+      "Usages": [
         {
-          "type": "Feature",
-          "properties": {},
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [
-              [
-                [
-                  -9.37,
-                  35.95
-                ],
-                [
-                  3.39,
-                  35.95
-                ],
-                [
-                  3.39,
-                  43.82
-                ],
-                [
-                  -9.37,
-                  43.82
-                ],
-                [
-                  -9.37,
-                  35.95
-                ]
-              ]
-            ]
+          "AuthorityCode": {
+            "Authority": "EPSG",
+            "Code": 9397
+          },
+          "Extent": {
+            "AuthorityCode": {
+              "Authority": "EPSG",
+              "Code": 4188
+            },
+            "BoundingBoxEastBoundLongitude": 3.39,
+            "BoundingBoxNorthBoundLatitude": 43.82,
+            "BoundingBoxSouthBoundLatitude": 35.95,
+            "BoundingBoxWestBoundLongitude": -9.37,
+            "Description": "Gibraltar - onshore; Spain - mainland onshore.",
+            "Name": "Spain and Gibraltar - onshore"
+          },
+          "Name": "Spain and Gibraltar - onshore",
+          "Scope": {
+            "AuthorityCode": {
+              "Authority": "EPSG",
+              "Code": 1059
+            },
+            "Name": "Change of height to a different vertical reference surface."
           }
         }
-      ]
-    },
-    "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateTransformation.1.1.0.json; commit SHA a046fbd2.",
-    "CommitDate": "2022-04-02T14:45:12+02:00"
+      ],
+      "Variant": 1,
+      "Wgs84Coordinates": {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [
+                [
+                  [
+                    -9.37,
+                    35.95
+                  ],
+                  [
+                    3.39,
+                    35.95
+                  ],
+                  [
+                    3.39,
+                    43.82
+                  ],
+                  [
+                    -9.37,
+                    43.82
+                  ],
+                  [
+                    -9.37,
+                    35.95
+                  ]
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateTransformation.1.1.0.json; commit SHA a046fbd2.",
+      "CommitDate": "2022-04-02T14:45:12+02:00"
+    }
   }
-}
 ]
