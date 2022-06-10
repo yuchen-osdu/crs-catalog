@@ -24,6 +24,12 @@ variables:
     --set data.serviceAccountName=$OSDU_GCP_SERVICE-k8s
   # --- end of osdu-gcp specific variables ---
 
+  # --- osdu-anthos specific variables ---
+  OSDU_ANTHOS_PYTHON_INT_TEST_SUBDIR: testing/catalog_test_anthos
+  # --- end of osdu-anthos specific variables ---
+
+
+
 osdu-gcp-test-python:
   variables:
     VIRTUAL_SERVICE_HOST_NAME: $OSDU_GCP_CRS_CATALOG_HOSTNAME
@@ -31,3 +37,7 @@ osdu-gcp-test-python:
 osdu-gcp-dev2-test-python:
   variables:
     VIRTUAL_SERVICE_HOST_NAME: $OSDU_GCP_CRS_CATALOG_HOSTNAME
+
+osdu-gcp-anthos-test-python:
+  variables:
+    VIRTUAL_SERVICE_HOST_NAME: $OSDU_ANTHOS_CRS_CATALOG_HOSTNAME
