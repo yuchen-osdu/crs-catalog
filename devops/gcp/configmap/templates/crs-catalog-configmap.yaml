@@ -8,7 +8,3 @@ metadata:
 data:
   LOG_LEVEL: "{{ .Values.data.log_level }}"
   ENTITLEMENT_URL: "{{ .Values.data.entitlement_url }}"
-  {{- if not .Values.conf.on_prem_enabled }}
-  CRS_CATALOG_HOSTNAME: "{{ .Values.data.crs_catalog_host_name }}"
-  PARTITION_API: "{{ .Values.data.partition_api }}"
-  {{- end }}
