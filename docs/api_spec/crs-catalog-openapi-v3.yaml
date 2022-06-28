@@ -246,6 +246,12 @@ definitions:
       longitude:
         type: number
         description: Longitude point for searching on CRS polygon
+      returnBoundProjectedAndProjectedBasedOnWgs84:
+        type: boolean
+        description: Whether or not to return bound projected type or projected based on wgs84 type
+      returnBoundGeographic2DAndWgs84:
+        type: boolean
+        description: Whether or not to return bound geographic 2d type
       offset:
         type: integer
         description: Corresponds to offset on search service
