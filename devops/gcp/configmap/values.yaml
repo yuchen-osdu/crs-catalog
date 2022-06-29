@@ -1,7 +1,6 @@
 data:
-  log_level: "INFO"
-  entitlement_url: "http://entitlements/api/entitlements/v2/"
+  logLevel: "INFO"
+  entitlementsHost: "http://entitlements"
 conf:
   configmap: "crs-catalog-config"
-  app_name: "crs-catalog"
-  on_prem_enabled: false
+  appName: "crs-catalog"
