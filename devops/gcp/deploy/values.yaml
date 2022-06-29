@@ -1,14 +1,14 @@
 data:
-  requests_cpu: "0.1"
-  requests_memory: "256M"
-  limits_cpu: "1"
-  limits_memory: "1G"
+  requestsCpu: "0.1"
+  requestsMemory: "256M"
+  limitsCpu: "1"
+  limitsMemory: "1G"
   serviceAccountName: ""
   image: ""
   imagePullPolicy: "IfNotPresent"
 
 conf:
   configmap: "crs-catalog-config"
-  app_name: "crs-catalog"
-  on_prem_enabled: false
+  appName: "crs-catalog"
+  onPremEnabled: false
   domain: ""
