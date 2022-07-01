@@ -42,9 +42,10 @@ In order to run the service locally or remotely, you will need to have the follo
  | ---  | ---   | ---         | ---        | ---    |
  | `LOG_PREFIX` | `service` | Logging prefix | no | - |
  | `SERVER_SERVLET_CONTEXPATH` | `/api/crs/catalog/` | CRS Catalog service context path | no | - |
- | `osdu.entitlement.url` | ex `https://entitlements.com/entitlements/v1` | Entitlements API endpoint | no | output of infrastructure deployment |
- | `osdu.crs.catalog.filename` | ex `C:\\osdu-delfi\\os-crs-catalog-service\\data\\crs_catalog_v2.json` | Crs Catalog V2 file | no | output of infrastructure deployment |
-  
+ | `CRS_CATALOG_FILENAME` | ex `C:\\osdu-delfi\\os-crs-catalog-service\\data\\crs_catalog_v2.json` | Crs Catalog V2 file | no | output of infrastructure deployment |
+ | `ENTITLEMENTS_API` | `http://entitlements/api/entitlements/v2/` | Entitlements service endpoint | no | - |
+ | `SEARCH_API` | `http://search/api/search/v2` | Search service endpoint | no | - |
+
 ### Run Locally
 Check that maven is installed:
 
