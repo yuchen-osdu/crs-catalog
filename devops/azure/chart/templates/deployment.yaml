@@ -107,6 +107,8 @@ spec:
               key: application-appid
         - name: ENTITLEMENT_URL
           value: http://entitlements/api/entitlements/v2
+        - name: SEARCH_API
+          value: http://search/api/search/v2
         - name: azure_istioauth_enabled
           value: "true"
         - name: SPRING_CONFIG_NAME
