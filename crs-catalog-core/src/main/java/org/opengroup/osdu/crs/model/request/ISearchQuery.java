@@ -13,12 +13,14 @@
 // limitations under the License.
 
 package org.opengroup.osdu.crs.model.request;
-
 import org.opengroup.osdu.core.common.model.search.SpatialFilter;
+
+import java.util.List;
 
 public interface ISearchQuery {
 	String constructQuery();
 	SpatialFilter constructSpatialFilter();
 	Integer getLimit();
 	Integer getOffset();
+	List<String> getReturnedFields();
 }

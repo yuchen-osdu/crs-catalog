@@ -39,8 +39,6 @@ import org.opengroup.osdu.crs.model.interfaces.*;
 @RequestMapping(path= "/v3")
 public class CrsCatalogApiV3 {
 
-	private Catalog catalog = null;
-
 	@Inject
 	private AuditLogger auditLogger;
 
@@ -58,14 +56,14 @@ public class CrsCatalogApiV3 {
 			@RequestParam(name = "recordId", required = false) String recordId,
 			@RequestParam(name = "dataId", required = false) String dataId
 			) {
-		return searchWrapperService.getSingleCrsOrCt(recordId, dataId, SearchWrapperService.COORDINATE_TRANSFORMATION_KIND);
+		return searchWrapperService.getSingleCrsOrCt(recordId, dataId, SearchWrapperService.getCoordinateTransformationKind());
 	}
 
 	@PostMapping("/coordinate-transformation")
 	public SearchResponse getCoordinateTransformations(
-			@RequestBody CoordinateTransformationsQuery coordinateTransformationsQuery
+			@RequestBody(required=false) CoordinateTransformationsQuery coordinateTransformationsQuery
 			) {
-		return searchWrapperService.search(coordinateTransformationsQuery, SearchWrapperService.COORDINATE_TRANSFORMATION_KIND);
+		return searchWrapperService.search(coordinateTransformationsQuery, SearchWrapperService.getCoordinateTransformationKind());
 	}
 
 	@GetMapping("/coordinate-reference-system")
@@ -73,14 +71,14 @@ public class CrsCatalogApiV3 {
 			@RequestParam(name = "recordId", required = false) String recordId,
 			@RequestParam(name = "dataId", required = false) String dataId
 	) {
-		return searchWrapperService.getSingleCrsOrCt(recordId, dataId, SearchWrapperService.COORDINATE_REFERENCE_SYSTEM_KIND);
+		return searchWrapperService.getSingleCrsOrCt(recordId, dataId, SearchWrapperService.getCoordinateReferenceSystemKind());
 	}
 
 	@PostMapping("/coordinate-reference-system")
 	public SearchResponse getCoordinateReferenceSystems(
-			@RequestBody CoordinateReferenceSystemsQuery coordinateReferenceSystemsQuery
+			@RequestBody(required=false) CoordinateReferenceSystemsQuery coordinateReferenceSystemsQuery
 	) {
-		return searchWrapperService.search(coordinateReferenceSystemsQuery, SearchWrapperService.COORDINATE_REFERENCE_SYSTEM_KIND);
+		return searchWrapperService.search(coordinateReferenceSystemsQuery, SearchWrapperService.getCoordinateReferenceSystemKind());
 	}
 
 	@PostMapping("/points-in-aou")

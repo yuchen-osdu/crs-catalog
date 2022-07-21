@@ -87,7 +87,7 @@ public class PointsInAouService {
     }
 
     private List<Polygon> getRecordPolygons(InPolygonQuery inPolygonQuery) {
-        SearchResponse searchResponse = searchWrapperService.search(inPolygonQuery, SearchWrapperService.CT_AND_CRS_KIND);
+        SearchResponse searchResponse = searchWrapperService.search(inPolygonQuery, SearchWrapperService.getCtAndCrsKind());
         List<Map<String, Object>> searchResults = searchResponse.getSearchResults().getResults();
         if (searchResults.size() != 1) {
             throw AppException.createBadRequest(String.format(

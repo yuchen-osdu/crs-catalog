@@ -18,5 +18,6 @@ else:
     ROOT_URL = os.getenv("VIRTUAL_SERVICE_HOST_NAME")
 MY_TENANT = os.getenv("MY_TENANT")
 ACL_DOMAIN = os.getenv("ACL_DOMAIN", "opendes.example.com")
+SCHEMA_AUTHORITY = os.getenv("SCHEMA_AUTHORITY", "osdu")
 LOCAL_MODE = os.getenv("LOCAL_MODE", "false")
 

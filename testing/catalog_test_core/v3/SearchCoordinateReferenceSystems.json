@@ -14,11 +14,12 @@
     "codeSpace": "EPSG"
   },
   "extent": {
-    "name": "Mayotte"
+    "description": "Mayotte"
   },
   "coordinateReferenceSystemType": "GeodeticCRS",
   "horizontalAxisUnitId": "{{data_partition_id}}:reference-data--UnitOfMeasure:dega:",
   "verticalAxisUnitId": "{{data_partition_id}}:reference-data--UnitOfMeasure:m:",
   "latitude": -12.8,
-  "longitude": 45.2
+  "longitude": 45.2,
+  "includeDeprecated": true
 }

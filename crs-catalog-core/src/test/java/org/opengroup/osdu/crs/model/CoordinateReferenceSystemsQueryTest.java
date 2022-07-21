@@ -35,11 +35,11 @@ public class CoordinateReferenceSystemsQueryTest {
 		datum.setCodeSpace("EPSG");
 		coordinateReferenceSystemsQuery.setDatum(datum);
 		Extent extent = new Extent();
-		extent.setName("Mayonette");
+		extent.setDescription("Mayonette");
 		coordinateReferenceSystemsQuery.setExtent(extent);
 		coordinateReferenceSystemsQuery.setCoordinateReferenceSystemType("GeodeticCRS");
 
-		String expectedQuery = "(data.CodeSpace: EPSG) AND (data.Code: \"4472\") AND (data.Name: \"Cadastre\") AND (data.ID: \"Geographic3D:EPSG::4472\") AND (data.Kind: \"geographic 3D\") AND (data.CoordinateReferenceSystemType: \"GeodeticCRS\") AND (data.BaseCRS.BaseCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Geocentric:EPSG::4473:\") AND (data.BaseCRS.Name: \"Cadastre\") AND (data.Datum.Name: \"Cadastre\") AND (data.Datum.AuthorityCode.Authority: \"EPSG\") AND (data.Datum.AuthorityCode.Code: \"1037\") AND (data.PreferredUsage.Extent.Name: \"Mayonette\")";
+		String expectedQuery = "(NOT data.InactiveIndicator: true) AND (data.CodeSpace: \"EPSG\") AND (data.Code: \"4472\") AND (data.Name: \"Cadastre\") AND (data.ID: \"Geographic3D:EPSG::4472\") AND (data.Kind: \"geographic 3D\") AND (data.CoordinateReferenceSystemType: \"GeodeticCRS\") AND (data.BaseCRS.BaseCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Geocentric:EPSG::4473:\") AND (data.BaseCRS.Name: \"Cadastre\") AND (data.Datum.Name: \"Cadastre\") AND (data.Datum.AuthorityCode.Authority: \"EPSG\") AND (data.Datum.AuthorityCode.Code: \"1037\") AND (data.PreferredUsage.Extent.Description: \"Mayonette\")";
 
 		// act
 		String query = coordinateReferenceSystemsQuery.constructQuery();
@@ -49,11 +49,20 @@ public class CoordinateReferenceSystemsQueryTest {
 	}
 
 	@Test
+	public void testConstructQueryIncludeDeprecated(){
+		// arrange
+		coordinateReferenceSystemsQuery.setIncludeDeprecated(true);
+		// act
+		String query = coordinateReferenceSystemsQuery.constructQuery();
+		// assert
+		Assert.assertTrue(query.isEmpty());
+	}
+	@Test
 	public void testConstructQueryBoundProjected(){
 		// arrange
 		coordinateReferenceSystemsQuery.setCodeSpace("EPSG");
 		coordinateReferenceSystemsQuery.setReturnBoundProjectedAndProjectedBasedOnWgs84(true);
-		String expectedQuery = "(data.CodeSpace: EPSG OR data.Codespace: EPSG OR data.PreferredUsage.Extent.AuthorityCode.Authority: EPSG) AND (data.Code: 4326 OR data.PreferredUsage.Extent.AuthorityCode.Authority: EPSG) AND (data.Kind: BoundProjected)";
+		String expectedQuery = "(NOT data.InactiveIndicator: true) AND (data.CodeSpace: \"EPSG\") AND ((data.Kind: \"BoundProjected\") OR ((data.Kind: \"projected\") AND (data.BaseCRS.AuthorityCode.Code: \"4326\")))";
 
 		// act
 		String query = coordinateReferenceSystemsQuery.constructQuery();
@@ -67,8 +76,7 @@ public class CoordinateReferenceSystemsQueryTest {
 		// arrange
 		coordinateReferenceSystemsQuery.setCodeSpace("EPSG");
 		coordinateReferenceSystemsQuery.setReturnBoundGeographic2DAndWgs84(true);
-		String expectedQuery = "(data.CodeSpace: EPSG OR data.Codespace: EPSG OR data.PreferredUsage.Extent.AuthorityCode.Authority: EPSG) AND (data.Code: 4326 OR data.PreferredUsage.Extent.AuthorityCode.Authority: EPSG) AND (data.Kind: BoundGeographic2d)";
-
+		String expectedQuery = "(NOT data.InactiveIndicator: true) AND (data.CodeSpace: \"EPSG\") AND ((data.Kind: \"BoundGeographic2D\") OR ((data.Kind: \"geographic 2D\") AND (data.Code: \"4326\") AND (data.CodeSpace: \"EPSG\")))";
 		// act
 		String query = coordinateReferenceSystemsQuery.constructQuery();
 

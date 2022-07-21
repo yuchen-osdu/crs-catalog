@@ -127,7 +127,7 @@
       "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateReferenceSystem.1.1.0.json; commit SHA a046fbd2.",
       "CommitDate": "2022-04-02T14:45:12+02:00"
     },
-    "kind": "osdu:wks:reference-data--CoordinateReferenceSystem:1.1.0",
+    "kind": "{{schema-authority}}:wks:reference-data--CoordinateReferenceSystem:1.1.0",
     "source": "wks",
     "acl": {
       "viewers": [
@@ -158,7 +158,7 @@
   },
   {
     "id": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4204",
-    "kind": "osdu:wks:reference-data--CoordinateReferenceSystem:1.1.0",
+    "kind": "{{schema-authority}}:wks:reference-data--CoordinateReferenceSystem:1.1.0",
     "acl": {
       "viewers": [
         "data.default.viewers@{{acl_domain}}"
@@ -296,7 +296,7 @@
   },
   {
     "id": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:BoundProjected:EPSG::24600_EPSG::1059",
-    "kind": "osdu:wks:reference-data--CoordinateReferenceSystem:1.1.0",
+    "kind": "{{schema-authority}}:wks:reference-data--CoordinateReferenceSystem:1.1.0",
     "acl": {
       "viewers": [
         "data.default.viewers@{{acl_domain}}"
@@ -449,7 +449,7 @@
   },
   {
     "id": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:BoundGeographic2D:EPSG::4154_EPSG::1514",
-    "kind": "osdu:wks:reference-data--CoordinateReferenceSystem:1.1.0",
+    "kind": "{{schema-authority}}:wks:reference-data--CoordinateReferenceSystem:1.1.0",
     "acl": {
       "viewers": [
         "data.default.viewers@{{acl_domain}}"
@@ -587,7 +587,7 @@
   },
   {
     "id": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:Projected:EPSG::3851",
-    "kind": "osdu:wks:reference-data--CoordinateReferenceSystem:1.1.0",
+    "kind": "{{schema-authority}}:wks:reference-data--CoordinateReferenceSystem:1.1.0",
     "acl": {
       "owners": [
         "data.default.owners@{{acl_domain}}"
@@ -759,7 +759,7 @@
   },
   {
     "id": "{{data_partition_id}}:reference-data--CoordinateTransformation:EPSG::1111",
-    "kind": "osdu:wks:reference-data--CoordinateTransformation:1.1.0",
+    "kind": "{{schema-authority}}:wks:reference-data--CoordinateTransformation:1.1.0",
     "acl": {
       "viewers": [
         "data.default.viewers@{{acl_domain}}"
@@ -784,6 +784,7 @@
       "CoordinateTransformationType": "Transformation",
       "CoordTfmVersion": "DMA-Sau",
       "ID": "EPSG::1111",
+      "Kind": "Transformation",
       "Method": {
         "AuthorityCode": {
           "Authority": "EPSG",
@@ -901,13 +902,13 @@
           }
         ]
       },
-      "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateTransformation.1.1.0.json; commit SHA a046fbd2.",
-      "CommitDate": "2022-04-02T14:45:12+02:00"
+      "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateTransformation.1.1.0.json; commit SHA 5443886a.",
+      "CommitDate": "2022-04-13T18:16:39+02:00"
     }
   },
   {
     "id": "{{data_partition_id}}:reference-data--CoordinateTransformation:EPSG::5429",
-    "kind": "osdu:wks:reference-data--CoordinateTransformation:1.1.0",
+    "kind": "{{schema-authority}}:wks:reference-data--CoordinateTransformation:1.1.0",
     "acl": {
       "viewers": [
         "data.default.viewers@{{acl_domain}}"
@@ -932,6 +933,7 @@
       "CoordinateTransformationType": "Transformation",
       "CoordTfmVersion": "EuG-Esp",
       "ID": "EPSG::5429",
+      "Kind": "VerticalTransformation",
       "Method": {
         "AuthorityCode": {
           "Authority": "EPSG",
@@ -1048,8 +1050,158 @@
           }
         ]
       },
-      "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateTransformation.1.1.0.json; commit SHA a046fbd2.",
-      "CommitDate": "2022-04-02T14:45:12+02:00"
+      "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateTransformation.1.1.0.json; commit SHA 5443886a.",
+      "CommitDate": "2022-04-13T18:16:39+02:00"
+    }
+  },
+  {
+    "id": "{{data_partition_id}}:reference-data--CoordinateTransformation:EPSG::147000000",
+    "kind": "{{schema-authority}}:wks:reference-data--CoordinateTransformation:1.1.0",
+    "acl": {
+      "viewers": [
+        "data.default.viewers@{{acl_domain}}"
+      ],
+      "owners": [
+        "data.default.owners@{{acl_domain}}"
+      ]
+    },
+    "legal": {
+      "legaltags": [
+        "{{data_partition_id}}-crs-catalog-int-test-legaltag"
+      ],
+      "otherRelevantDataCountries": [
+        "US"
+      ]
+    },
+    "data": {
+      "Accuracy": 2.0,
+      "Code": "1470",
+      "CodeAsNumber": 1470,
+      "CodeSpace": "EPSG",
+      "CoordinateTransformationType": "Transformation",
+      "CoordTfmVersion": "IGN-Civ",
+      "ID": "EPSG::1470",
+      "Kind": "Transformation",
+      "InactiveIndicator": true,
+      "Method": {
+        "AuthorityCode": {
+          "Authority": "EPSG",
+          "Code": 9603
+        },
+        "Name": "Geocentric translations (geog2D domain)"
+      },
+      "Name": "Abidjan 1987 to WGS 84 (1)",
+      "PersistableReference": "{\"authCode\":{\"auth\":\"EPSG\",\"code\":\"1470\"},\"name\":\"Abidjan_1987_To_WGS_1984\",\"type\":\"ST\",\"ver\":\"PE_10_9_1\",\"wkt\":\"GEOGTRAN[\\\"Abidjan_1987_To_WGS_1984\\\",GEOGCS[\\\"GCS_Abidjan_1987\\\",DATUM[\\\"D_Abidjan_1987\\\",SPHEROID[\\\"Clarke_1880_RGS\\\",6378249.145,293.465]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],GEOGCS[\\\"GCS_WGS_1984\\\",DATUM[\\\"D_WGS_1984\\\",SPHEROID[\\\"WGS_1984\\\",6378137.0,298.257223563]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],METHOD[\\\"Geocentric_Translation\\\"],PARAMETER[\\\"X_Axis_Translation\\\",-124.76],PARAMETER[\\\"Y_Axis_Translation\\\",53.0],PARAMETER[\\\"Z_Axis_Translation\\\",466.79],OPERATIONACCURACY[2.0],AUTHORITY[\\\"EPSG\\\",1470]]\"}",
+      "PreferredUsage": {
+        "AuthorityCode": {
+          "Authority": "EPSG",
+          "Code": 8391
+        },
+        "Extent": {
+          "AuthorityCode": {
+            "Authority": "EPSG",
+            "Code": 1075
+          },
+          "BoundingBoxEastBoundLongitude": -2.48,
+          "BoundingBoxNorthBoundLatitude": 10.74,
+          "BoundingBoxSouthBoundLatitude": 1.02,
+          "BoundingBoxWestBoundLongitude": -8.61,
+          "Description": "C\u00f4te d'Ivoire (Ivory Coast) - onshore and offshore.",
+          "Name": "Cote d'Ivoire (Ivory Coast)"
+        },
+        "Name": "Cote d'Ivoire (Ivory Coast)",
+        "Scope": {
+          "AuthorityCode": {
+            "Authority": "EPSG",
+            "Code": 1216
+          },
+          "Name": "Oil and gas exploration."
+        }
+      },
+      "RevisionDate": "2020-03-14T00:00:00+00:00",
+      "SourceCRS": {
+        "AuthorityCode": {
+          "Authority": "EPSG",
+          "Code": 4143
+        },
+        "Name": "Abidjan 1987",
+        "SourceCRSID": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4143:"
+      },
+      "TargetCRS": {
+        "AuthorityCode": {
+          "Authority": "EPSG",
+          "Code": 4326
+        },
+        "Name": "WGS 84",
+        "TargetCRSID": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4326:"
+      },
+      "Usages": [
+        {
+          "AuthorityCode": {
+            "Authority": "EPSG",
+            "Code": 8391
+          },
+          "Extent": {
+            "AuthorityCode": {
+              "Authority": "EPSG",
+              "Code": 1075
+            },
+            "BoundingBoxEastBoundLongitude": -2.48,
+            "BoundingBoxNorthBoundLatitude": 10.74,
+            "BoundingBoxSouthBoundLatitude": 1.02,
+            "BoundingBoxWestBoundLongitude": -8.61,
+            "Description": "C\u00f4te d'Ivoire (Ivory Coast) - onshore and offshore.",
+            "Name": "Cote d'Ivoire (Ivory Coast)"
+          },
+          "Name": "Cote d'Ivoire (Ivory Coast)",
+          "Scope": {
+            "AuthorityCode": {
+              "Authority": "EPSG",
+              "Code": 1216
+            },
+            "Name": "Oil and gas exploration."
+          }
+        }
+      ],
+      "Variant": 1,
+      "Wgs84Coordinates": {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [
+                [
+                  [
+                    -8.61,
+                    1.02
+                  ],
+                  [
+                    -2.48,
+                    1.02
+                  ],
+                  [
+                    -2.48,
+                    10.74
+                  ],
+                  [
+                    -8.61,
+                    10.74
+                  ],
+                  [
+                    -8.61,
+                    1.02
+                  ]
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateTransformation.1.1.0.json; commit SHA 5443886a.",
+      "CommitDate": "2022-04-13T18:16:39+02:00"
     }
   }
 ]

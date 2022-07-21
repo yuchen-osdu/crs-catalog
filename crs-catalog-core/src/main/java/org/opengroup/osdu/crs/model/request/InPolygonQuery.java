@@ -29,7 +29,7 @@ public class InPolygonQuery implements ISearchQuery {
 	private List<Point> points = new ArrayList<>();
 	private Integer offset;
 	private Integer limit;
-
+	private List<String> returnedFields = new ArrayList<>();
 	@Override
 	public String constructQuery() {
 		String query = "";
