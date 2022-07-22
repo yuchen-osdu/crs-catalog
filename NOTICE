@@ -95,6 +95,7 @@ The following software have components provided under the terms of this license:
 - Byte Buddy Java agent (from https://repo1.maven.org/maven2/net/bytebuddy/byte-buddy-agent)
 - ClassMate (from http://github.com/cowtowncoder/java-classmate)
 - Cobertura (from http://cobertura.sourceforge.net)
+- Cobertura Limited Runtime (from http://cobertura.sourceforge.net)
 - Collections (from https://repo1.maven.org/maven2/commons-collections/commons-collections)
 - Commons Digester (from http://commons.apache.org/digester/)
 - Commons Lang (from http://commons.apache.org/lang/)
@@ -343,6 +344,7 @@ The following software have components provided under the terms of this license:
 - springfox-swagger-ui (from https://github.com/springfox/springfox)
 - springfox-swagger2 (from https://github.com/springfox/springfox)
 - swagger-annotations (from https://repo1.maven.org/maven2/io/swagger/core/v3/swagger-annotations, https://repo1.maven.org/maven2/io/swagger/swagger-annotations)
+- swagger-core (from https://repo1.maven.org/maven2/io/swagger/swagger-core)
 - swagger-jaxrs (from https://repo1.maven.org/maven2/io/swagger/swagger-jaxrs)
 - swagger-models (from https://repo1.maven.org/maven2/io/swagger/core/v3/swagger-models, https://repo1.maven.org/maven2/io/swagger/swagger-models)
 - xml-apis (from https://repo1.maven.org/maven2/xml-apis/xml-apis)
@@ -455,6 +457,8 @@ The following software have components provided under the terms of this license:
 - Apache Log4j Core (from https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core)
 - Java EE Transaction API (from http://jcp.org/en/jsr/detail?id=907)
 - JavaBeans Activation Framework (from https://repo1.maven.org/maven2/com/sun/activation/javax.activation)
+- Jetty :: Websocket :: javax.websocket :: Client Implementation (from https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-client-impl)
+- Jetty :: Websocket :: javax.websocket.server :: Server Implementation (from https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-server-impl)
 - Servlet Specification 2.5 API (from http://jetty.mortbay.org, https://repo1.maven.org/maven2/org/mortbay/jetty/servlet-api-2.5)
 - javax.annotation-api (from http://jcp.org/en/jsr/detail?id=250)
 
@@ -545,6 +549,8 @@ The following software have components provided under the terms of this license:
 - Jakarta Servlet (from https://projects.eclipse.org/projects/ee4j.servlet)
 - Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket)
 - Jakarta XML Binding API (from https://repo1.maven.org/maven2/jakarta/xml/bind/jakarta.xml.bind-api, https://repo1.maven.org/maven2/org/jboss/spec/javax/xml/bind/jboss-jaxb-api_2.3_spec)
+- Jetty :: Websocket :: javax.websocket :: Client Implementation (from https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-client-impl)
+- Jetty :: Websocket :: javax.websocket.server :: Server Implementation (from https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-server-impl)
 
 ========================================================================
 GPL-1.0-or-later
@@ -563,7 +569,7 @@ The following software have components provided under the terms of this license:
 - Expression Language 3.0 (from http://el-spec.java.net, http://uel.java.net, https://projects.eclipse.org/projects/ee4j.el)
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
 - Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket)
-- JavaBeans Activation Framework
+- JavaBeans Activation Framework (from https://repo1.maven.org/maven2/com/sun/activation/javax.activation)
 - Lang (from https://repo1.maven.org/maven2/commons-lang/commons-lang)
 - Mojo's Maven plugin for Cobertura (from http://mojo.codehaus.org/cobertura-maven-plugin/)
 - javax.annotation-api (from http://jcp.org/en/jsr/detail?id=250)
@@ -590,6 +596,8 @@ The following software have components provided under the terms of this license:
 - Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket)
 - Jakarta XML Binding API (from https://repo1.maven.org/maven2/jakarta/xml/bind/jakarta.xml.bind-api, https://repo1.maven.org/maven2/org/jboss/spec/javax/xml/bind/jboss-jaxb-api_2.3_spec)
 - JavaBeans Activation Framework (from https://repo1.maven.org/maven2/com/sun/activation/javax.activation)
+- Jetty :: Websocket :: javax.websocket :: Client Implementation (from https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-client-impl)
+- Jetty :: Websocket :: javax.websocket.server :: Server Implementation (from https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-server-impl)
 - javax.annotation-api (from http://jcp.org/en/jsr/detail?id=250)
 
 ========================================================================
@@ -646,6 +654,13 @@ JSON
 The following software have components provided under the terms of this license:
 
 - JSON in Java (from https://github.com/douglascrockford/JSON-java)
+
+========================================================================
+LGPL-2.0-only
+========================================================================
+The following software have components provided under the terms of this license:
+
+- java-getopt (from https://repo1.maven.org/maven2/urbanophile/java-getopt)
 
 ========================================================================
 LGPL-2.1-only
