@@ -135,7 +135,7 @@ public class SearchWrapperService {
 
     private void handleSearchError(String errorMsg, Exception e) {
         logger.error(errorMsg, e);
-        e.printStackTrace(System.out);
+        e.printStackTrace();
         throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorMsg, e.getMessage());
     }
 }
