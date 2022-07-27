@@ -49,7 +49,7 @@ public class SearchWrapperService {
 
     ISearchService searchService;
 
-    public static String schemaAuthority;
+    private static String schemaAuthority;
 
     public static String getCoordinateReferenceSystemKind() {
         return String.format("%s:wks:reference-data--CoordinateReferenceSystem:1.1.0", schemaAuthority);
