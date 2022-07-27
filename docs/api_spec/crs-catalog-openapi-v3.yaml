@@ -196,7 +196,7 @@ definitions:
         description: Corresponds to CodeSpace field on CT records
       name:
         type: string
-        description: Corresponds to Name field on CT records
+        description: Corresponds to Name field on CT records. All entities with name containing the search string will be returned. Wildcard is not supported.
       id:
         type: string
         description: Corresponds to ID field on CT records
@@ -214,10 +214,10 @@ definitions:
         description: Corresponds to TargetCRS.TargetCRSID (record id), e.g., "osdu:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4198:". As SourceCRS and TargetCRS are interchangeable, it will also search SourceCRS.SourceCRSID
       latitude:
         type: number
-        description: Latitude point for searching on CT bounding box
+        description: Returns all entities for which the (Latitude, Longitude) is inside the Extent bounding box. Must also provide longitude.
       longitude:
         type: number
-        description: Longitude point for searching on CT bounding box
+        description: See latitude
       includeDeprecated:
         type: boolean
         description: Whether to return deprecated records marked with InactiveIndicator=true. Default is false.
@@ -226,7 +226,7 @@ definitions:
         description: Corresponds to offset on search service
       limit:
         type: integer
-        description: Corresponds to limit on search service
+        description: Corresponds to limit on search service. Default is to return all found entities.
       returnAllFields:
         type: boolean
         description: Whether to return all fields in the record. Default is false and only a subset is returned
@@ -239,7 +239,7 @@ definitions:
         description: Corresponds to CodeSpace field on CRS records
       name:
         type: string
-        description: Corresponds to Name field on CRS records
+        description: Corresponds to Name field on CRS records. All entities with name containing the search string will be returned. Wildcard is not supported.
       id:
         type: string
         description: Corresponds to ID field on CRS records
@@ -257,10 +257,10 @@ definitions:
         $ref: "#/definitions/Extent"
       coordinateReferenceSystemType:
         type: string
-        description: Type of CRS i.e. GeodeticCRS
+        description: Type of CRS, e.g., BoundCRS, ProjectedCRS, GeodeticCRS, VerticalCRS
       horizontalAxisUnitId:
         type: string
-        description: Corresponds to CoordinateSystem.HorizontalAxisUnitID field on CRS records
+        description: Corresponds to CoordinateSystem.HorizontalAxisUnitID field on CRS records, e.g., "osdu:reference-data--UnitOfMeasure:dega:".
       verticalAxisUnitId:
         type: string
         description: Corresponds to CoordinateSystem.VerticalAxisUnitID field on CRS records
@@ -285,7 +285,7 @@ definitions:
         description: Corresponds to offset on search service
       limit:
         type: integer
-        description: Corresponds to limit on search service
+        description: Corresponds to limit on search service. Default is to return all found entities.
       returnAllFields:
         type: boolean
         description: Whether to return all fields in the record. Default is false and only a subset is returned
@@ -315,7 +315,7 @@ definitions:
     properties:
       description:
         type: string
-        description: Description of extent. Corresponds to PreferredUsage.Extent.Description in the record.
+        description: Description of extent. Corresponds to PreferredUsage.Extent.Description in the record. All entities with PreferredUsage.Extent.Description containing the search string will be returned. Wildcard is not supported.
 
   SearchResponse:
     description: Results for most V3 endpoints
