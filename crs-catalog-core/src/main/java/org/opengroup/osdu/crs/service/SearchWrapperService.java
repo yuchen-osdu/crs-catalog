@@ -25,6 +25,7 @@ import org.opengroup.osdu.core.common.search.ISearchService;
 import org.opengroup.osdu.crs.model.request.ISearchQuery;
 import org.opengroup.osdu.crs.model.response.SearchResponse;
 import org.opengroup.osdu.crs.util.AppException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -37,111 +38,104 @@ import java.util.List;
 @Service
 public class SearchWrapperService {
 
-	@Inject
-	ISearchFactory searchFactory;
+    @Inject
+    ISearchFactory searchFactory;
 
-	@Inject
-	DpsHeaders dpsHeaders;
+    @Inject
+    DpsHeaders dpsHeaders;
 
-	@Inject
-	JaxRsDpsLog logger;
+    @Inject
+    JaxRsDpsLog logger;
 
-	ISearchService searchService;
+    ISearchService searchService;
 
-	public final static String COORDINATE_TRANSFORMATION_KIND = "osdu:wks:reference-data--CoordinateTransformation:1.1.0";
-	public final static String COORDINATE_REFERENCE_SYSTEM_KIND = "osdu:wks:reference-data--CoordinateReferenceSystem:1.1.0";
-	public final static String CT_AND_CRS_KIND = "osdu:wks:reference-data--*:1.1.0";
+    private static String schemaAuthority;
 
-	@PostConstruct
-	public void postInit(){
-		searchService = searchFactory.create(dpsHeaders);
-	}
+    public static String getCoordinateReferenceSystemKind() {
+        return String.format("%s:wks:reference-data--CoordinateReferenceSystem:1.1.0", schemaAuthority);
+    }
 
-	public SearchResponse getSingleCrsOrCt(String recordId, String dataId, String kind) {
-		String query = "";
-		if(recordId != null && dataId != null){
-			query = String.format("id: \"%s\" && data.ID: \"%s\"", recordId, dataId);
-		} else if(recordId != null){
-			query = String.format("id: \"%s\"", recordId);
-		} else if(dataId != null){
-			query = String.format("data.ID: \"%s\"", dataId);
-		}
+    public static String getCoordinateTransformationKind() {
+        return String.format("%s:wks:reference-data--CoordinateTransformation:1.1.0", schemaAuthority);
+    }
 
-		if(query == ""){
-			throw AppException.createBadRequest("Must supply either recordId or dataId as request param");
-		}
+    public static String getCtAndCrsKind() {
+        return String.format("%s:wks:reference-data--*:1.1.0", schemaAuthority);
+    }
 
-		QueryRequest queryRequest = new QueryRequest();
+    @PostConstruct
+    public void postInit() {
+        searchService = searchFactory.create(dpsHeaders);
+    }
 
-		queryRequest.setQuery(query);
-		queryRequest.setKind(kind);
+    @Value("${osdu.crs.catalog.schema-authority:osdu}")
+    public void setSchemaAuthority(String privateName) {
+        SearchWrapperService.schemaAuthority = privateName;
+    }
 
-		return new SearchResponse(sendToSearch(queryRequest), query);
-	}
+    public SearchResponse getSingleCrsOrCt(String recordId, String dataId, String kind) {
+        String query;
+        if (recordId != null && dataId != null) {
+            query = String.format("id: \"%s\" && data.ID: \"%s\"", recordId, dataId);
+        } else if (recordId != null) {
+            query = String.format("id: \"%s\"", recordId);
+        } else if (dataId != null) {
+            query = String.format("data.ID: \"%s\"", dataId);
+        } else {
+            throw AppException.createBadRequest("Must supply either recordId or dataId as request param");
+        }
 
-	public SearchResponse search(ISearchQuery searchQuery, String kind) {
-		QueryRequest queryRequest = new QueryRequest();
+        QueryRequest queryRequest = new QueryRequest();
 
-		String query = searchQuery.constructQuery();
-		queryRequest.setQuery(query);
-		queryRequest.setKind(kind);
+        queryRequest.setQuery(query);
+        queryRequest.setKind(kind);
 
-		List<String> returnedFields = getReturnedFields(kind);
-		if(returnedFields.size() > 0){
-			queryRequest.setReturnedFields(returnedFields);
-		}
+        return new SearchResponse(sendToSearch(queryRequest), query);
+    }
 
-		SpatialFilter spatialFilter = searchQuery.constructSpatialFilter();
-		if(spatialFilter != null){
-			queryRequest.setSpatialFilter(searchQuery.constructSpatialFilter());
-		}
+    public SearchResponse search(ISearchQuery searchQuery, String kind) {
+        QueryRequest queryRequest = new QueryRequest();
 
-		if(searchQuery.getLimit() != null) {
-			queryRequest.setLimit(searchQuery.getLimit());
-		}
+        String query = searchQuery.constructQuery();
+        queryRequest.setQuery(query);
+        queryRequest.setKind(kind);
 
-		if(searchQuery.getOffset() != null){
-			queryRequest.setFrom(searchQuery.getOffset());
-		}
+        List<String> returnedFields = searchQuery.getReturnedFields();
+        if (returnedFields.size() > 0) {
+            queryRequest.setReturnedFields(returnedFields);
+        }
 
-		return new SearchResponse(sendToSearch(queryRequest), query);
-	}
+        SpatialFilter spatialFilter = searchQuery.constructSpatialFilter();
+        if (spatialFilter != null) {
+            queryRequest.setSpatialFilter(searchQuery.constructSpatialFilter());
+        }
 
-	private QueryResponse sendToSearch(QueryRequest queryRequest){
-		QueryResponse queryResponse = null;
-		try {
-			logger.debug(String.format("Sending query to search service: %s", queryRequest.toString()));
-			queryResponse = searchService.search(queryRequest);
-			logger.debug(String.format("Received response from search service: %s", queryResponse.toString()));
-		} catch (SearchException e) {
-			handleSearchError("Failed to call search service", e);
-		}
-		return queryResponse;
-	}
+        if (searchQuery.getLimit() != null) {
+            queryRequest.setLimit(searchQuery.getLimit());
+        }
 
-	private List<String> getReturnedFields(String kind){
-		List<String> returnedFields = new ArrayList<>();
-		if(kind == COORDINATE_TRANSFORMATION_KIND){
-			returnedFields = Arrays.asList(
-					"id", "kind", "version", "modifyTime",
-					"data.Source", "data.Name", "data.ID",
-					"data.Code", "data.CommitDate", "data.Description",
-					"data.InactiveIndicator"
-			);
-		} else if(kind == COORDINATE_REFERENCE_SYSTEM_KIND){
-			returnedFields = Arrays.asList(
-					"id", "kind", "version", "modifyTime",
-					"data.Source", "data.Name", "data.ID",
-					"data.Code", "data.CommitDate", "data.Description",
-					"data.InactiveIndicator"
-			);
-		}
-		return returnedFields;
-	}
+        if (searchQuery.getOffset() != null) {
+            queryRequest.setFrom(searchQuery.getOffset());
+        }
 
-	private void handleSearchError(String errorMsg, Exception e){
-		logger.error(errorMsg, e);
-		e.printStackTrace(System.out);
-		throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorMsg, e.getMessage());
-	}
+        return new SearchResponse(sendToSearch(queryRequest), query);
+    }
+
+    private QueryResponse sendToSearch(QueryRequest queryRequest) {
+        QueryResponse queryResponse = null;
+        try {
+            logger.debug(String.format("Sending query to search service: %s", queryRequest.toString()));
+            queryResponse = searchService.search(queryRequest);
+            logger.debug(String.format("Received response from search service: %s", queryResponse.toString()));
+        } catch (SearchException e) {
+            handleSearchError("Failed to call search service", e);
+        }
+        return queryResponse;
+    }
+
+    private void handleSearchError(String errorMsg, Exception e) {
+        logger.error(errorMsg, e);
+        e.printStackTrace();
+        throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorMsg, e.getMessage());
+    }
 }

@@ -14,7 +14,7 @@
     "codeSpace": "EPSG"
   },
   "extent": {
-    "name": "Mayotte"
+    "description": "Mayotte"
   },
   "coordinateReferenceSystemType": "GeodeticCRS",
   "horizontalAxisUnitId": "UnitOfMeasure:dega:",

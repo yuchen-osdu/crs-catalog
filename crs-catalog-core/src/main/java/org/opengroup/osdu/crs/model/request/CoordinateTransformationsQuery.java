@@ -15,84 +15,69 @@
 package org.opengroup.osdu.crs.model.request;
 
 import lombok.Data;
-import org.opengroup.osdu.core.common.model.search.Point;
 import org.opengroup.osdu.core.common.model.search.SpatialFilter;
-import org.opengroup.osdu.crs.util.AppException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 @Data
 public class CoordinateTransformationsQuery implements ISearchQuery {
-	private boolean includeHorizontal;
-	private boolean includeVertical;
-	private String codeSpace;
-	private String name;
-	private String sourceCRS;
-	private String targetCRS;
-	private Double latitude;
-	private Double longitude;
-	private boolean includeDeprecated;
-	private Integer offset;
-	private Integer limit;
+    private String codeSpace;
+    private String name;
+    private String id;
+    private String code;
+    private String kind = "ExcludeVertical";
+    private String sourceCRS;
+    private String targetCRS;
+    private Double latitude;
+    private Double longitude;
+    private Boolean includeDeprecated = false;
+    private Integer offset;
+    private Integer limit = 10000;
+    private Boolean returnAllFields = false;
+    List<String> returnedFields = Arrays.asList(
+            "id", "data.Name", "data.Code", "data.InactiveIndicator", "data.Kind", "data.Accuracy",
+            "data.Method", "data.CodeSpace", "data.CoordinateTransformationType", "data.SourceCRS",
+            "data.TargetCRS", "data.PreferredUsage"
+    );
 
-	public String constructQuery(){
-		String query = "";
-		if(codeSpace != null) {
-			query = String.format("(data.CodeSpace: %s)", codeSpace);
-		}
-		query = buildQuerySearch(query, "data.Name", name);
-		query = buildQuerySearch(query, "data.SourceCRS.SourceCRSID", sourceCRS);
-		query = buildQuerySearch(query, "data.TargetCRS.TargetCRSID", targetCRS);
+    public String constructQuery() {
+        SearchQueryBuilder queryBuilder = new SearchQueryBuilder();
+        if (!includeDeprecated) {
+            queryBuilder.addQuery("NOT data.InactiveIndicator: true");
+        }
+        switch (kind.toLowerCase()) {
+            case "excludevertical":
+                queryBuilder.addNegativePhraseQuery("data.Kind", "VerticalTransformation");
+                break;
+            case "all":
+                break;
+            default:
+                queryBuilder.addPhraseQuery("data.Kind", kind);
+        }
+        queryBuilder.addPhraseQuery("data.CodeSpace", codeSpace);
+        queryBuilder.addPhraseQuery("data.Name", name);
+        queryBuilder.addPhraseQuery("data.ID", id);
+        queryBuilder.addPhraseQuery("data.Code", code);
+        queryBuilder.addMultiFieldPhraseQuery(sourceCRS, "data.SourceCRS.SourceCRSID", "data.TargetCRS.TargetCRSID");
+        queryBuilder.addMultiFieldPhraseQuery(targetCRS, "data.SourceCRS.SourceCRSID", "data.TargetCRS.TargetCRSID");
+        return queryBuilder.connectQuery("AND");
+    }
 
-		if(includeVertical && includeHorizontal){
-			throw AppException.createBadRequest("Cannot have both includeVertical and includeHorizontal set to true");
-		}
+    public SpatialFilter constructSpatialFilter() {
+        return SpatialQueryBuilder.buildSpatialQuery(latitude, longitude);
+    }
 
-		if((includeVertical || includeHorizontal) && codeSpace == null){
-			throw AppException.createBadRequest("Must provide CodeSpace when includeVertical or includeHorizontal is used");
-		}
-
-		if(includeVertical) {
-			query = appendQuery(query, String.format("(data.SourceCRS.SourceCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Vertical:%s::*:\")"
-					, codeSpace));
-		} else if (includeHorizontal) {
-			query = appendQuery(query, String.format("NOT (data.SourceCRS.SourceCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Vertical:%s::*:\")"
-					, codeSpace));
-		}
-
-		return query;
-	}
-
-	public SpatialFilter constructSpatialFilter(){
-		SpatialFilter spatialFilter = null;
-
-		if(latitude != null && longitude != null) {
-			spatialFilter = new SpatialFilter();
-			spatialFilter.setField("data.Wgs84Coordinates");
-			SpatialFilter.ByWithinPolygon byWithinPolygon = new SpatialFilter.ByWithinPolygon();
-			List<Point> points = Arrays.asList(new Point(latitude, longitude));
-			byWithinPolygon.setPoints(points);
-			spatialFilter.setByWithinPolygon(byWithinPolygon);
-		} else if((latitude != null && longitude == null) || (latitude == null && longitude != null)){
-			throw AppException.createBadRequest("Must supply both latitude and longitude when specifying either one");
-		}
-
-		return spatialFilter;
-	}
-
-	private String buildQuerySearch(String query, String recordBodyAttrName, Object attribute){
-		if (attribute != null) {
-			query = appendQuery(query, String.format("(%s: \"%s\")", recordBodyAttrName, attribute));
-		}
-		return query;
-	}
-
-	private String appendQuery(String query, String toAppend){
-		if (query.isEmpty()) {
-			return toAppend;
-		} else {
-			return String.format("%s AND %s", query, toAppend);
-		}
-	}
+    public List<String> getReturnedFields() {
+        if (!returnAllFields) {
+            return Arrays.asList(
+                    "id", "data.Name", "data.Code", "data.InactiveIndicator", "data.Kind", "data.Accuracy",
+                    "data.Method", "data.CodeSpace", "data.CoordinateTransformationType", "data.SourceCRS",
+                    "data.TargetCRS", "data.PreferredUsage"
+            );
+        }
+        return new ArrayList<>();
+    }
 }

@@ -1,4 +1,4 @@
 {
   "codeSpace": "EPSG",
-  "includeVertical": "true"
+  "kind": "VerticalTransformation"
 }
