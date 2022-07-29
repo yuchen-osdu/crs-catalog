@@ -31,6 +31,7 @@
         <osdu.oscorecommon.version>0.16.0-rc2</osdu.oscorecommon.version>
         <jackson-databind.version>2.13.2.2</jackson-databind.version>
         <jackson.version>2.13.2</jackson.version>
+        <spring-webmvc.version>5.3.22</spring-webmvc.version>
     </properties>
 
     <prerequisites>
@@ -90,6 +91,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring-webmvc.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.jdo</groupId>
