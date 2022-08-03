@@ -251,6 +251,7 @@ class TestCrsCatalog(unittest.TestCase):
             test_data = test_data_file.read()
             response = self.client.make_request('POST', ct_endpoint_path, test_data)
             response_body = json.loads(response.content)
+            self.check_search_response_count(response, 1)
             assert "InformationSource" in response_body["searchResults"]["results"][0]['data']
 
     def test_search_coordinate_transformations_find_all(self):
