@@ -1,0 +1,4 @@
+{{- template "common.deployment" (list . "os-crs-catalog.deployment") -}}
+{{- define "os-crs-catalog.deployment" -}}
+## Define overrides for the service deployment resource here
+{{- end -}}

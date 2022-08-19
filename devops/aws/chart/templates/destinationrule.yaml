@@ -1,0 +1,4 @@
+{{- template "common.destinationrule" (list . "os-crs-catalog.destinationrule") -}}
+{{- define "os-crs-catalog.destinationrule" -}}
+## Define overrides for the service destination rule resource here
+{{- end -}}
