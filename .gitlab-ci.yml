@@ -16,6 +16,7 @@ variables:
   AZURE_BUILD_SUBDIR: provider/crs-catalog-azure/crs-catalog-aks
   AZURE_TEST_SUBDIR: testing/catalog_test_azure
   AZURE_TEST_TYPE: python
+  AZURE_SWAGGER_PATH: api/crs/catalog/swagger-ui/index.html#
   SHARE_NAME: crs
 
 include:
