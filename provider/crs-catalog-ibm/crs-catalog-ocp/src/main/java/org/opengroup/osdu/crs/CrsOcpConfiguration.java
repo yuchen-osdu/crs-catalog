@@ -46,13 +46,4 @@ public class CrsOcpConfiguration {
     	
     }
 
-    @Bean
-    public JaxRsDpsLog jaxRsDpsLog() {
-        return new JaxRsDpsLog(new DefaultLogger(), new DpsHeaders());
-    }
-
-//    @Bean
-//    public DpsHeaders getDpsHeaders() {
-//        return new DpsHeaders();
-//    }
 }
