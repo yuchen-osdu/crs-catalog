@@ -12,7 +12,7 @@
         <os-core-common.version>0.17.0</os-core-common.version>
         <snakeyaml.version>1.26</snakeyaml.version>
         <nimbus-jose-jwt.version>7.9</nimbus-jose-jwt.version>
-        <springfox.version>3.0.0</springfox.version>
+        <openapi.version>1.6.9</openapi.version>
         <lucene.version>8.0.0</lucene.version>
         <log4j.version>2.17.1</log4j.version>
     </properties>
@@ -98,25 +98,15 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    
-        <!--Swagger-->
+
         <dependencies>
-    		<dependency>
-      			<groupId>io.springfox</groupId>
-      			<artifactId>springfox-boot-starter</artifactId>
-      			<version>${springfox.version}</version>
-    		</dependency>
             <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
-                <version>${springfox.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-ui</artifactId>
-                <version>${springfox.version}</version>
-            </dependency>
-    	</dependencies>
+    		    <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${openapi.version}</version>
+    	    </dependency>
+        </dependencies>
+
 
     <build>
         <pluginManagement>
