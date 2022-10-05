@@ -28,7 +28,7 @@
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <osdu.oscorecommon.version>0.17.0-rc2</osdu.oscorecommon.version>
+        <osdu.oscorecommon.version>0.17.0</osdu.oscorecommon.version>
         <jackson-databind.version>2.13.2.2</jackson-databind.version>
         <jackson.version>2.13.2</jackson.version>
         <spring-webmvc.version>5.3.22</spring-webmvc.version>
@@ -141,7 +141,6 @@
             <artifactId>lucene-queryparser</artifactId>
             <version>${lucene.version}</version>
         </dependency>
-       
 
         <!-- Test Dependencies -->
         <dependency>
