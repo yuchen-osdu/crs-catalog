@@ -12,6 +12,8 @@ variables:
   IBM_BUILD_SUBDIR: provider/crs-catalog-ibm/crs-catalog-ocp
   IBM_INT_TEST_PY_SUBDIR: testing/catalog_test_ibm
   IBM_INT_TEST_PY_FILE: run_test.py
+  IBM_HELM_CONFIG_PATH: devops/ibm/ibm-crs-catalog-config
+  IBM_HELM_DEPLOY_PATH: devops/ibm/ibm-crs-catalog-deploy
 
   #azure
   AZURE_SERVICE: crs_catalog
@@ -45,6 +47,9 @@ include:
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/ibm-python-test.yml"
+
+  - project: "osdu/platform/ci-cd-pipelines"
+    file: "cloud-providers/ibm.yml"
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/azure.yml"
