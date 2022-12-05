@@ -55,3 +55,9 @@ include:
     file: "cloud-providers/aws-python.yml"
 
   - local: "devops/gcp/pipeline/override-stages.yml"
+
+# It is a temporary change as there are no tests written for this service.
+# Therefore the job has been disabled
+azure_code_coverage:
+  variables:
+    AZURE_SKIP_COVERAGE: 'true'
