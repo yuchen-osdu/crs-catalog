@@ -1,4 +1,8 @@
 data:
+  # configmaps
+  logLevel: "ERROR"
+  entitlementsHost: "http://entitlements"
+  # deployments
   requestsCpu: "0.1"
   requestsMemory: "256M"
   limitsCpu: "1"
@@ -8,7 +12,6 @@ data:
   imagePullPolicy: "IfNotPresent"
 
 conf:
-  configmap: "crs-catalog-config"
   appName: "crs-catalog"
   onPremEnabled: false
   domain: ""

@@ -1,6 +1,0 @@
-data:
-  logLevel: "ERROR"
-  entitlementsHost: "http://entitlements"
-conf:
-  configmap: "crs-catalog-config"
-  appName: "crs-catalog"
