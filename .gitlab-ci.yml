@@ -26,33 +26,43 @@ variables:
 include:
   - project: "osdu/platform/ci-cd-pipelines"
     file: "standard-setup.yml"
+    ref: release/0.18
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "build/maven.yml"
+    ref: release/0.18
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "scanners/fossa-maven.yml"
+    ref: release/0.18
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "scanners/gitlab-ultimate.yml"
+    ref: release/0.18
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/osdu-gcp-global.yml"
+    ref: release/0.18
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/aws-global.yml"
+    ref: release/0.18
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/aws-maven.yml"
+    ref: release/0.18
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/ibm-python-test.yml"
+    ref: release/0.18
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/azure.yml"
+    ref: release/0.18
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/aws-python.yml"
+    ref: release/0.18
 
   - local: "devops/gcp/pipeline/override-stages.yml"
 
