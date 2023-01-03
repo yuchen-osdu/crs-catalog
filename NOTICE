@@ -25,6 +25,10 @@ The following software have components provided under the terms of this license:
 - Doxia :: FML Module (from https://repo1.maven.org/maven2/org/apache/maven/doxia/doxia-module-fml)
 - Doxia :: Sink API (from https://repo1.maven.org/maven2/org/apache/maven/doxia/doxia-sink-api)
 - Doxia :: XDoc Module (from https://repo1.maven.org/maven2/org/apache/maven/doxia/doxia-module-xdoc)
+- Lucene Common Analyzers (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common)
+- Lucene Queries (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queries)
+- Lucene QueryParsers (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queryparser)
+- Lucene Sandbox (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-sandbox)
 - Maven Core (from https://repo1.maven.org/maven2/org/apache/maven/maven-core)
 - Maven Error Diagnostics (from https://repo1.maven.org/maven2/org/apache/maven/maven-error-diagnostics)
 - Maven Monitor (from https://repo1.maven.org/maven2/org/apache/maven/maven-monitor)
@@ -62,8 +66,8 @@ The following software have components provided under the terms of this license:
 - Apache Commons Validator (from http://commons.apache.org/proper/commons-validator/, http://jakarta.apache.org/commons/${pom.artifactId.substring(8)}/, https://repo1.maven.org/maven2/commons-validator/commons-validator)
 - Apache Geronimo JMS Spec 2.0 (from http://geronimo.apache.org/maven/${siteId}/${version})
 - Apache HttpClient (from http://hc.apache.org/httpcomponents-client, http://hc.apache.org/httpcomponents-client-ga)
-- Apache HttpClient Cache (from http://hc.apache.org/httpcomponents-client)
-- Apache HttpCore (from http://hc.apache.org/httpcomponents-core-ga, http://hc.apache.org/httpcomponents-core-ga/)
+- Apache HttpClient Cache (from http://hc.apache.org/httpcomponents-client, http://hc.apache.org/httpcomponents-client-ga)
+- Apache HttpCore (from http://hc.apache.org/httpcomponents-core-ga, http://hc.apache.org/httpcomponents-core-ga/, http://hc.apache.org/httpcomponents-core/)
 - Apache Log4j API (from https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api)
 - Apache Log4j Core (from https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core)
 - Apache Log4j JUL Adapter (from https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-jul)
@@ -269,7 +273,6 @@ The following software have components provided under the terms of this license:
 - Spring Boot Json Starter (from https://projects.spring.io/spring-boot/#/spring-boot-parent/spring-boot-starters/spring-boot-starter-json, https://spring.io/projects/spring-boot)
 - Spring Boot Log4j 2 Starter (from http://projects.spring.io/spring-boot/, https://projects.spring.io/spring-boot/#/spring-boot-parent/spring-boot-starters/spring-boot-starter-log4j2, https://spring.io/projects/spring-boot)
 - Spring Boot Logging Starter (from http://projects.spring.io/spring-boot/, https://projects.spring.io/spring-boot/#/spring-boot-parent/spring-boot-starters/spring-boot-starter-logging, https://spring.io/projects/spring-boot)
-- Spring Boot Reactor Netty Starter (from https://projects.spring.io/spring-boot/#/spring-boot-parent/spring-boot-starters/spring-boot-starter-reactor-netty, https://spring.io/projects/spring-boot)
 - Spring Boot Security Starter (from http://projects.spring.io/spring-boot/, https://spring.io/projects/spring-boot)
 - Spring Boot Starter (from http://projects.spring.io/spring-boot/, https://spring.io/projects/spring-boot)
 - Spring Boot Test (from http://projects.spring.io/spring-boot/, https://spring.io/projects/spring-boot)
@@ -277,7 +280,6 @@ The following software have components provided under the terms of this license:
 - Spring Boot Test Starter (from http://projects.spring.io/spring-boot/, https://spring.io/projects/spring-boot)
 - Spring Boot Validation Starter (from http://projects.spring.io/spring-boot/, https://projects.spring.io/spring-boot/, https://spring.io/projects/spring-boot)
 - Spring Boot Web Starter (from http://projects.spring.io/spring-boot/, https://spring.io/projects/spring-boot)
-- Spring Boot WebFlux Starter (from https://projects.spring.io/spring-boot/#/spring-boot-parent/spring-boot-starters/spring-boot-starter-webflux, https://spring.io/projects/spring-boot)
 - Spring Commons Logging Bridge (from https://github.com/spring-projects/spring-framework)
 - Spring Context (from http://www.springframework.org, https://github.com/spring-projects/spring-framework, https://repo1.maven.org/maven2/org/springframework/spring-context)
 - Spring Core (from http://www.springframework.org, https://github.com/spring-projects/spring-framework, https://repo1.maven.org/maven2/org/springframework/spring-core)
@@ -292,7 +294,6 @@ The following software have components provided under the terms of this license:
 - Spring Transaction (from https://github.com/SpringSource/spring-framework, https://github.com/spring-projects/spring-framework)
 - Spring Web (from http://www.springframework.org, https://github.com/spring-projects/spring-framework, https://repo1.maven.org/maven2/org/springframework/spring-web)
 - Spring Web MVC (from https://github.com/spring-projects/spring-framework, https://repo1.maven.org/maven2/org/springframework/spring-webmvc)
-- Spring WebFlux (from https://github.com/spring-projects/spring-framework)
 - Swagger UI (from http://webjars.org)
 - Vavr (from http://vavr.io, https://www.vavr.io)
 - Vavr Match (from http://vavr.io)
@@ -365,7 +366,7 @@ The following software have components provided under the terms of this license:
 - Jackson module: Afterburner (from http://wiki.fasterxml.com/JacksonHome, https://github.com/FasterXML/jackson-modules-base)
 - Jakarta Activation API (from https://github.com/eclipse-ee4j/jaf, https://repo1.maven.org/maven2/jakarta/activation/jakarta.activation-api)
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
-- Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket)
+- Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket, https://repo1.maven.org/maven2/org/jboss/spec/javax/websocket/jboss-websocket-api_1.1_spec)
 - Jakarta XML Binding API (from https://repo1.maven.org/maven2/jakarta/xml/bind/jakarta.xml.bind-api, https://repo1.maven.org/maven2/org/jboss/spec/javax/xml/bind/jboss-jaxb-api_2.3_spec)
 - Lucene Common Analyzers (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common)
 - Lucene Core (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
@@ -487,7 +488,7 @@ The following software have components provided under the terms of this license:
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
 - Jakarta Bean Validation API (from https://beanvalidation.org)
 - Jakarta Servlet (from https://projects.eclipse.org/projects/ee4j.servlet)
-- Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket)
+- Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket, https://repo1.maven.org/maven2/org/jboss/spec/javax/websocket/jboss-websocket-api_1.1_spec)
 - Jakarta XML Binding API (from https://repo1.maven.org/maven2/jakarta/xml/bind/jakarta.xml.bind-api, https://repo1.maven.org/maven2/org/jboss/spec/javax/xml/bind/jboss-jaxb-api_2.3_spec)
 - Jetty :: Continuation (from http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-continuation)
 - Jetty :: Plus (from http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-plus)
@@ -537,7 +538,7 @@ The following software have components provided under the terms of this license:
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
 - Jakarta Bean Validation API (from https://beanvalidation.org)
 - Jakarta Servlet (from https://projects.eclipse.org/projects/ee4j.servlet)
-- Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket)
+- Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket, https://repo1.maven.org/maven2/org/jboss/spec/javax/websocket/jboss-websocket-api_1.1_spec)
 - Jakarta XML Binding API (from https://repo1.maven.org/maven2/jakarta/xml/bind/jakarta.xml.bind-api, https://repo1.maven.org/maven2/org/jboss/spec/javax/xml/bind/jboss-jaxb-api_2.3_spec)
 - Jetty :: Continuation (from http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-continuation)
 - Jetty :: Plus (from http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-plus)
@@ -575,7 +576,7 @@ The following software have components provided under the terms of this license:
 - Cobertura (from http://cobertura.sourceforge.net)
 - Expression Language 3.0 (from http://el-spec.java.net, http://uel.java.net, https://projects.eclipse.org/projects/ee4j.el)
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
-- Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket)
+- Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket, https://repo1.maven.org/maven2/org/jboss/spec/javax/websocket/jboss-websocket-api_1.1_spec)
 - Java Architecture for XML Binding (from http://jaxb.java.net/, https://repo1.maven.org/maven2/javax/xml/bind/jaxb-api)
 - JavaBeans Activation Framework (from https://repo1.maven.org/maven2/com/sun/activation/javax.activation)
 
@@ -597,7 +598,7 @@ The following software have components provided under the terms of this license:
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
 - Jakarta Bean Validation API (from https://beanvalidation.org)
 - Jakarta Servlet (from https://projects.eclipse.org/projects/ee4j.servlet)
-- Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket)
+- Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket, https://repo1.maven.org/maven2/org/jboss/spec/javax/websocket/jboss-websocket-api_1.1_spec)
 - Jakarta XML Binding API (from https://repo1.maven.org/maven2/jakarta/xml/bind/jakarta.xml.bind-api, https://repo1.maven.org/maven2/org/jboss/spec/javax/xml/bind/jboss-jaxb-api_2.3_spec)
 - Java Architecture for XML Binding (from http://jaxb.java.net/, https://repo1.maven.org/maven2/javax/xml/bind/jaxb-api)
 - JavaBeans Activation Framework (from https://repo1.maven.org/maven2/com/sun/activation/javax.activation)
@@ -641,6 +642,16 @@ The following software have components provided under the terms of this license:
 - Cobertura (from http://cobertura.sourceforge.net)
 
 ========================================================================
+ICU
+========================================================================
+The following software have components provided under the terms of this license:
+
+- Lucene Common Analyzers (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common)
+- Lucene Queries (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queries)
+- Lucene QueryParsers (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queryparser)
+- Lucene Sandbox (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-sandbox)
+
+========================================================================
 IPA
 ========================================================================
 The following software have components provided under the terms of this license:
@@ -654,7 +665,6 @@ ISC
 The following software have components provided under the terms of this license:
 
 - Java Native Access Platform (from https://github.com/java-native-access/jna)
-- Lucene Sandbox (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-sandbox)
 - Spring Security - Core (from http://spring.io/spring-security, https://repo1.maven.org/maven2/org/springframework/security/spring-security-core, https://spring.io/projects/spring-security, https://spring.io/spring-security)
 - spring-security-crypto (from http://spring.io/spring-security, https://spring.io/projects/spring-security, https://spring.io/spring-security)
 
@@ -709,7 +719,7 @@ MIT
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Apache HttpClient Cache (from http://hc.apache.org/httpcomponents-client)
+- Apache HttpClient Cache (from http://hc.apache.org/httpcomponents-client, http://hc.apache.org/httpcomponents-client-ga)
 - Apache Log4j API (from https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api)
 - Apache Log4j Core (from https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core)
 - Apache Log4j SLF4J Binding (from https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-slf4j-impl)
@@ -825,16 +835,6 @@ WTFPL
 The following software have components provided under the terms of this license:
 
 - Reflections (from http://code.google.com/p/reflections/, http://github.com/ronmamo/reflections)
-
-========================================================================
-X11
-========================================================================
-The following software have components provided under the terms of this license:
-
-- Lucene Common Analyzers (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common)
-- Lucene Queries (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queries)
-- Lucene QueryParsers (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queryparser)
-- Lucene Sandbox (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-sandbox)
 
 ========================================================================
 cc-pd
