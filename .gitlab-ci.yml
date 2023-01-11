@@ -37,7 +37,7 @@ include:
     file: "scanners/gitlab-ultimate.yml"
 
   - project: "osdu/platform/ci-cd-pipelines"
-    file: "cloud-providers/osdu-gcp-global.yml"
+    file: "cloud-providers/gc-global.yml"
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/aws-global.yml"
@@ -54,10 +54,10 @@ include:
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/aws-python.yml"
 
-  - local: "devops/gcp/pipeline/override-stages.yml"
+  - local: "devops/gc/pipeline/override-stages.yml"
 
 # It is a temporary change as there are no tests written for this service.
 # Therefore the job has been disabled
 azure_code_coverage:
   variables:
-    AZURE_SKIP_COVERAGE: 'true'
+    AZURE_SKIP_COVERAGE: "true"
