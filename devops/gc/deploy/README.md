@@ -58,7 +58,7 @@ Before installing deploy Helm chart you need to set variables in **values.yaml**
 Run this command from within this directory:
 
 ```console
-helm install gcp-crs-catalog-deploy .
+helm install gc-crs-catalog-deploy .
 ```
 
 ## Uninstalling the Chart
@@ -66,7 +66,7 @@ helm install gcp-crs-catalog-deploy .
 To uninstall the helm release:
 
 ```console
-helm uninstall gcp-crs-catalog-deploy
+helm uninstall gc-crs-catalog-deploy
 ```
 
 [Move-to-Top](#deploy-helm-chart)

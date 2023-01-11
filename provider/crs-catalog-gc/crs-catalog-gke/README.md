@@ -115,7 +115,7 @@ mvn clean install -DskipTests
 After configuring your environment as specified above, you can follow these steps to build and run the application. These steps should be invoked from the *repository root.*
 
 ```bash
-cd provider/crs-catalog-gcp/crs-catalog-gke/ && mvn spring-boot:run
+cd provider/crs-catalog-gc/crs-catalog-gke/ && mvn spring-boot:run
 ```
 
 ## Testing
@@ -130,7 +130,7 @@ $ (cd crs-catalog-core/ && mvn clean install)
 After the service has started it should be accessible via a web browser by visiting [http://localhost:8080/api/crs/catalog/swagger-ui.html](http://localhost:8080/api/crs/catalog/swagger-ui.html). If the request does not fail, you can then run the integration tests.
 
 ### Running E2E Tests 
-This section describes how to run cloud OSDU E2E tests (testing/catalog_test_gcp/jwt_client.py).
+This section describes how to run cloud OSDU E2E tests (testing/catalog_test_gc/jwt_client.py).
 
 | name | value | description | sensitive? | source |
 | ---  | ---   | ---         | ---        | ---    |
@@ -216,5 +216,3 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-
-
