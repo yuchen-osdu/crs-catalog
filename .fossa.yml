@@ -8,27 +8,27 @@ cli:
   project: CRS Catalog
 analyze:
   modules:
-  - name: crs-catalog-service
-    type: mvn
-    target: pom.xml
-    path: .
-  - name: crs-catalog-core
-    type: mvn
-    target: crs-catalog-core/pom.xml
-    path: .
-  - name: crs-catalog-aks
-    type: mvn
-    target: provider/crs-catalog-azure/crs-catalog-aks/pom.xml
-    path: .
-  - name: crs-catalog-gke
-    type: mvn
-    target: provider/crs-catalog-gcp/crs-catalog-gke/pom.xml
-    path: .
-  - name: crs-catalog-ocp
-    type: mvn
-    target: provider/crs-catalog-ibm/crs-catalog-ocp/pom.xml
-    path: .
-  - name: crs-catalog-aws
-    type: mvn
-    target: provider/crs-catalog-aws/pom.xml
-    path: .
+    - name: crs-catalog-service
+      type: mvn
+      target: pom.xml
+      path: .
+    - name: crs-catalog-core
+      type: mvn
+      target: crs-catalog-core/pom.xml
+      path: .
+    - name: crs-catalog-aks
+      type: mvn
+      target: provider/crs-catalog-azure/crs-catalog-aks/pom.xml
+      path: .
+    - name: crs-catalog-gke
+      type: mvn
+      target: provider/crs-catalog-gc/crs-catalog-gke/pom.xml
+      path: .
+    - name: crs-catalog-ocp
+      type: mvn
+      target: provider/crs-catalog-ibm/crs-catalog-ocp/pom.xml
+      path: .
+    - name: crs-catalog-aws
+      type: mvn
+      target: provider/crs-catalog-aws/pom.xml
+      path: .
