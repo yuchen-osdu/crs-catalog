@@ -107,7 +107,6 @@ requires the following environment variables:
 | client-id | Required, Azure AAD client id |
 | CRS_CATALOG_FILENAME | Required, e.g. `{path_to_the_catalog}/crs-catalog-service/data/crs_catalog_v2.json` |
 
-## GCP
+## Google Cloud
 
-Instructions for running the Google Cloud Platform implementation locally can be found [here](./provider/crs-catalog-gcp/crs-catalog-gke/README.md).
-
+Instructions for running the Google Cloud Platform implementation locally can be found [here](./provider/crs-catalog-gc/crs-catalog-gke/README.md).
