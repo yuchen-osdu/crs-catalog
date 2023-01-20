@@ -1,5 +1,6 @@
 package org.opengroup.osdu.crs.middleware;
 
+import org.eclipse.jetty.http.BadMessageException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -33,6 +34,19 @@ public class GlobalExceptionMapperTests {
         assertEquals(409, body.getCode());
         assertEquals("any message", body.getMessage());
         assertEquals("any reason", body.getReason());
+        Mockito.verify(log).error(Mockito.any(), Mockito.any(AppException.class));
+    }
+
+    @Test
+    public void should_useBadMassageValues_When_AppExceptionIsHandledByGlobalExceptionMapper() {
+        BadMessageException exception = new BadMessageException(400, "bad request reason");
+
+        ResponseEntity<AppError> response = sut.handleBadMessageException(exception);
+        AppError body = response.getBody();
+        assertNotNull(body);
+        assertEquals(400, body.getCode());
+        assertEquals("Please check the input type and format and try again.", body.getMessage());
+        assertEquals("Bad input type or format.", body.getReason());
         Mockito.verify(log).error(Mockito.any(), Mockito.any(AppException.class));
     }
 
