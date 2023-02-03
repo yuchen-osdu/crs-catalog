@@ -30,28 +30,37 @@ Before installing deploy Helm chart you need to set variables in **values.yaml**
 
 | Name | Description | Type | Default |Required |
 |------|-------------|------|---------|---------|
-**logLevel** | logging level | string | `ERROR` | yes
-**entitlementsHost** | Entitlements service host | string | `http://entitlements` | yes
+**data.logLevel** | logging level | string | `ERROR` | yes
+**data.entitlementsHost** | Entitlements service host | string | `http://entitlements` | yes
 
 ### Deployment variables
 
 | Name | Description | Type | Default |Required |
 |------|-------------|------|---------|---------|
-**image** | path to the image in a registry | string | - | yes
-**requestsCpu** | amount of requests CPU | string | `0.1` | yes
-**requestsMemory** | amount of requests memory| string | `256M` | yes
-**limitsCpu** | CPU limit | string | `1` | yes
-**limitsMemory** | memory limit | string | `1G` | yes
-**serviceAccountName** | name of kubernetes service account | string | `crs-catalog` | yes
-**imagePullPolicy** | when to pull the image | string | `IfNotPresent` | yes
+**data.image** | path to the image in a registry | string | - | yes
+**data.requestsCpu** | amount of requests CPU | string | `25m` | yes
+**data.requestsMemory** | amount of requests memory| string | `352Mi` | yes
+**data.limitsCpu** | CPU limit | string | `1` | yes
+**data.limitsMemory** | memory limit | string | `1G` | yes
+**data.serviceAccountName** | name of kubernetes service account | string | `crs-catalog` | yes
+**data.imagePullPolicy** | when to pull the image | string | `IfNotPresent` | yes
 
 ### Configuration variables
 
 | Name | Description | Type | Default |Required |
 |------|-------------|------|---------|---------|
-**domain** | your domain, ex `example.com` | string | - | yes
-**appName** | Service name | string | `crs-catalog` | yes
-**onPremEnabled** | whether on-prem is enabled | boolean | false | yes
+**conf.domain** | your domain, ex `example.com` | string | - | yes
+**conf.appName** | Service name | string | `crs-catalog` | yes
+**conf.onPremEnabled** | whether on-prem is enabled | boolean | false | yes
+
+### ISTIO variables
+
+| Name | Description | Type | Default |Required |
+|------|-------------|------|---------|---------|
+**istio.proxyCPU** | CPU request for Envoy sidecars | string | 10m | yes
+**istio.proxyCPULimit** | CPU limit for Envoy sidecars | string | 200m | yes
+**istio.proxyMemory** | memory request for Envoy sidecars | string | 32Mi | yes
+**istio.proxyMemoryLimit** | memory limit for Envoy sidecars | string | 256Mi | yes
 
 ### Install the helm chart
 

@@ -3,8 +3,8 @@ data:
   logLevel: "ERROR"
   entitlementsHost: "http://entitlements"
   # deployments
-  requestsCpu: "0.1"
-  requestsMemory: "256M"
+  requestsCpu: "25m"
+  requestsMemory: "352Mi"
   limitsCpu: "1"
   limitsMemory: "1G"
   serviceAccountName: ""
@@ -17,7 +17,7 @@ conf:
   domain: ""
 
 istio:
-  proxyCPU: "50m"
-  proxyCPULimit: "500m"
-  proxyMemory: "64Mi"
-  proxyMemoryLimit: "512Mi"
+  proxyCPU: "10m"
+  proxyCPULimit: "200m"
+  proxyMemory: "32Mi"
+  proxyMemoryLimit: "256Mi"
