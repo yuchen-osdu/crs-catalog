@@ -35,8 +35,7 @@ environmentVariables:
     value: "/data/crs_catalog_v2.json"
   - name: SEARCH_API
     value: "http://os-search:8080/api/search/v2"
-podAnnotations: 
-  seccomp.security.alpha.kubernetes.io/pod: "runtime/default"
+
 
 # Resource Config
 replicaCount: 1
@@ -74,9 +73,13 @@ securityContext:
   capabilities:
     drop:
     - ALL
+podSecurityContext: 
+  fsGroup: 1337
+  seccompProfile:
+    type: RuntimeDefault
 
 allowedPrincipals:
-  - cluster.local/ns/istio-system/sa/istio-ingressgateway-service-account
+  - cluster.local/ns/istio-system/sa/istio-ingressgateway
   - cluster.local/ns/{{ .Release.Namespace }}/sa/os-storage
   - cluster.local/ns/aws-binary-dms/sa/binary-dms
   - cluster.local/ns/osdu-airflow/sa/airflow-dag-upload
