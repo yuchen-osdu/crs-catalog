@@ -14,7 +14,7 @@
 
 package org.opengroup.osdu.crs.middleware;
 
-import io.swagger.jaxrs.config.JaxrsScanner;
+import org.eclipse.jetty.http.BadMessageException;
 import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.opengroup.osdu.crs.util.AppError;
 import org.opengroup.osdu.crs.util.AppException;
@@ -36,6 +36,13 @@ public class GlobalExceptionMapper extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AppException.class)
     protected ResponseEntity<AppError> handleAppException(AppException e) {
         return this.getErrorResponse(e);
+    }
+
+    @ExceptionHandler(BadMessageException.class)
+    protected ResponseEntity<AppError> handleBadMessageException(BadMessageException e) {
+        /*When invalid input types are passed(recordId or dataId = "%"), it causes BadMessageException.
+         Handled it with generic error with code 400 (Bad Request).*/
+        return this.getErrorResponse(new AppException(BAD_REQUEST.value(), "Bad input type or format.", "Please check the input type and format and try again."));
     }
 
     @ExceptionHandler(Exception.class)
