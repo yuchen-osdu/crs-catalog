@@ -41,6 +41,7 @@ export AWS_COGNITO_AUTH_PARAMS_USER_NO_ACCESS=$USER_NO_ACCESS
 export VIRTUAL_SERVICE_HOST_NAME=$CRS_CATALOG_HOST
 export MY_TENANT=opendes
 export ACL_DOMAIN=opendes.example.com
+export SCHEMA_AUTHORITY=opendes
 
 #### RUN INTEGRATION TEST #########################################################################
 

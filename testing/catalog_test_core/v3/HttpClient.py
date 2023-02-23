@@ -53,7 +53,7 @@ class HttpClient(object):
         if (response.status_code == 401 or response.status_code == 403) and self.unauth_retries < 1:
             self.bearer_token = self.jwt_client.get_id_token()
             self.unauth_retries += 1
-            self.make_request(method, data)
+            self.make_request(method, path, data)
 
         self.unauth_retries = 0
 
