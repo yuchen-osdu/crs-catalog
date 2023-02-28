@@ -38,8 +38,8 @@ Before installing deploy Helm chart you need to set variables in **values.yaml**
 | Name | Description | Type | Default |Required |
 |------|-------------|------|---------|---------|
 **data.image** | path to the image in a registry | string | - | yes
-**data.requestsCpu** | amount of requests CPU | string | `25m` | yes
-**data.requestsMemory** | amount of requests memory| string | `352Mi` | yes
+**data.requestsCpu** | amount of requests CPU | string | `10m` | yes
+**data.requestsMemory** | amount of requests memory| string | `350Mi` | yes
 **data.limitsCpu** | CPU limit | string | `1` | yes
 **data.limitsMemory** | memory limit | string | `1G` | yes
 **data.serviceAccountName** | name of kubernetes service account | string | `crs-catalog` | yes
@@ -59,7 +59,7 @@ Before installing deploy Helm chart you need to set variables in **values.yaml**
 |------|-------------|------|---------|---------|
 **istio.proxyCPU** | CPU request for Envoy sidecars | string | 10m | yes
 **istio.proxyCPULimit** | CPU limit for Envoy sidecars | string | 200m | yes
-**istio.proxyMemory** | memory request for Envoy sidecars | string | 32Mi | yes
+**istio.proxyMemory** | memory request for Envoy sidecars | string | 100Mi | yes
 **istio.proxyMemoryLimit** | memory limit for Envoy sidecars | string | 256Mi | yes
 
 ### Install the helm chart

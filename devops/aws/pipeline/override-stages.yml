@@ -1,0 +1,5 @@
+aws-test-python:
+  variables:
+    MY_TENANT: "osdu"
+    ACL_DOMAIN: "osdu.example.com"
+    SCHEMA_AUTHORITY: "osdu"
