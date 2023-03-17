@@ -1,3 +1,6 @@
+global:
+  domain: ""
+
 data:
   # configmaps
   logLevel: "ERROR"
@@ -14,7 +17,6 @@ data:
 conf:
   appName: "crs-catalog"
   onPremEnabled: false
-  domain: ""
 
 istio:
   proxyCPU: "10m"
