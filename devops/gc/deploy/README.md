@@ -31,6 +31,7 @@ Before installing deploy Helm chart you need to set variables in **values.yaml**
 | Name | Description | Type | Default |Required |
 |------|-------------|------|---------|---------|
 **global.domain** | your domain for the external endpoint, ex `example.com` | string | - | yes
+**global.onPremEnabled** | whether on-prem is enabled | boolean | false | yes
 
 ### Configmap variables
 
@@ -56,7 +57,6 @@ Before installing deploy Helm chart you need to set variables in **values.yaml**
 | Name | Description | Type | Default |Required |
 |------|-------------|------|---------|---------|
 **conf.appName** | Service name | string | `crs-catalog` | yes
-**conf.onPremEnabled** | whether on-prem is enabled | boolean | false | yes
 
 ### ISTIO variables
 
