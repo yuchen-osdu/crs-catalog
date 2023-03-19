@@ -1,5 +1,6 @@
 global:
   domain: ""
+  onPremEnabled: false
 
 data:
   # configmaps
@@ -16,7 +17,6 @@ data:
 
 conf:
   appName: "crs-catalog"
-  onPremEnabled: false
 
 istio:
   proxyCPU: "10m"
