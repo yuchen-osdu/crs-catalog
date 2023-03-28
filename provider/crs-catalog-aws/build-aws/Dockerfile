@@ -19,11 +19,9 @@ ARG JAR_FILE=provider/crs-catalog-aws/target/crs-catalog-aws-*.jar
 WORKDIR /
 
 #Default to using self signed generated TLS cert
-ENV USE_SELF_SIGNED_SSL_CERT true
 
 COPY ${JAR_FILE} app.jar
 COPY /data/crs_catalog_v2.json /data/crs_catalog_v2.json
-COPY /provider/crs-catalog-aws/build-aws/ssl.sh /ssl.sh
 COPY /provider/crs-catalog-aws/build-aws/entrypoint.sh /entrypoint.sh
 
 EXPOSE 8080

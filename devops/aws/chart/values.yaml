@@ -35,6 +35,8 @@ environmentVariables:
     value: "/data/crs_catalog_v2.json"
   - name: SEARCH_API
     value: "http://os-search:8080/api/search/v2"
+  - name: TMP_VOLUME_PATH
+    value: "/tmp"
 
 
 # Resource Config
@@ -68,7 +70,7 @@ cors:
 securityContext: 
   runAsUser: 10001
   runAsNonRoot: true
-  readOnlyRootFilesystem: false
+  readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   capabilities:
     drop:
