@@ -10,7 +10,7 @@
         <powermock.version>2.0.6</powermock.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <os-core-common.version>0.19.0</os-core-common.version>
-        <snakeyaml.version>1.33</snakeyaml.version>
+        <snakeyaml.version>2.0</snakeyaml.version>
         <nimbus-jose-jwt.version>7.9</nimbus-jose-jwt.version>
         <openapi.version>1.6.9</openapi.version>
         <lucene.version>8.10.0</lucene.version>
