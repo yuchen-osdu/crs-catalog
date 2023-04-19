@@ -1,6 +1,6 @@
 # CRS Catalog helper service tutorial
 
-*The OSDU has two CRS helper services: "CRS Convert" and "CRS
+*The OSDU has two CRS helper services: "CRS Conversion" and "CRS
 Catalog". This tutorial provides examples and background to help
 application developers accomplish typical tasks.*
 
@@ -9,12 +9,13 @@ application developers accomplish typical tasks.*
 | **Version** | **Reason for change**             | **Author** | **Date**   |
 | ----------- | --------------------------------- | ---------- | --------   |
 | 1.0         | Initial version for R3.M13 API v3 | Geomatics Integration  | 2022-09-30 |
+| 1.1         | Updated responses                 | Geomatics Integration  | 2023-04-19 |
 |             |                                   |            |            |
 
 **Table of Contents**
 
 -   [1. Introduction](#1-introduction)
-    -   [1.1 Fundamental Concepts](#11-fundamental-concepts)
+    -   [1.1 CRS concepts](#11-crs-concepts)
 -   [2. CRS Catalog overview](#2-crs-catalog-overview)
 -   [3. Fetch the details of a single CRS or CT](#3-fetch-the-details-of-a-single-crs-or-ct)
     -   [3.1 Context](#31-context)
@@ -54,13 +55,16 @@ application developers accomplish typical tasks.*
 
 # 1. Introduction
 
-This "How To" tutorial is intended as quick start for developers by
-describing common tasks with examples how to accomplish them (and
-background not easily described in swagger documentation or postman collections).
+This "How To" tutorial serves as a quick start for developers by
+giving examples of how to accomplish common tasks dealing with Coordinate Reference Systems (CRS)
+and Coordinate Transformations (CT), as well as to provide some
+background not easily described in swagger documentation or postman collections.
+
+The reasons for a dedicated CRS Catalog Service rather than using the standard search API are described below in section 2.
 
 -   `record id`
     -   For interoperability it is essential to adhere to the `record id` convention when storing geodetic reference data in OSDU. 
-        These record ids are unique, stable and permanent identifiers for the defined CRSs and CTs, 
+        These record ids are unique, stable and permanent identifiers for the CRSs and CTs, 
         largely based on the [EPSG Dataset](https://epsg.org).
     -   The style for the `record id` will be clear from the examples given, and is described in detail in chapter 4 of
         the [Schema Definition Guide](https://gitlab.opengroup.org/osdu/subcommittees/data-def/work-products/schema/-/tree/master/Guides).
@@ -68,13 +72,13 @@ background not easily described in swagger documentation or postman collections)
         specifically the agreed conventions for the `record id` for geodetic data.  An example is:
         - `osdu:reference-data\--CoordinateReferenceSystem:BoundGeographic2D:EPSG::4267_EPSG::15851`
         - `osdu:reference-data\--CoordinateReferenceSystem:ProjectedEPSG::32632`
-    -   Note that a CRS or CT is uniquely identified by it codeSpace + code
-        combination (in many Operator databases code alone will be unique,
+    -   A CRS or CT is uniquely identified by it codeSpace + code
+        combination (in many Operator databases the code alone will be unique,
         but two operators could have assigned the same code to different
         entities, theoretically). It may be confusing that sub-entities also have 
         codes, and these codes are not unique across geodetic entities (except
         for CRSs and CTs). For example, an extent has a code and that code
-        may be equal to the CRS object code. Hence when searching for a code
+        may be equal to the CRS code. Hence, when searching for a code
         (or codeSpace + code) it is better to search through the specific
         entity of interest, to avoid unwanted results to be returned.
     -   The code is an integer. For entities in the EPSG CodeSpace the code
@@ -84,13 +88,13 @@ background not easily described in swagger documentation or postman collections)
         queries. There is a potential risk that when querying for
         code="2044" that also an entity with code="20440" is returned.
         Another example is code="2043" and code="2043\[6-9\]" which are
-        all Projected CRSs. (It was tested in v3 on 2022-06-20 that this
+        all Projected CRSs. It was tested in v3 on 2022-06-20 that this
         worked properly for the CRS Catalog endpoints and no incorrect
-        entities were returned).
-    -   CRS reference data are fundamental, but do reference Unit of Measure.
-        It was noted that querying for unit of measure using record id may have an issue.
+        entities were returned.
+    -   CRS reference data are fundamental entities, but they do reference Unit of Measure.
+        In R3.M13 querying for unit of measure using record id may have an issue.
         There are record id like reference-data\--UnitOfMeasure:ft: and
-        reference-data\--UnitOfMeasure:ft%5BUS%5D: ("ft\[US\]" for US
+        reference-data\--UnitOfMeasure:ft%5BUS%5D: ("ft\[US\]" for the US
         survey foot). The query needs to be on exact match.
 
 -   When ingesting data into OSDU, the original coordinates are used, and **data must be associated with a transformation to WGS 84**.
@@ -101,34 +105,39 @@ background not easily described in swagger documentation or postman collections)
     [CoordinateReferenceSystem.1.1.0.json and CoordinateTransformation.1.1.0.json](https://community.opengroup.org/osdu/data/data-definitions/-/tree/master/ReferenceValues/Manifests/reference-data/LOCAL).
 
 
-## 1.1 Fundamental Concepts
+## 1.1 CRS concepts
 
-The most important thing to understand is that coordinates require a CRS to be associated with them, 
+The most important thing to understand is that coordinates **always** require a CRS to be associated with them, 
 or their location on the earth cannot be established.
-That is true even for latitude and longitude.  
-A location with coordinates latitude 30 degrees North and longitude 90 degrees West
-will plots at different spots depending on whether the associated CRS is WGS 84 or NAD27, for example.
-This is true for horizontal coordinates as well as for vertical coordinates.
+That is true even for latitude and longitude. For example, a point with coordinates latitude 30&deg;N and longitude 90&deg;W 
+will plots at different locations depending on whether the associated CRS is WGS 84 or NAD27.
+The requirement to specify the associated CRS with coordinates is equally true for horizontal coordinates as for vertical coordinates.
+
+Some information on CRSs may be found on [wikipedia](https://en.wikipedia.org/wiki/Spatial_reference_system) and in particular at the IOGP [EPSG website](https://epsg.org) and guidance notes therein.
+
 
 **The term CRS**
-The term CRS is an abbreviation  for Coordinate Reference System. A CRS consist of two parts:
+
+The term CRS is an abbreviation of **Coordinate Reference System**. A CRS is comprised of two components:
 * [Geodetic reference frame](https://en.wikipedia.org/wiki/Geodetic_datum) (datum)
 * [Coordinate system](https://en.wikipedia.org/wiki/Coordinate_system) (CS)
 
-The datum is a reference, either horizontal or vertical, from which distances and directions are measured. It's defining the connection between the coordinate system and the real world. Or more precise, it defines the position and orientation of the reference ellipsoid relative to the true earth. 
-The [ellipsoid](https://en.wikipedia.org/wiki/Ellipsoid) is a mathematical model of earth defined by:
-* semi-major axis a
-* semi-minor axis b
+The datum is a reference, either horizontal or vertical, from which distances and directions are measured. It defines the connection between the coordinate system and the earth. A geodetic datum defines the position and orientation of the reference ellipsoid relative to the earth, as well as its prime meridan. 
+The [ellipsoid](https://en.wikipedia.org/wiki/Ellipsoid) is a mathematical model of earth defined by its:
+* semi-major axis _a_
+* semi-minor axis _b_ (or more commonly, its inverse flattening _1/f_)
 
-A coordinate system is a set of mathematical rules that specify how points can be given coordinates. It's defining the axis unit and orientation with respect to the datum. 
+A coordinate system is a set of mathematical rules that specify how points can be given coordinates. It defines the axes' units and orientation with respect to the datum (the axes' positive directions). 
 
 Because geodetic science knows a long history and the mathematical shape is an approximation, there
-are hundreds of geodetic datums, often optimizing to a single country, landmass or continent.
-Examples are [NAD27](https://en.wikipedia.org/wiki/North_American_Datum),
-NAD83 in North America, and [ED50](https://en.wikipedia.org/wiki/ED50) in Europe.
+are hundreds of geodetic datums, often fitted to a single country, landmass, or continent.
+Examples are [NAD27](https://en.wikipedia.org/wiki/North_American_Datum), in North America, and [ED50](https://en.wikipedia.org/wiki/ED50) in Europe.
 
-Based on one geodetic datum, several different CRS can be created based on the choice of a coordinate system. 
-Ex: ED50 (datum) + UTM Z31 (CS) -> Horizontal CRS
+Several geodetic CRS subtypes can be created that have the same datum but different coordinate system. These subtypes are the geographic 2D CRS, geographic 3D CRS, and geocentric CRS. 
+- In OSDU only the geographic 2D CRS is used. 
+
+A geodetic CRS using grads or radians instead of degrees as unit of measure is also considered a different CRS.  
+- In OSDU only geographic 2D CRSs using degree should be used to avoid unexpected issues that might well occur otherwise (although the engine should be able to handle this properly).
 
 With the introduction of satellites, several earth-centered world-wide approximations have been defined and are constantly being refined.
 [WGS 84 (World Geodetic System of 1984)](https://en.wikipedia.org/wiki/World_Geodetic_System) is the most known example and is used ubiquitously.
@@ -143,38 +152,43 @@ whether WGS 84 is suitable.
 In OSDU WGS 84 is used as the global system for normalization for applications like search and discovery of data, 
 spatial awareness, and machine learning. 
 
-For accurate work requiring better than 1-3m accuracy, the WGS 84 coordinates should strictly not be used (at least not without knowing the coordinate epoch of the data and the WGS 84 realization of the datum), because the "fuzzy definition" of WGS 84 prohibits clear labeling. 
+For accurate work requiring better than 1-3m accuracy, the WGS 84 coordinates should not be used (at least not without knowing the coordinate epoch of the data and the WGS 84 realization of the datum), because the "fuzzy definition" of WGS 84 prohibits clear labeling. 
 Instead, use the original ingested coordinates which are generally stored referenced to a national CRS that is fixed with the tectonic plate (in which coordinates do not change with time, or are reduced to a specific epoch).
 
-Eventually the geospatial references may become time dependent. 
+* Eventually the geospatial references may become time dependent. 
 The OSDU catalog does not contain any time-dependent elements, although the coordinate date can be stored with the data.
 
-**Geographic CRS (latitude and longitude coordinates)**
-A geographic CRS is a combination of a geodetic datum and a [ellipsoidal coordinate system](https://en.wikipedia.org/wiki/Geodetic_coordinates). These coordinates are known as latitude and longitude, and
-is one of the most used coordinate formats. Latitude is the angle from equator plane, and the longitude is the angle from the prime meridian, which is for the most the Greenwich meridian.
+**Geographic 2D CRS (latitude and longitude coordinates)**
+
+A geographic 2D CRS is a combination of a geodetic datum and a [2D ellipsoidal coordinate system](https://en.wikipedia.org/wiki/Geodetic_coordinates). These coordinates are known as latitude and longitude, and
+is one of the most used coordinate formats. Latitude is the angle from equator plane, and the longitude is the angle from the prime meridian, which is for most CRSs the Greenwich meridian near London in England.
+- In OSDU only geographic 2D CRSs using Greenwhich should be used to avoid unexpected issues that might well occur otherwise (although the engine should be able to handle this properly).
+
+**The term CT**
+
+The term CT is an abbreviation of **Coordinate Transformation**. A CT is a coordinate operation with empirically derived parameters that enacts a change of datum. In other
+words, after applying a transformation, coordinates are referenced to a different geographic CRS. An example is a transformation from ED50 to WGS 84. Because CTs are empirically derived there are many transformations from ED50 to WGS 84. Each give slightly different answers, and have different accuracies and areas of applicability. 
+
+In ISO 19111, a CT is independent from the CRS.
+Coordinate Transformations are modeled in OSDU as such, and the OSDU reference data contains many of such transformations.
+Some information on CT methods may be found in [wikipedia](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#Datum_transformations), and in particular in guidance notes on the [EPSG website](https://epsg.org).
 
 
+**Bound CRS (a CRS combined with a specific CT)**
 
-**Bound CRSs (a CRS combined with a CT)**
-
-Each geodetic reference is independent. One physical position will manifest
-itself with different numeric coordinate values based on different geodetic
-references. The operation to change coordinates to a different geodetic reference is called a
-[coordinate transformation](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#Datum_transformations) (`CT`).
-The OSDU reference data contains many of such transformations. 
-Generally there are multiple realizations of transformations for a given pair of geodetic datums (called transformation multiplicity).
-The choice of transformation is non-trivial and typically the responsibility
+The choice of transformation to use in a certain area is non-trivial and typically the responsibility
 of geodesists or geomatics specialists and data managers. Ordinary end users or data consumers
 may not be able to make such decisions.
 
 This is the reason why so-called **early-bound coordinate reference systems**
 were introduced: An early-bound CRS pairs a regular (late-bound or un-bound) CRS 
-with a coordinate transformation (CT). Typically this transformation
-is **from the CRS geodetic reference to WGS 84** (this convention is required in OSDU). 
+with a coordinate transformation (CT). 
+- In OSDU the CT used in a Bound CRS must be "to WGS 84"
+
 Different early-bound CRSs
 then enable the *any datum* to *any datum* case, via the hub CRS WGS 84.
 
-As mentioned in the introduction, this means that data ingested into OSDU must be associated with a Bound CRS (unless it is referenced already to WGS 84). Once that is done, the end-user does not have to worry about this association, and the data can be transformed from any CRS to any CRS (within the accuracy limitations).
+As already mentioned in the introduction, this implies that all data ingested into OSDU must be associated with a Bound CRS (unless it is referenced already to WGS 84). Once that is done, the end-user does not have to worry about this association, and the data can be transformed from any CRS to any CRS (within the accuracy limitations).
 
 -   For accurate work, a direct transformation is to be preferred over a hub transformation.
     OSDU (CRS Convert service) currently does not support direct transformations.  
