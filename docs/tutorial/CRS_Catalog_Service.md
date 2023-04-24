@@ -1,6 +1,6 @@
 # CRS Catalog helper service tutorial
 
-*The OSDU has two CRS helper services: "CRS Convert" and "CRS
+*The OSDU has two CRS helper services: "CRS Conversion" and "CRS
 Catalog". This tutorial provides examples and background to help
 application developers accomplish typical tasks.*
 
@@ -9,13 +9,15 @@ application developers accomplish typical tasks.*
 | **Version** | **Reason for change**             | **Author** | **Date**   |
 | ----------- | --------------------------------- | ---------- | --------   |
 | 1.0         | Initial version for R3.M13 API v3 | Geomatics Integration  | 2022-09-30 |
+| 1.1         | Updated responses                 | Geomatics Integration  | 2023-04-19 |
 |             |                                   |            |            |
 
 **Table of Contents**
 
 -   [1. Introduction](#1-introduction)
-    -   [1.1 Fundamental Concepts](#11-fundamental-concepts)
--   [2. CRS Catalog overview](#2-crs-catalog-overview)
+    -   [1.1 The importance of using the CRS record id](#11-the-importance-of-using-the-crs-record-id)
+    -   [1.2 CRS concepts](#12-crs-concepts)
+-   [2. CRS catalog endpoints](#2-crs-catalog-endpoints)
 -   [3. Fetch the details of a single CRS or CT](#3-fetch-the-details-of-a-single-crs-or-ct)
     -   [3.1 Context](#31-context)
     -   [3.2 Simple examples](#32-simple-examples)
@@ -54,80 +56,144 @@ application developers accomplish typical tasks.*
 
 # 1. Introduction
 
-This "How To" tutorial is intended as quick start for developers by
-describing common tasks with examples how to accomplish them (and
-background not easily described in swagger documentation or postman collections).
+This "How To" tutorial serves as a quick start for developers by
+giving examples of how to accomplish common tasks dealing with Coordinate Reference Systems (CRS)
+and Coordinate Transformations (CT), as well as to provide some
+background not easily described in swagger documentation or postman collections.
 
--   `record id`
-    -   For interoperability it is essential to adhere to the `record id` convention when storing geodetic reference data in OSDU. 
-        These record ids are unique, stable and permanent identifiers for the defined CRSs and CTs, 
+When loading data into the OSDU it is possible to define the CRS by using a `PersistableReference`, i.e., a self-contained actionable definition that can be passed on to an engine. However, it is much preferred to implicitly identify the CRS by means of a CRS `record id`. The design of the OSDU is to centrally manage CRS definitions as reference data, and to use this Catalog service to retrieve them. This makes it easier for ingest workflows to pick the CRS of the data, and it increases geodetic integrity of the platform. This is predicated of course on using a clear record id that uniquely and permanently identifies the CRS.  This is done by a convention using EPSG codes (see also the next section).
+
+The CRS Catalog helper service can be seen as a data domain specific
+service, i.e., endpoints specific to make it easy to work with geodetic
+reference data (CRSs and CTs) in OSDU. Since release R3.M12 (\~3Q2022) new endpoints have been implemented in API v3 that
+interact with the reference data. Prior to this an actual "catalog file"
+was used (service v2), **which usage has been deprecated**. 
+
+Use cases for the CRS Catalog Service include:
+- Enable end-users to make a selection of **Coordinate Reference Systems** (CRSs) 
+  and **Coordinate Transformations** (CTs) associated with ingested data and project setup.
+- Search for CRSs given a number of constraints, including spatial constraints.
+- Download of the entire catalog for local caching/synchronization in applications that require this.
+
+The CRS Catalog service calls the standard OSDU search service query "under the hood" for most endpoints. Therefore, geodetic
+information can also be retrieved by making queries via the standard
+search service with identical results. The query is reported in
+the response.
+
+However, **users should use the dedicated CRS Catalog Service rather than the standard search API** to retrieve CRS definitions for the following reasons:
+
+-   If the Search service is directly used this results in multiple or very complex queries, for example to fetch all transformations between two datums
+(this because of reversibility).  The CRS Catalog Service simply has a parameter to achieve this. Another example is
+finding projected CRS based on the WGS 84 datum, or finding CRSs that use the meter as unit.
+
+-   By default the CRS Catalog Service returns all records, rather than a default limit of 10, and suffering from a hard limit of 1000, forcing the programmer to use pagination. There are less than 10,000 CRSs in the world, and perhaps 1500 or so in practical use by Operators. Therefore it is convenient to simply retrieve all records and then filter on the client side. To facilitate this the Service by default returns all records in the system (with the given filter parameters).  The limit parameter can still be used to set the number of records to be returned to a lower number.
+
+-   By default only "valid" entities are returned. Deprecated (invalid)
+entities are flagged with \"data.InactiveIndicator\": true, but if
+it is absent then it means the entity is in active use (valid in
+case of CRS). This property is located in the referenced "allOff
+\$ref\$ AbstractReferenceType".  The query generated by the CRS Catalog service by default filters these out. There is a parameter to overwrite this behavior and retrieve invalid records.
+
+-   The CRS Catalog Service by default limits the information returned when a search is performed. The OSDU contains several thousands CRS entities stored as reference
+data. Each entity consists of 100-200 rows of information, i.e., the
+total size of manifests may be around 20 MB.  A lot of properties are not of interest for many common tasks, where perhaps only the name and ID are needed. There is a flag to return all properties.
+
+Populated reference data manifests for CRS and CT can be found in the OSDU reference data
+[CoordinateReferenceSystem.1.1.0.json and CoordinateTransformation.1.1.0.json](https://community.opengroup.org/osdu/data/data-definitions/-/tree/master/ReferenceValues/Manifests/reference-data/LOCAL).
+
+
+## 1.1 The importance of using the CRS record id
+
+In an OSDU instance the CRS definitions are centrally managed as reference data under LOCAL governance. These records include the actionable definition (persistable reference).
+
+Data and projects should reference the record id of the CRS.
+Once the CRS is found that belongs to the data, store its id with the data. Since clear EPSG codes are used, the definition can always later be found and is not a practical limitation to interoperability.
+
+It is not necessary, but a good practice to also store the persistable reference (PR) with the data. Ideally the ingest workflow does this automatically by looking up the PR based on the given CRS record id, and adding it to the manifest when storing it. This is not current practice (R3.M17).
+
+The persistable reference describes the CRS mathematically so that a geodetic engine can execute coordinate operations. Hence, such a persistable reference string becomes independent of the reference data in the particular OSDU instance and the data self-described. This means any consumer will be able to understand the CRS definition even if a different catalog is used in the future context. When an CRS record id is stored with the data and also a PR, then the record id wins. The PR is considered a snapshot of its definition at the time of loading, which may be useful if question arise in future about the geodetic referencing of the dataset.
+
+Notes on proper usage of the CRS `record id`:
+
+-   For interoperability it is essential to adhere to the `record id` convention when storing geodetic reference data in OSDU. 
+        These record ids are unique, stable and permanent identifiers for the CRSs and CTs, 
         largely based on the [EPSG Dataset](https://epsg.org).
-    -   The style for the `record id` will be clear from the examples given, and is described in detail in chapter 4 of
+-   The style for the `record id` will be clear from the examples given, and is described in detail in chapter 4 of
         the [Schema Definition Guide](https://gitlab.opengroup.org/osdu/subcommittees/data-def/work-products/schema/-/tree/master/Guides).
         See the Frame of Reference (FoR) concept, and
-        specifically the agreed conventions for the `record id` for geodetic data.  An example is:
-        - `osdu:reference-data\--CoordinateReferenceSystem:BoundGeographic2D:EPSG::4267_EPSG::15851`
-        - `osdu:reference-data\--CoordinateReferenceSystem:ProjectedEPSG::32632`
-    -   Note that a CRS or CT is uniquely identified by it codeSpace + code
-        combination (in many Operator databases code alone will be unique,
+        specifically the agreed conventions for the `record id` for geodetic data.  Example are:
+    - `osdu:reference-data\--CoordinateReferenceSystem:BoundGeographic2D:EPSG::4267_EPSG::15851`
+    - `osdu:reference-data\--CoordinateReferenceSystem:ProjectedEPSG::32632`
+-   A CRS or CT is uniquely identified by it codeSpace + code
+        combination (in many Operator databases the code alone will be unique,
         but two operators could have assigned the same code to different
         entities, theoretically). It may be confusing that sub-entities also have 
         codes, and these codes are not unique across geodetic entities (except
         for CRSs and CTs). For example, an extent has a code and that code
-        may be equal to the CRS object code. Hence when searching for a code
+        may be equal to the CRS code. Hence, when searching for a code
         (or codeSpace + code) it is better to search through the specific
         entity of interest, to avoid unwanted results to be returned.
-    -   The code is an integer. For entities in the EPSG CodeSpace the code
+-   The code is an integer. For entities in the EPSG CodeSpace the code
         range is from 1024 to 32767 (inclusive), i.e., an EPSG code can
         have four or five digits.
-    -   In OSDU this integer number may be represented as string in some
+-   In OSDU this integer number may be represented as string in some
         queries. There is a potential risk that when querying for
         code="2044" that also an entity with code="20440" is returned.
         Another example is code="2043" and code="2043\[6-9\]" which are
-        all Projected CRSs. (It was tested in v3 on 2022-06-20 that this
+        all Projected CRSs. It was tested in v3 on 2022-06-20 that this
         worked properly for the CRS Catalog endpoints and no incorrect
-        entities were returned).
-    -   CRS reference data are fundamental, but do reference Unit of Measure.
-        It was noted that querying for unit of measure using record id may have an issue.
+        entities were returned.
+-   CRS reference data are fundamental entities, but they do reference Unit of Measure.
+        In R3.M13 querying for unit of measure using record id may have an issue.
         There are record id like reference-data\--UnitOfMeasure:ft: and
-        reference-data\--UnitOfMeasure:ft%5BUS%5D: ("ft\[US\]" for US
+        reference-data\--UnitOfMeasure:ft%5BUS%5D: ("ft\[US\]" for the US
         survey foot). The query needs to be on exact match.
 
--   When ingesting data into OSDU, the original coordinates are used, and **data must be associated with a transformation to WGS 84**.
-    Unless the data is already in WGS 84, this requires a reference to a BoundCRS. 
-    This is explained further in the section below.
 
--   Populated reference data manifests for CRS and CT can be found in the OSDU reference data
-    [CoordinateReferenceSystem.1.1.0.json and CoordinateTransformation.1.1.0.json](https://community.opengroup.org/osdu/data/data-definitions/-/tree/master/ReferenceValues/Manifests/reference-data/LOCAL).
+When ingesting data into OSDU, the original coordinates are used, and **data must be associated with a transformation to WGS 84**.
+Unless the data is already in WGS 84, **this requires a reference to a BoundCRS**. 
+This is explained further in the section below.
 
 
-## 1.1 Fundamental Concepts
+## 1.2 CRS concepts
 
-The most important thing to understand is that coordinates require a CRS to be associated with them, 
+This section covers some basic geodesy concepts for people not familiar with the terminology.
+
+The most important thing to understand is that coordinates **always** require a CRS to be associated with them, 
 or their location on the earth cannot be established.
-That is true even for latitude and longitude.  
-A location with coordinates latitude 30 degrees North and longitude 90 degrees West
-will plots at different spots depending whether the associated CRS is WGS 84 or NAD27, for example.
-This is true for horizontal coordinates as well as for vertical coordinates.
+That is true even for latitude and longitude. For example, a point with coordinates latitude 30&deg;N and longitude 90&deg;W 
+will plots at different locations depending on whether the associated CRS is WGS 84 or NAD27.
+The requirement to specify the associated CRS with coordinates is equally true for horizontal coordinates as for vertical coordinates.
 
-**Geographic CRS (latitude and longitude coordinates)**
+Some information on CRSs may be found on [wikipedia](https://en.wikipedia.org/wiki/Spatial_reference_system) and in particular at the IOGP [EPSG website](https://epsg.org) and guidance notes therein.
 
-Coordinate Reference Systems (`CRS`) consist of a
-[coordinate system](https://en.wikipedia.org/wiki/Coordinate_system)
-combined with geodetic reference. The [geodetic reference](https://en.wikipedia.org/wiki/Geodetic_datum),
-a.k.a. geodetic datum uses an ellipsoid as
-mathematical approximation of the earth, and a prime meridian where the longitude is zero.
-Latitude is zero at the equator. 
-Geodetic latitude and longitude coordinates are measured in plane angles
-([ellipsoidal coordinate system](https://en.wikipedia.org/wiki/Geodetic_coordinates)).
+
+**The term CRS**
+
+The term CRS is an abbreviation of **Coordinate Reference System**. A CRS is comprised of two components:
+* [Geodetic reference frame](https://en.wikipedia.org/wiki/Geodetic_datum) (datum)
+* [Coordinate system](https://en.wikipedia.org/wiki/Coordinate_system) (CS)
+
+The datum is a reference, either horizontal or vertical, from which distances and directions are measured. It defines the connection between the coordinate system and the earth. A geodetic datum defines the position and orientation of the reference ellipsoid relative to the earth, as well as its prime meridan. 
+The [ellipsoid](https://en.wikipedia.org/wiki/Ellipsoid) is a mathematical model of earth defined by its:
+* semi-major axis _a_
+* semi-minor axis _b_ (or more commonly, its inverse flattening _1/f_)
+
+A coordinate system is a set of mathematical rules that specify how points can be given coordinates. It defines the axes' units and orientation with respect to the datum (the axes' positive directions). 
+
 Because geodetic science knows a long history and the mathematical shape is an approximation, there
-are hundreds of geodetic datums, often optimizing to a single country, landmass or continent.
-Examples are [NAD27](https://en.wikipedia.org/wiki/North_American_Datum),
-NAD83 in North America, and [ED50](https://en.wikipedia.org/wiki/ED50) in Europe.
+are hundreds of geodetic datums, often fitted to a single country, landmass, or continent.
+Examples are [NAD27](https://en.wikipedia.org/wiki/North_American_Datum), in North America, and [ED50](https://en.wikipedia.org/wiki/ED50) in Europe.
+
+Several geodetic CRS subtypes can be created that have the same datum but different coordinate system. These subtypes are the geographic 2D CRS, geographic 3D CRS, and geocentric CRS. 
+- In OSDU only the geographic 2D CRS is used. 
+
+A geodetic CRS using grads or radians instead of degrees as unit of measure is also considered a different CRS.  
+- In OSDU only geographic 2D CRSs using degree should be used to avoid unexpected issues that might well occur otherwise (although the engine should be able to handle this properly).
 
 With the introduction of satellites, several earth-centered world-wide approximations have been defined and are constantly being refined.
 [WGS 84 (World Geodetic System of 1984)](https://en.wikipedia.org/wiki/World_Geodetic_System) is the most known example and is used ubiquitously.
-This is the reference used by the [GPS Global Positioning System](https://en.wikipedia.org/wiki/Global_Positioning_System), 
+This is the reference used by the [Global Positioning System (GPS)](https://en.wikipedia.org/wiki/Global_Positioning_System), 
 although that uses a specific realization of the WGS 84 ensemble of datums.
 A WGS 84 realization is a dynamic CRS. 
 Over time, tectonic plates move relatively to each other in this reference system.
@@ -138,32 +204,43 @@ whether WGS 84 is suitable.
 In OSDU WGS 84 is used as the global system for normalization for applications like search and discovery of data, 
 spatial awareness, and machine learning. 
 
-For accurate work requiring better than 1-3m accuracy, the WGS 84 coordinates should strictly not be used (at least not without knowing the coordinate epoch of the data and the WGS 84 realization of the datum), because the "fuzzy definition" of WGS 84 prohibits clear labeling. 
-Instead, use the original ingested coordinates which are generally stored referenced to a national CRS that is afixed with the tectonic plate (in which coordinates do not change with time, or are reduced to a specific epoch).
+For accurate work requiring better than 1-3m accuracy, the WGS 84 coordinates should not be used (at least not without knowing the coordinate epoch of the data and the WGS 84 realization of the datum), because the "fuzzy definition" of WGS 84 prohibits clear labeling. 
+Instead, use the original ingested coordinates which are generally stored referenced to a national CRS that is fixed with the tectonic plate (in which coordinates do not change with time, or are reduced to a specific epoch).
 
-Eventually the geospatial references may become time dependent. 
+* Eventually the geospatial references may become time dependent. 
 The OSDU catalog does not contain any time-dependent elements, although the coordinate date can be stored with the data.
 
-**Bound CRSs (a CRS combined with a CT)**
+**Geographic 2D CRS (latitude and longitude coordinates)**
 
-Each geodetic reference is independent. One physical position will manifest
-itself with different numeric coordinate values based on different geodetic
-references. The operation to change coordinates to a different geodetic reference is called a
-[coordinate transformation](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#Datum_transformations) (`CT`).
-The OSDU reference data contains many of such transformations. 
-Generally there are multiple realizations of transformations for a given pair of geodetic datums (called transformation multiplicity).
-The choice of transformation is non-trivial and typically the responsibility
+A geographic 2D CRS is a combination of a geodetic datum and a [2D ellipsoidal coordinate system](https://en.wikipedia.org/wiki/Geodetic_coordinates). These coordinates are known as latitude and longitude, and
+is one of the most used coordinate formats. Latitude is the angle from equator plane, and the longitude is the angle from the prime meridian, which is for most CRSs the Greenwich meridian near London in England.
+- In OSDU only geographic 2D CRSs using Greenwhich should be used to avoid unexpected issues that might well occur otherwise (although the engine should be able to handle this properly).
+
+**The term CT**
+
+The term CT is an abbreviation of **Coordinate Transformation**. A CT is a coordinate operation with empirically derived parameters that enacts a change of datum. In other
+words, after applying a transformation, coordinates are referenced to a different geographic CRS. An example is a transformation from ED50 to WGS 84. Because CTs are empirically derived there are many transformations from ED50 to WGS 84. Each give slightly different answers, and have different accuracies and areas of applicability. 
+
+In ISO 19111, a CT is independent from the CRS.
+Coordinate Transformations are modeled in OSDU as such, and the OSDU reference data contains many of such transformations.
+Some information on CT methods may be found in [wikipedia](https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#Datum_transformations), and in particular in guidance notes on the [EPSG website](https://epsg.org).
+
+
+**Bound CRS (a CRS combined with a specific CT)**
+
+The choice of transformation to use in a certain area is non-trivial and typically the responsibility
 of geodesists or geomatics specialists and data managers. Ordinary end users or data consumers
 may not be able to make such decisions.
 
 This is the reason why so-called **early-bound coordinate reference systems**
 were introduced: An early-bound CRS pairs a regular (late-bound or un-bound) CRS 
-with a coordinate transformation (CT). Typically this transformation
-is **from the CRS geodetic reference to WGS 84** (this convention is required in OSDU). 
+with a coordinate transformation (CT). 
+- In OSDU the CT used in a Bound CRS must be "to WGS 84"
+
 Different early-bound CRSs
 then enable the *any datum* to *any datum* case, via the hub CRS WGS 84.
 
-As mentioned in the introduction, this means that data ingested into OSDU must be associated with a Bound CRS (unless it is referenced already to WGS 84). Once that is done, the end-user does not have to worry about this association, and the data can be transformed from any CRS to any CRS (within the accuracy limitations).
+As already mentioned in the introduction, this implies that all data ingested into OSDU must be associated with a Bound CRS (unless it is referenced already to WGS 84). Once that is done, the end-user does not have to worry about this association, and the data can be transformed from any CRS to any CRS (within the accuracy limitations).
 
 -   For accurate work, a direct transformation is to be preferred over a hub transformation.
     OSDU (CRS Convert service) currently does not support direct transformations.  
@@ -179,13 +256,13 @@ defined as late-bound or un-bound CRSs. When such a CRS is bound to a
 coordinate transformation, a projected, early-bound CRS is created, called `BoundProjected`.
 
 **Vertical CRS (height and depth coordinates)**
-
-So far we only covered 2D CRSs, i.e., the third dimension may be implicitly
-assumed as height above mean sea level (MSL). Such height coordinates, physically referenced 
+In the same way as for horizontal CRS, vertical CRS also consists of a datum which defines the reference surface, and a coordinate system (CS). The datum defines where the heights/depths are measured from and the
+coordinate system defines the unit (meters/feet) and the direction (positive up/down).
+The third dimension may be implicitly assumed as height above mean sea level (MSL). Such height coordinates, physically referenced 
 to a gravity-related surface are independent of the horizontal coordinates
 that are geometrically referenced to an ellipsoid.
 In OSDU the geographic CRSs are 2D.
-Transformations between 2D CRSs will not
+Transformations between 2D CRSs will NOT
 change the vertical values (z-coordinate) since the values refer
 implicitly to the same MSL reference surface.
 
@@ -237,52 +314,7 @@ Item Type | Link to Item Details
 
 
 
-# 2. CRS Catalog overview
-
-The main goals of the CRS Catalog service are to:
-
-- Centrally manage geodetic reference data, with their actionable definition (persistable reference).
-  Data and projects should reference the record id of the CRS.
-  - Once a CRS is found, produce a persistable reference to be stored with
-    the data, which fully describes the CRS; this persistable reference string
-    becomes catalog independent. This means any consumer will be able to
-    understand the CRS definition even if a different catalog is used in the
-    future context (however, the record-id can identify in practice the CRS definition, 
-    and a reference to the reference data trumps the locally stored persistable reference).
-- Enable end-users to make a selection of **Coordinate Reference Systems** (CRSs) 
-  and **Coordinate Transformations** (CTs)to associated with ingested data and project setup.
-- Search for CRSs given a number of constraints.
-- Download of the entire catalog for local caching/synchronization in applications that require this.
-
-The OSDU contains several thousands CRS entities stored as reference
-data. Each entity consists of 100-200 rows of information, i.e., the
-total size of manifests may be around 20 MB.
-
-The CRS Catalog helper service can be seen as a data domain specific
-service, i.e., endpoints specific to make it easy to work with geodetic
-reference data in OSDU. Since release R3.M12 (\~3Q2022) new endpoints have been implemented in API v3 that
-interact with the reference data. Prior to this an actual "catalog file"
-was used (service v2), which usage has been deprecated. 
-
-The CRS Catalog service utilizes the standard OSDU search service. Therefore, geodetic
-information can also be retrieved by making queries via the standard
-search service with identical results. The search query is reported in
-the response.
-
-The CRS Catalog Service handles some common cases more conveniently than
-the search API
-
--   By default all entities are returned, rather than a limit of 10.
-
--   By default only "valid" entities are returned. Deprecated (invalid)
-    entities are flagged with \"data.InactiveIndicator\": true, but if
-    it is absent then it means the entity is in active use (valid in
-    case of CRS). This property is located in the referenced "allOff
-    \$ref\$ AbstractReferenceType".
-
--   Some complex searches like fetching transformations that go between
-    two datums are enabled with a specific parameter. Another example is
-    finding projected CRS based on the WGS 84 datum.
+# 2. CRS Catalog  endpoints
 
 The endpoints for CRS Catalog v3 are specified via the [Swagger documentation](https://community.opengroup.org/osdu/platform/system/reference/crs-catalog-service/-/blob/master/docs/api_spec/crs-catalog-openapi-v3.yaml). The main endpoints are:
 
@@ -291,6 +323,8 @@ The endpoints for CRS Catalog v3 are specified via the [Swagger documentation](h
 | coordinate-reference-system | Fetch CRS(s) details.  |
 | coordinate-transformation   | Fetch CT(s) details.   |
 | points-in-aou               | Check if given points are inside the area of use of a CRS or CT. |
+
+
 
 # 3. Fetch the details of a single CRS or CT
 
@@ -843,6 +877,14 @@ An alternative request body that leads to the same response is to specify the da
 }
 ```
 
+or by using the name of the CRS
+```json
+{
+  "name": "NAD27 / BLM 15N (ftUS)"
+}
+```
+
+
 
 **Response**
 
@@ -851,26 +893,45 @@ An alternative request body that leads to the same response is to specify the da
     "searchResults": {
         "results": [
             {
-                "modifyTime": "2022-06-24T22:38:55.290Z",
                 "data": {
+                    "PreferredUsage.Extent.Description": "United States (USA) - between 96°W and 90°W - Arkansas; Illinois; Iowa; Kansas; Louisiana; Michigan; Minnesota; Mississippi; Missouri; Nebraska; Oklahoma; Tennessee; Texas; Wisconsin; Gulf of Mexico outer continental shelf (GoM OCS) between approximately 96°W and 90°W - protraction areas East Breaks; Alaminos Canyon; Garden Banks; Keathley Canyon; Sigsbee Escarpment; Ewing Bank; Green Canyon; Walker Ridge; Amery Terrace.",
+                    "CoordinateSystem.AuthorityCode.Authority": "EPSG",
                     "Description": null,
+                    "PreferredUsage.Extent.BoundingBoxEastBoundLongitude": -89.86,
+                    "PreferredUsage.AuthorityCode.Code": 7179,
+                    "Name": "NAD27 / BLM 15N (ftUS)",
+                    "PreferredUsage.Scope.AuthorityCode.Authority": "EPSG",
+                    "PreferredUsage.Extent.BoundingBoxSouthBoundLatitude": 25.61,
+                    "PreferredUsage.Extent.BoundingBoxWestBoundLongitude": -96.01,
+                    "PreferredUsage.Name": "USA - 96°W to 90°W and GoM OCS",
+                    "Kind": "projected",
+                    "CoordinateSystem.HorizontalAxisUnitID": "opendes:reference-data--UnitOfMeasure:ft%5BUS%5D:",
+                    "PreferredUsage.Extent.AuthorityCode.Code": 3640,
+                    "PreferredUsage.Extent.AuthorityCode.Authority": "EPSG",
+                    "PreferredUsage.Extent.BoundingBoxNorthBoundLatitude": 49.38,
+                    "PreferredUsage.Scope.AuthorityCode.Code": 1249,
                     "InactiveIndicator": null,
-                    "ID": "Projected:EPSG::32065",
+                    "CodeSpace": "EPSG",
                     "Code": "32065",
-                    "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateReferenceSystem.1.1.0.json; commit SHA a046fbd2.",
-                    "CommitDate": "2022-04-02T14:45:12+0200",
-                    "Name": "NAD27 / BLM 15N (ftUS)"
+                    "CoordinateSystem.VerticalAxisUnitID": null,
+                    "RevisionDate": "2010-03-05T00:00:00+0000",
+                    "Datum.Name": null,
+                    "PreferredUsage.Extent.Name": "USA - 96°W to 90°W and GoM OCS",
+                    "CoordinateSystem.Name": "Cartesian 2D CS. Axes: easting, northing (X,Y). Orientations: east, north. UoM: ftUS.",
+                    "CoordinateSystem.AuthorityCode.Code": 4497,
+                    "PreferredUsage.AuthorityCode.Authority": "EPSG",
+                    "Datum.AuthorityCode.Authority": null,
+                    "PreferredUsage.Scope.Name": "Minerals management (including oil and gas exploration and production)."
                 },
-                "kind": "osdu:wks:reference-data--CoordinateReferenceSystem:1.1.0",
-                "id": "osdu:reference-data--CoordinateReferenceSystem:Projected:EPSG::32065",
-                "version": 1656110335022942
+                "id": "opendes:reference-data--CoordinateReferenceSystem:Projected:EPSG::32065"
             }
         ],
         "totalCount": 1
     },
-    "query": "(data.CodeSpace: EPSG) AND (data.Code: \"32065\")"
+    "query": "(NOT data.InactiveIndicator: true) AND (data.CodeSpace: \"EPSG\") AND (data.Code: \"32065\")"
 }
 ```
+
 
 
 ## 4.3 Fetch all CRSs of a specific Kind (e.g., BoundProjected)
@@ -899,28 +960,133 @@ are returned in search results (which would be the common use case).
 
 ```json
 ...
-            {
-                "modifyTime": "2022-06-24T22:38:58.246Z",
+        {
                 "data": {
+                    "PreferredUsage.Extent.Description": "Description intersection between CRS and CT 'Europe - between 0°E and 6°E - Andorra; Denmark (North Sea); Germany offshore; Netherlands offshore; Norway including Svalbard - onshore and offshore; Spain - onshore (mainland and Balearic Islands); United Kingdom (UKCS) offshore.' (CRS) and 'Norway - offshore south of 62°N - North Sea.' (CT) [1634,2334]",
+                    "CoordinateSystem.AuthorityCode.Authority": "EPSG",
                     "Description": null,
+                    "PreferredUsage.Extent.BoundingBoxEastBoundLongitude": 6.01,
+                    "Name": "ED50 * EPSG-Nor S62 2001 / UTM zone 31N [23031,1613]",
+                    "PreferredUsage.Scope.AuthorityCode.Authority": "EPSG",
+                    "PreferredUsage.Extent.BoundingBoxSouthBoundLatitude": 56.08,
+                    "PreferredUsage.Extent.BoundingBoxWestBoundLongitude": 1.37,
+                    "PreferredUsage.Name": "Usage intersection between CRS and CT 'Europe - 0°E to 6°E and ED50 by country' (CRS) and 'Norway - North Sea - offshore south of 62°N' (CT) [6394,8534]",
+                    "Kind": "BoundProjected",
+                    "CoordinateSystem.HorizontalAxisUnitID": "opendes:reference-data--UnitOfMeasure:m:",
+                    "PreferredUsage.Extent.AuthorityCode.Authority": null,
+                    "PreferredUsage.Extent.BoundingBoxNorthBoundLatitude": 62.0,
+                    "PreferredUsage.Scope.AuthorityCode.Code": 1142,
                     "InactiveIndicator": null,
-                    "ID": "BoundProjected:EPSG::32337_EPSG::1237",
-                    "Code": "32337001",
-                    "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateReferenceSystem.1.1.0.json; commit SHA 86f383ba.",
-                    "CommitDate": "2022-04-13T18:29:10+0200",
-                    "Name": "WGS 72 * DMA1 / UTM zone 37S [32337,1237]"
+                    "CodeSpace": "OSDU",
+                    "Code": "23031024",
+                    "CoordinateSystem.VerticalAxisUnitID": null,
+                    "RevisionDate": "2022-04-04T16:54:46+0000",
+                    "Datum.Name": null,
+                    "PreferredUsage.Extent.Name": "Extent intersection between CRS and CT 'Europe - 0°E to 6°E and ED50 by country' (CRS) and 'Norway - North Sea - offshore south of 62°N' (CT) [1634,2334]",
+                    "CoordinateSystem.Name": "Cartesian 2D CS. Axes: easting, northing (E,N). Orientations: east, north. UoM: m.",
+                    "CoordinateSystem.AuthorityCode.Code": 4400,
+                    "PreferredUsage.AuthorityCode.Authority": null,
+                    "Datum.AuthorityCode.Authority": null,
+                    "PreferredUsage.Scope.Name": "Engineering survey, topographic mapping."
                 },
-                "kind": "osdu:wks:reference-data--CoordinateReferenceSystem:1.1.0",
-                "id": "osdu:reference-data--CoordinateReferenceSystem:BoundProjected:EPSG::32337_EPSG::1237",
-                "version": 1656110337911605
+                "id": "opendes:reference-data--CoordinateReferenceSystem:BoundProjected:EPSG::23031_EPSG::1613"
             }
         ],
         "totalCount": 999
     },
-    "query": "(data.Kind: \"BoundProjected\")"
+    "query": "(NOT data.InactiveIndicator: true) AND (data.Kind: \"BoundProjected\")"
+}
+```
+<br>
+<br>
+
+
+### Fetch only the two first projected CRSs
+```json
+{
+    "kind": "projected",
+    "limit": 2
 }
 ```
 
+**Respone**
+```json
+{
+    "searchResults": {
+        "results": [
+            {
+                "data": {
+                    "PreferredUsage.Extent.Description": "United States (USA) - Nevada - counties of Clark; Elko; Eureka; Lincoln; White Pine.",
+                    "CoordinateSystem.AuthorityCode.Authority": "EPSG",
+                    "Description": null,
+                    "PreferredUsage.Extent.BoundingBoxEastBoundLongitude": -114.03,
+                    "PreferredUsage.AuthorityCode.Code": 7125,
+                    "Name": "NAD27 / Nevada East",
+                    "PreferredUsage.Scope.AuthorityCode.Authority": "EPSG",
+                    "PreferredUsage.Extent.BoundingBoxSouthBoundLatitude": 34.99,
+                    "PreferredUsage.Extent.BoundingBoxWestBoundLongitude": -117.01,
+                    "PreferredUsage.Name": "USA - Nevada - SPCS - E",
+                    "Kind": "projected",
+                    "CoordinateSystem.HorizontalAxisUnitID": "opendes:reference-data--UnitOfMeasure:ft%5BUS%5D:",
+                    "PreferredUsage.Extent.AuthorityCode.Code": 2224,
+                    "PreferredUsage.Extent.AuthorityCode.Authority": "EPSG",
+                    "PreferredUsage.Extent.BoundingBoxNorthBoundLatitude": 42.0,
+                    "PreferredUsage.Scope.AuthorityCode.Code": 1142,
+                    "InactiveIndicator": null,
+                    "CodeSpace": "EPSG",
+                    "Code": "32007",
+                    "CoordinateSystem.VerticalAxisUnitID": null,
+                    "RevisionDate": "2000-03-07T00:00:00+0000",
+                    "Datum.Name": null,
+                    "PreferredUsage.Extent.Name": "USA - Nevada - SPCS - E",
+                    "CoordinateSystem.Name": "Cartesian 2D CS. Axes: easting, northing (X,Y). Orientations: east, north. UoM: ftUS.",
+                    "CoordinateSystem.AuthorityCode.Code": 4497,
+                    "PreferredUsage.AuthorityCode.Authority": "EPSG",
+                    "Datum.AuthorityCode.Authority": null,
+                    "PreferredUsage.Scope.Name": "Engineering survey, topographic mapping."
+                },
+                "id": "opendes:reference-data--CoordinateReferenceSystem:Projected:EPSG::32007"
+            },
+            {
+                "data": {
+                    "PreferredUsage.Extent.Description": "United States (USA) - Kansas - counties of Atchison; Brown; Cheyenne; Clay; Cloud; Decatur; Dickinson; Doniphan; Douglas; Ellis; Ellsworth; Geary; Gove; Graham; Jackson; Jefferson; Jewell; Johnson; Leavenworth; Lincoln; Logan; Marshall; Mitchell; Morris; Nemaha; Norton; Osborne; Ottawa; Phillips; Pottawatomie; Rawlins; Republic; Riley; Rooks; Russell; Saline; Shawnee; Sheridan; Sherman; Smith; Thomas; Trego; Wabaunsee; Wallace; Washington; Wyandotte.",
+                    "CoordinateSystem.AuthorityCode.Authority": "EPSG",
+                    "Description": null,
+                    "PreferredUsage.Extent.BoundingBoxEastBoundLongitude": -94.58,
+                    "PreferredUsage.AuthorityCode.Code": 6612,
+                    "Name": "NAD27 / Kansas North",
+                    "PreferredUsage.Scope.AuthorityCode.Authority": "EPSG",
+                    "PreferredUsage.Extent.BoundingBoxSouthBoundLatitude": 38.52,
+                    "PreferredUsage.Extent.BoundingBoxWestBoundLongitude": -102.06,
+                    "PreferredUsage.Name": "USA - Kansas - SPCS - N",
+                    "Kind": "projected",
+                    "CoordinateSystem.HorizontalAxisUnitID": "opendes:reference-data--UnitOfMeasure:ft%5BUS%5D:",
+                    "PreferredUsage.Extent.AuthorityCode.Code": 2200,
+                    "PreferredUsage.Extent.AuthorityCode.Authority": "EPSG",
+                    "PreferredUsage.Extent.BoundingBoxNorthBoundLatitude": 40.01,
+                    "PreferredUsage.Scope.AuthorityCode.Code": 1142,
+                    "InactiveIndicator": null,
+                    "CodeSpace": "EPSG",
+                    "Code": "26777",
+                    "CoordinateSystem.VerticalAxisUnitID": null,
+                    "RevisionDate": "1995-06-02T00:00:00+0000",
+                    "Datum.Name": null,
+                    "PreferredUsage.Extent.Name": "USA - Kansas - SPCS - N",
+                    "CoordinateSystem.Name": "Cartesian 2D CS. Axes: easting, northing (X,Y). Orientations: east, north. UoM: ftUS.",
+                    "CoordinateSystem.AuthorityCode.Code": 4497,
+                    "PreferredUsage.AuthorityCode.Authority": "EPSG",
+                    "Datum.AuthorityCode.Authority": null,
+                    "PreferredUsage.Scope.Name": "Engineering survey, topographic mapping."
+                },
+                "id": "opendes:reference-data--CoordinateReferenceSystem:Projected:EPSG::26777"
+            }
+        ],
+        "totalCount": 991
+    },
+    "query": "(NOT data.InactiveIndicator: true) AND (data.Kind: \"projected\")"
+}
+
+```
 
 ## 4.4 Fetch all CRSs of a specific "kind" which area of use includes a specific location
 
@@ -977,8 +1143,9 @@ meters.
 ```json
 {
     "kind": "BoundProjected",
-    "horizontalAxisUnitId": "osdu:reference-data--UnitOfMeasure:m:"
+    "horizontalAxisUnitId": "opendes:reference-data--UnitOfMeasure:m:"
 }
+
 ```
 
 
@@ -995,26 +1162,41 @@ meters.
 
 ```json
 ...
-            },
             {
-                "modifyTime": "2022-06-24T22:38:58.246Z",
                 "data": {
+                    "PreferredUsage.Extent.Description": "Description intersection between CRS and CT 'Europe - between 0°E and 6°E - Andorra; Denmark (North Sea); Germany offshore; Netherlands offshore; Norway including Svalbard - onshore and offshore; Spain - onshore (mainland and Balearic Islands); United Kingdom (UKCS) offshore.' (CRS) and 'Norway - offshore south of 62°N - North Sea.' (CT) [1634,2334]",
+                    "CoordinateSystem.AuthorityCode.Authority": "EPSG",
                     "Description": null,
+                    "PreferredUsage.Extent.BoundingBoxEastBoundLongitude": 6.01,
+                    "Name": "ED50 * EPSG-Nor S62 2001 / UTM zone 31N [23031,1613]",
+                    "PreferredUsage.Scope.AuthorityCode.Authority": "EPSG",
+                    "PreferredUsage.Extent.BoundingBoxSouthBoundLatitude": 56.08,
+                    "PreferredUsage.Extent.BoundingBoxWestBoundLongitude": 1.37,
+                    "PreferredUsage.Name": "Usage intersection between CRS and CT 'Europe - 0°E to 6°E and ED50 by country' (CRS) and 'Norway - North Sea - offshore south of 62°N' (CT) [6394,8534]",
+                    "Kind": "BoundProjected",
+                    "CoordinateSystem.HorizontalAxisUnitID": "opendes:reference-data--UnitOfMeasure:m:",
+                    "PreferredUsage.Extent.AuthorityCode.Authority": null,
+                    "PreferredUsage.Extent.BoundingBoxNorthBoundLatitude": 62.0,
+                    "PreferredUsage.Scope.AuthorityCode.Code": 1142,
                     "InactiveIndicator": null,
-                    "ID": "BoundProjected:EPSG::32337_EPSG::1237",
-                    "Code": "32337001",
-                    "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateReferenceSystem.1.1.0.json; commit SHA 86f383ba.",
-                    "CommitDate": "2022-04-13T18:29:10+0200",
-                    "Name": "WGS 72 * DMA1 / UTM zone 37S [32337,1237]"
+                    "CodeSpace": "OSDU",
+                    "Code": "23031024",
+                    "CoordinateSystem.VerticalAxisUnitID": null,
+                    "RevisionDate": "2022-04-04T16:54:46+0000",
+                    "Datum.Name": null,
+                    "PreferredUsage.Extent.Name": "Extent intersection between CRS and CT 'Europe - 0°E to 6°E and ED50 by country' (CRS) and 'Norway - North Sea - offshore south of 62°N' (CT) [1634,2334]",
+                    "CoordinateSystem.Name": "Cartesian 2D CS. Axes: easting, northing (E,N). Orientations: east, north. UoM: m.",
+                    "CoordinateSystem.AuthorityCode.Code": 4400,
+                    "PreferredUsage.AuthorityCode.Authority": null,
+                    "Datum.AuthorityCode.Authority": null,
+                    "PreferredUsage.Scope.Name": "Engineering survey, topographic mapping."
                 },
-                "kind": "osdu:wks:reference-data--CoordinateReferenceSystem:1.1.0",
-                "id": "osdu:reference-data--CoordinateReferenceSystem:BoundProjected:EPSG::32337_EPSG::1237",
-                "version": 1656110337911605
+                "id": "opendes:reference-data--CoordinateReferenceSystem:BoundProjected:EPSG::23031_EPSG::1613"
             }
         ],
         "totalCount": 855
     },
-    "query": "(data.Kind: \"BoundProjected\") AND (data.CoordinateSystem.HorizontalAxisUnitID: \"osdu:reference-data--UnitOfMeasure:m:\")"
+    "query": "(NOT data.InactiveIndicator: true) AND (data.Kind: \"BoundProjected\") AND (data.CoordinateSystem.HorizontalAxisUnitID: \"opendes:reference-data--UnitOfMeasure:m:\")"
 }
 ```
 
@@ -1030,35 +1212,55 @@ responses.
 ```json
 {
     "kind": "Projected",
-    "horizontalAxisUnitId": "osdu:reference-data--UnitOfMeasure:m:",
-    "baseCRS": {"id": "osdu:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4326"}
+    "horizontalAxisUnitId": "opendes:reference-data--UnitOfMeasure:m:",
+    "baseCRS": {"id": "opendes:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4326"}
 }
 ```
 
 
 **Response**
 ```json
-...
-            },
+{
+    "searchResults": {
+        "results": [
             {
-                "modifyTime": "2022-06-24T22:38:55.964Z",
+...
                 "data": {
+                    "PreferredUsage.Extent.Description": "Between 66°E and 72°E, southern hemisphere between 80°S and equator, onshore and offshore.",
+                    "CoordinateSystem.AuthorityCode.Authority": "EPSG",
                     "Description": null,
+                    "PreferredUsage.Extent.BoundingBoxEastBoundLongitude": 72.0,
+                    "PreferredUsage.AuthorityCode.Code": 7621,
+                    "Name": "WGS 84 / UTM zone 42S",
+                    "PreferredUsage.Scope.AuthorityCode.Authority": "EPSG",
+                    "PreferredUsage.Extent.BoundingBoxSouthBoundLatitude": -80.0,
+                    "PreferredUsage.Extent.BoundingBoxWestBoundLongitude": 66.0,
+                    "PreferredUsage.Name": "World - S hemisphere - 66°E to 72°E - by country",
+                    "Kind": "projected",
+                    "CoordinateSystem.HorizontalAxisUnitID": "opendes:reference-data--UnitOfMeasure:m:",
+                    "PreferredUsage.Extent.AuthorityCode.Code": 2083,
+                    "PreferredUsage.Extent.AuthorityCode.Authority": "EPSG",
+                    "PreferredUsage.Extent.BoundingBoxNorthBoundLatitude": 0.0,
+                    "PreferredUsage.Scope.AuthorityCode.Code": 1142,
                     "InactiveIndicator": null,
-                    "ID": "Projected:EPSG::32728",
-                    "Code": "32728",
-                    "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateReferenceSystem.1.1.0.json; commit SHA a046fbd2.",
-                    "CommitDate": "2022-04-02T14:45:12+0200",
-                    "Name": "WGS 84 / UTM zone 28S"
+                    "CodeSpace": "EPSG",
+                    "Code": "32742",
+                    "CoordinateSystem.VerticalAxisUnitID": null,
+                    "RevisionDate": "2020-03-14T00:00:00+0000",
+                    "Datum.Name": null,
+                    "PreferredUsage.Extent.Name": "World - S hemisphere - 66°E to 72°E - by country",
+                    "CoordinateSystem.Name": "Cartesian 2D CS. Axes: easting, northing (E,N). Orientations: east, north. UoM: m.",
+                    "CoordinateSystem.AuthorityCode.Code": 4400,
+                    "PreferredUsage.AuthorityCode.Authority": "EPSG",
+                    "Datum.AuthorityCode.Authority": null,
+                    "PreferredUsage.Scope.Name": "Engineering survey, topographic mapping."
                 },
-                "kind": "osdu:wks:reference-data--CoordinateReferenceSystem:1.1.0",
-                "id": "osdu:reference-data--CoordinateReferenceSystem:Projected:EPSG::32728",
-                "version": 1656110335564234
+                "id": "opendes:reference-data--CoordinateReferenceSystem:Projected:EPSG::32742"
             }
         ],
         "totalCount": 200
     },
-    "query": "(data.Kind: \"Projected\") AND (data.CoordinateSystem.HorizontalAxisUnitID: \"osdu:reference-data--UnitOfMeasure:m:\") AND (data.BaseCRS.BaseCRSID: \"osdu:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4326\")"
+    "query": "(NOT data.InactiveIndicator: true) AND (data.Kind: \"Projected\") AND (data.CoordinateSystem.HorizontalAxisUnitID: \"opendes:reference-data--UnitOfMeasure:m:\") AND (data.BaseCRS.BaseCRSID: \"opendes:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4326\")"
 }
 ```
 
@@ -1278,37 +1480,39 @@ not practical because the full word has to be used.
 
 ## 4.9 Alternatively using the OSDU Search service directly
 
-Alternatively to the CRS Catalog service, the OSDU standard search
-service can be used to achieve the same. The query syntax is slightly
+CRS Catalog service is well suited for requesting CRSs. It easy to use and guarantees to return all records with a single call, excludes by default vertical CRSs, excludes by default deprecated CRSs, excludes by default most properties that are not of interest, and of course is simpler to use in case complex things are needed like CRS with a specific unit. However, if a more complex query is necessery, the OSDU standard search service can be used to achieve the same. The query syntax is slightly
 more complicated for some tasks, but the developer has full control of
-the returned fields and can build a complex query.
+the returned fields and can build a complex query to extract only the information needed. 
+
+-   However, the CRS Catalog Service filters out deprecated entities and one using the Search will have to do that in a query on on the returned results.  
+-   Also note that the CRS Catalog Services returns all CRS records and someone using Search may have to paginate to ensure that.
 
 In the examples below a specific list is returned of (Bound) projected
 CRSs using two calls. After the user selects a specific CRS, the record
 id can be used to convert coordinates.
 
-From the query it will be clear how alternatively it is possible to
-fetch all records from the OSDU reference data, and then on the client
+From the query it will be clear how it is possible to
+fetch the CRS records from the OSDU reference data, and then on the client
 side perform the filter on the unit.
 
--   An issue with the below query is that if "m" is changed to \"ft\"
+-   An issue found in R3.M13 with the below query is that if "m" is changed to \"ft\"
     then the response includes \"ft\[US\]\". This has been logged.
 
 -   it seems UOM are in form url encoded for square brackets like
-    ..."UnitOfMeasure:ft%5BUS%5D:\". As a side note, the CRS Convert
-    convertTrajectory appears not to deal with the final ":".
+    ..."UnitOfMeasure:ft%5BUS%5D:\".
 
 ### 4.9.1 Find all BoundProjected CRSs with a Horizontal unit of meters
 
-**Request** _{{osduonaws_base_url}}/api/search/v2/query_
+**Request**  https://{{SEARCH_HOST}}/query
 
 ```json
 {
     "kind": "osdu:wks:reference-data--CoordinateReferenceSystem:1.1.0",
-    "query": "data.Kind: BoundProjected AND data.CoordinateSystem.HorizontalAxisUnitID: \"reference-data--UnitOfMeasure:m:\"",
+    "query": "data.Kind: BoundProjected AND data.CoordinateSystem.HorizontalAxisUnitID: \"opendes:reference-data--UnitOfMeasure:m:\"",
     "limit": 1,
     "returnedFields": ["id", "data.Name", "data.SourceCRS", "data.Transformation", "data.BaseCRS.BaseCRSID", "data.CoordinateSystem.HorizontalAxisUnitID", "data.PersistableReference"]
 }
+
 ```
 
 
@@ -1321,19 +1525,19 @@ side perform the filter on the unit.
         {
             "data": {
                 "SourceCRS.AuthorityCode.Authority": "EPSG",
-                "PersistableReference": "{\"authCode\":{\"auth\":\"OSDU\",\"code\":\"24600001\"},\"lateBoundCRS\":{\"authCode\":{\"auth\":\"EPSG\",\"code\":\"24600\"},\"name\":\"KOC_Lambert\",\"type\":\"LBC\",\"ver\":\"PE_10_9_1\",\"wkt\":\"PROJCS[\\\"KOC_Lambert\\\",GEOGCS[\\\"GCS_Kuwait_Oil_Company\\\",DATUM[\\\"D_Kuwait_Oil_Company\\\",SPHEROID[\\\"Clarke_1880_RGS\\\",6378249.145,293.465]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],PROJECTION[\\\"Lambert_Conformal_Conic\\\"],PARAMETER[\\\"False_Easting\\\",1500000.0],PARAMETER[\\\"False_Northing\\\",1166200.0],PARAMETER[\\\"Central_Meridian\\\",45.0],PARAMETER[\\\"Standard_Parallel_1\\\",32.5],PARAMETER[\\\"Scale_Factor\\\",0.998786407767],PARAMETER[\\\"Latitude_Of_Origin\\\",32.5],UNIT[\\\"Meter\\\",1.0],AUTHORITY[\\\"EPSG\\\",24600]]\"},\"name\":\"KOC * WGC-Kwt / Iraq zone [24600,1059]\",\"singleCT\":{\"authCode\":{\"auth\":\"EPSG\",\"code\":\"1059\"},\"name\":\"KOC_To_WGS_1984_1\",\"type\":\"ST\",\"ver\":\"PE_10_9_1\",\"wkt\":\"GEOGTRAN[\\\"KOC_To_WGS_1984_1\\\",GEOGCS[\\\"GCS_Kuwait_Oil_Company\\\",DATUM[\\\"D_Kuwait_Oil_Company\\\",SPHEROID[\\\"Clarke_1880_RGS\\\",6378249.145,293.465]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],GEOGCS[\\\"GCS_WGS_1984\\\",DATUM[\\\"D_WGS_1984\\\",SPHEROID[\\\"WGS_1984\\\",6378137.0,298.257223563]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],METHOD[\\\"Geocentric_Translation\\\"],PARAMETER[\\\"X_Axis_Translation\\\",-294.7],PARAMETER[\\\"Y_Axis_Translation\\\",-200.1],PARAMETER[\\\"Z_Axis_Translation\\\",525.5],OPERATIONACCURACY[1.0],AUTHORITY[\\\"EPSG\\\",1059]]\"},\"type\":\"EBC\",\"ver\":\"PE_10_9_1\"}",
-                "SourceCRS.Name": "KOC Lambert",
-                "Transformation.AuthorityCode.Code": 1059,
-                "SourceCRS.SourceCRSID": "{{NAMESPACE}}:reference-data--CoordinateReferenceSystem:Projected:EPSG::24600:",
-                "CoordinateSystem.HorizontalAxisUnitID": "{{NAMESPACE}}:reference-data--UnitOfMeasure:m:",
-                "Transformation.TransformationID": "{{NAMESPACE}}:reference-data--CoordinateTransformation:EPSG::1059:",
+                "PersistableReference": "{\"authCode\":{\"auth\":\"OSDU\",\"code\":\"23028006\"},\"lateBoundCRS\":{\"authCode\":{\"auth\":\"EPSG\",\"code\":\"23028\"},\"name\":\"ED_1950_UTM_Zone_28N\",\"type\":\"LBC\",\"ver\":\"PE_10_9_1\",\"wkt\":\"PROJCS[\\\"ED_1950_UTM_Zone_28N\\\",GEOGCS[\\\"GCS_European_1950\\\",DATUM[\\\"D_European_1950\\\",SPHEROID[\\\"International_1924\\\",6378388.0,297.0]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],PROJECTION[\\\"Transverse_Mercator\\\"],PARAMETER[\\\"False_Easting\\\",500000.0],PARAMETER[\\\"False_Northing\\\",0.0],PARAMETER[\\\"Central_Meridian\\\",-15.0],PARAMETER[\\\"Scale_Factor\\\",0.9996],PARAMETER[\\\"Latitude_Of_Origin\\\",0.0],UNIT[\\\"Meter\\\",1.0],AUTHORITY[\\\"EPSG\\\",23028]]\"},\"name\":\"ED50 * DMA-Irl Gbr / UTM zone 28N [23028,1138]\",\"singleCT\":{\"authCode\":{\"auth\":\"EPSG\",\"code\":\"1138\"},\"name\":\"ED_1950_To_WGS_1984_6\",\"type\":\"ST\",\"ver\":\"PE_10_9_1\",\"wkt\":\"GEOGTRAN[\\\"ED_1950_To_WGS_1984_6\\\",GEOGCS[\\\"GCS_European_1950\\\",DATUM[\\\"D_European_1950\\\",SPHEROID[\\\"International_1924\\\",6378388.0,297.0]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],GEOGCS[\\\"GCS_WGS_1984\\\",DATUM[\\\"D_WGS_1984\\\",SPHEROID[\\\"WGS_1984\\\",6378137.0,298.257223563]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],METHOD[\\\"Geocentric_Translation\\\"],PARAMETER[\\\"X_Axis_Translation\\\",-86.0],PARAMETER[\\\"Y_Axis_Translation\\\",-96.0],PARAMETER[\\\"Z_Axis_Translation\\\",-120.0],OPERATIONACCURACY[6.0],AUTHORITY[\\\"EPSG\\\",1138]]\"},\"type\":\"EBC\",\"ver\":\"PE_10_9_1\"}",
+                "SourceCRS.Name": "ED50 / UTM zone 28N",
+                "Transformation.AuthorityCode.Code": 1138,
+                "SourceCRS.SourceCRSID": "opendes:reference-data--CoordinateReferenceSystem:Projected:EPSG::23028:",
+                "CoordinateSystem.HorizontalAxisUnitID": "opendes:reference-data--UnitOfMeasure:m:",
+                "Transformation.TransformationID": "opendes:reference-data--CoordinateTransformation:EPSG::1138:",
                 "Transformation.AuthorityCode.Authority": "EPSG",
-                "Transformation.Name": "KOC to WGS 84 (1)",
-                "BaseCRS.BaseCRSID": "{{NAMESPACE}}:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4246:",
-                "SourceCRS.AuthorityCode.Code": 24600,
-                "Name": "KOC * WGC-Kwt / Iraq zone [24600,1059]"
+                "Transformation.Name": "ED50 to WGS 84 (6)",
+                "BaseCRS.BaseCRSID": "opendes:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4230:",
+                "SourceCRS.AuthorityCode.Code": 23028,
+                "Name": "ED50 * DMA-Irl Gbr / UTM zone 28N [23028,1138]"
             },
-            "id": "osdu:reference-data--CoordinateReferenceSystem:BoundProjected:EPSG::24600_EPSG::1059"
+            "id": "opendes:reference-data--CoordinateReferenceSystem:BoundProjected:EPSG::23028_EPSG::1138"
         }
     ],
     "aggregations": null,
@@ -1486,7 +1690,7 @@ between two datums, not through the hub CRS (WGS 84).*
 
 ## 5.3 Find all CTs between two (horizontal) CRSs
 
-To find all CTs between two CRSs do, for example,
+By defining a sourceCRS and a targetCRS, it's possible to find all CTs between those two CRSs. To find the available transformations between for example Kousseri (epsg:4198) and WGS 72BE(4324), you can do 
 
 **Request** _{{osduonaws_base_url}}/api/crs/catalog/v3/coordinate-transformation_
 ```json
@@ -1497,7 +1701,7 @@ To find all CTs between two CRSs do, for example,
 ```
 
 *\*Note: Operations in OSDU are (all) reversible but stored only once.
-Hence, to find CTs between CRS A and CRS B two queries would be
+Hence, to find CTs between CRS A and CRS B, two queries would be
 required, i.e., first to find all from A to B and second all from B to
 A. The complex OR query constructed in the CRS Catalog Helper service
 does this switch automatically.*
@@ -1553,6 +1757,7 @@ does this switch automatically.*
 
 
 ## 5.4 Find all vertical CTs
+To list all vertical tranformations do:
 
 **Request** _{{osduonaws_base_url}}/api/crs/catalog/v3/coordinate-transformation_
 ```json
