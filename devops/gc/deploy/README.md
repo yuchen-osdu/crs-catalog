@@ -26,6 +26,13 @@ Packages are only needed for installation from a local computer.
 
 Before installing deploy Helm chart you need to set variables in **values.yaml** file using any code editor. Some of the values are prefilled, but you need to specify some values as well. You can find more information about them below.
 
+### Global variables
+
+| Name | Description | Type | Default |Required |
+|------|-------------|------|---------|---------|
+**global.domain** | your domain for the external endpoint, ex `example.com` | string | - | yes
+**global.onPremEnabled** | whether on-prem is enabled | boolean | false | yes
+
 ### Configmap variables
 
 | Name | Description | Type | Default |Required |
@@ -49,9 +56,7 @@ Before installing deploy Helm chart you need to set variables in **values.yaml**
 
 | Name | Description | Type | Default |Required |
 |------|-------------|------|---------|---------|
-**conf.domain** | your domain, ex `example.com` | string | - | yes
 **conf.appName** | Service name | string | `crs-catalog` | yes
-**conf.onPremEnabled** | whether on-prem is enabled | boolean | false | yes
 
 ### ISTIO variables
 
