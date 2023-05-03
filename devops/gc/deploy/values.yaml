@@ -7,8 +7,8 @@ data:
   logLevel: "ERROR"
   entitlementsHost: "http://entitlements"
   # deployments
-  requestsCpu: "10m"
-  requestsMemory: "350Mi"
+  requestsCpu: "5m"
+  requestsMemory: "280Mi"
   limitsCpu: "1"
   limitsMemory: "1G"
   serviceAccountName: ""
@@ -19,7 +19,7 @@ conf:
   appName: "crs-catalog"
 
 istio:
-  proxyCPU: "10m"
+  proxyCPU: "5m"
   proxyCPULimit: "200m"
-  proxyMemory: "100Mi"
+  proxyMemory: "50Mi"
   proxyMemoryLimit: "256Mi"
