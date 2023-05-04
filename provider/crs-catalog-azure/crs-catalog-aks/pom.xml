@@ -176,6 +176,11 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${spring-webmvc.version}</version>
         </dependency>
+        <dependency>
+    		<groupId>org.mortbay.jetty</groupId>
+    		<artifactId>jetty</artifactId>
+    		<version>6.1.23</version>
+		</dependency>
     </dependencies>
 
     <build>
