@@ -32,6 +32,7 @@
         <jackson-databind.version>2.14.0</jackson-databind.version>
         <jackson.version>2.13.2</jackson.version>
         <spring-webmvc.version>5.3.22</spring-webmvc.version>
+        <commons-beanutils.version>1.9.4</commons-beanutils.version>
     </properties>
 
     <prerequisites>
@@ -123,6 +124,17 @@
             <groupId>com.googlecode.objectify</groupId>
             <artifactId>objectify</artifactId>
             <version>${objectify.version}</version>
+        </dependency>
+
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${commons-beanutils.version}</version>
+		</dependency>
+        <dependency>
+    		<groupId>org.mortbay.jetty</groupId>
+    		<artifactId>jetty</artifactId>
+    		<version>6.1.23</version>
         </dependency>
 
         <!-- Lucene Indexing Dependencies -->
