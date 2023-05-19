@@ -136,7 +136,7 @@ This section describes how to run cloud OSDU E2E tests (testing/catalog_test_gc/
 | ---  | ---   | ---         | ---        | ---    |
 | `INTEGRATION_TESTER` | `********` | A base64 encoded google service account json credentials authorization for OSDU services | yes | output of infrastructure deployment |
 
-This section describes how to run cloud OSDU E2E tests (testing/catalog_test_anthos/jwt_client.py).
+This section describes how to run cloud OSDU E2E tests (testing/catalog_test_baremetal/jwt_client.py).
 
 | name | value | description | sensitive? | source |
 | ---  | ---   | ---         | ---        | ---    |
