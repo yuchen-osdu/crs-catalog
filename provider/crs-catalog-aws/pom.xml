@@ -50,10 +50,6 @@
     </prerequisites>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
@@ -62,9 +58,9 @@
         </dependency>
 
         <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -86,7 +82,11 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${spring-webmvc.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>5.7.8</version>
+        </dependency>
     </dependencies>
 
     <build>
