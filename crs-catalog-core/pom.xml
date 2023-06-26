@@ -33,6 +33,7 @@
         <jackson.version>2.13.2</jackson.version>
         <spring-webmvc.version>5.3.22</spring-webmvc.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
+        <org-eclipse-jetty.version>9.4.51.v20230217</org-eclipse-jetty.version>
     </properties>
 
     <prerequisites>
@@ -88,6 +89,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jetty</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jetty-server</artifactId>
+                    <groupId>org.eclipse.jetty</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -196,6 +203,11 @@
             <artifactId>plexus-utils</artifactId>
             <version>3.0.16</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>${org-eclipse-jetty.version}</version>
         </dependency>
     </dependencies>
 
