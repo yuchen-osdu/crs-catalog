@@ -187,11 +187,6 @@
             <artifactId>jetty</artifactId>
             <version>6.1.23</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>5.7.8</version>
-        </dependency>
     </dependencies>
 
     <build>

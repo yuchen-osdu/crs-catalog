@@ -138,11 +138,6 @@
             <artifactId>netty-codec</artifactId>
             <version>4.1.86.Final</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>5.7.8</version>
-        </dependency>
     </dependencies>
 
     <build>
