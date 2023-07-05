@@ -121,7 +121,7 @@
 			<groupId>org.opengroup.osdu</groupId>
 			<artifactId>os-core-lib-ibm</artifactId>
 			<version>${os-core-lib-ibm.version}</version>
-           
+
 		</dependency>
         <dependency>
             <groupId>org.springframework</groupId>
