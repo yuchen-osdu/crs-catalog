@@ -3,9 +3,9 @@ variables:
   GC_VENDOR: gc
   GC_INT_TEST_TYPE: python
   GC_PYTHON_INT_TEST_SUBDIR: testing/catalog_test_gc
-  # --- osdu-anthos specific variables ---
-  GC_ANTHOS_PYTHON_INT_TEST_SUBDIR: testing/catalog_test_anthos
-  # --- end of osdu-anthos specific variables ---
+  # --- baremetal specific variables ---
+  GC_BAREMETAL_PYTHON_INT_TEST_SUBDIR: testing/catalog_test_baremetal
+  # --- end of baremetal specific variables ---
 
 gc-test-python:
   variables:
@@ -15,6 +15,6 @@ gc-dev2-test-python:
   variables:
     VIRTUAL_SERVICE_HOST_NAME: $GC_CRS_CATALOG_HOSTNAME
 
-gc-anthos-test-python:
+gc-baremetal-test-python:
   variables:
-    VIRTUAL_SERVICE_HOST_NAME: $OSDU_ANTHOS_CRS_CATALOG_HOSTNAME
+    VIRTUAL_SERVICE_HOST_NAME: $OSDU_BAREMETAL_CRS_CATALOG_HOSTNAME

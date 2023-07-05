@@ -34,6 +34,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SearchWrapperService {
@@ -50,6 +51,8 @@ public class SearchWrapperService {
     ISearchService searchService;
 
     private static String schemaAuthority;
+
+    private int DEFAULT_QUERY_LIMIT=1000;
 
     public static String getCoordinateReferenceSystemKind() {
         return String.format("%s:wks:reference-data--CoordinateReferenceSystem:1.1.0", schemaAuthority);
@@ -126,6 +129,20 @@ public class SearchWrapperService {
         try {
             logger.debug(String.format("Sending query to search service: %s", queryRequest.toString()));
             queryResponse = searchService.search(queryRequest);
+            List<Map<String, Object>> searchResultList = new ArrayList<Map<String, Object>>();
+            searchResultList = queryResponse.getResults();
+            if (queryRequest.getFrom() <= 0) {
+                int default_Count = searchResultList.size();
+                long totalCount = queryResponse.getTotalCount();
+                while (default_Count < totalCount && queryRequest.getLimit() > DEFAULT_QUERY_LIMIT) {
+                    queryRequest.setFrom(default_Count);
+                    queryResponse = searchService.search(queryRequest);
+                    searchResultList.addAll(queryResponse.getResults());
+                    default_Count += default_Count;
+
+                }
+            }
+            queryResponse.setResults(searchResultList);
             logger.debug(String.format("Received response from search service: %s", queryResponse.toString()));
         } catch (SearchException e) {
             handleSearchError("Failed to call search service", e);
