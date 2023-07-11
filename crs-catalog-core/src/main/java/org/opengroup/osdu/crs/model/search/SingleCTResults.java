@@ -21,14 +21,17 @@ package org.opengroup.osdu.crs.model.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.opengroup.osdu.crs.model.interfaces.SingleCT;
 
 
 /**
  *  An object to hold the list of {@link SingleCT} objects from a search
  */
+@Schema(description = "A response containing a list of single cartographic transformations.")
 public class SingleCTResults extends SearchResults {
 
+    @Schema(description = "An array of SingleCTs.")
 	private List<SingleCT>	items;
 
     /**

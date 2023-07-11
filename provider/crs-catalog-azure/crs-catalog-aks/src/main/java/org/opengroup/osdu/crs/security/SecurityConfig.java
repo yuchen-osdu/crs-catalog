@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.opengroup.osdu.core.common.model.http.AppError;
 import org.opengroup.osdu.crs.middleware.AuthenticationRequestFilter;
 import org.opengroup.osdu.crs.middleware.AuthenticationService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,7 +16,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -37,18 +35,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  implements Acc
             "/",
             "/index.html",
             "/_ah/*",
-            "/v2/api-docs",
-            "/v3/api-docs",
-            "/configuration/ui",
-            "/swagger-resources/**",
-            "/configuration/security",
+            "/api-docs.yaml",
+            "/api-docs/swagger-config",
+            "/api-docs/**",
             "/swagger",
             "/swagger-ui.html",
             "/swagger-ui/**",
-            "/v2/info",
-            "/v3/info",
             "/actuator/*",
-            "/webjars/**",
             "/csrf"
     };
 

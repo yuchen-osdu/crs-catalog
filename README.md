@@ -65,6 +65,17 @@ Similarly, when not using Postman but client code, set the configuration  ```ver
 
 Run application using debug mode and use [Postman](https://www.getpostman.com/)
 to send a GET request to obtaining the Swagger API documentation
+
+### Open API 3.0 - Swagger
+
+- Swagger UI : https://host/context-path/swagger (will redirect to https://host/context-path/swagger-ui/index.html)
+- api-docs [All Versions] (JSON) : https://host/context-path/api-docs
+- api-docs [All versions] (YAML) :https://host/context-path/api-docs.yaml
+- api-docs [Version V2] (JSON) : https://host/context-path/api-docs/v2
+- api-docs [Version V3] (JSON) : https://host/context-path/api-docs/v3        
+
+All the Swagger and OpenAPI related common properties are managed here [swagger.properties](https://community.opengroup.org/osdu/platform/system/reference/crs-catalog-service/-/blob/jb/az_swagger_openapi/crs-catalog-core/src/main/resources/swagger.properties)   
+
 ```
 http://localhost:8080/api/crs/catalog/v2/swagger.json
 ```

@@ -14,10 +14,14 @@
 
 package org.opengroup.osdu.crs.model.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
+@Schema(description = "BaseCRS")
 public class BaseCRS {
+	@Schema(description = "Record Id of parent CRS", type = "string")
 	private String id;
+	@Schema(description = "Name of parent CRS", type = "string")
 	private String name;
 }

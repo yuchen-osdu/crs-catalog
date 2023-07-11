@@ -14,6 +14,7 @@
 
 package org.opengroup.osdu.crs.model.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.opengroup.osdu.core.common.model.search.SpatialFilter;
 
@@ -23,19 +24,33 @@ import java.util.List;
 
 
 @Data
+@Schema(description = "Body for searching on CTs")
 public class CoordinateTransformationsQuery implements ISearchQuery {
+    @Schema(description = "Corresponds to CodeSpace field on CT records", type = "string")
     private String codeSpace;
+    @Schema(description = "Corresponds to Name field on CT records. All entities with name containing the search string will be returned. Wildcard is not supported", type = "string")
     private String name;
+    @Schema(description = "Corresponds to ID field on CT records", type = "string")
     private String id;
+    @Schema(description = "Corresponds to Code field on CT records", type = "string")
     private String code;
+    @Schema(description = "Corresponds to the Kind field on CT records. Default is to not return CT records with Kind \"VerticalTransformation\". Viable options include \"Transformation\", \"ConcatenatedOperation\", \"VerticalTransformation\", \"ExcludeVertical\" (default) and \"All\". \"All\" is a special value which indicates returning records of all kinds.", type = "string")
     private String kind = "ExcludeVertical";
+    @Schema(description = "Corresponds to SourceCRS.SourceCRSID (record id), e.g., \"osdu:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4198:\". As SourceCRS and TargetCRS are interchangeable, it will also search TargetCRS.TargetCRSID", type = "string")
     private String sourceCRS;
+    @Schema(description = "Corresponds to TargetCRS.TargetCRSID (record id), e.g., \"osdu:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4198:\". As SourceCRS and TargetCRS are interchangeable, it will also search SourceCRS.SourceCRSID", type = "string")
     private String targetCRS;
+    @Schema(description = "Returns all entities for which the (Latitude, Longitude) is inside the Extent bounding box. Must also provide longitude", type = "number")
     private Double latitude;
+    @Schema(description = "See latitude", type = "number")
     private Double longitude;
+    @Schema(description = "Whether to return deprecated records marked with InactiveIndicator=true. Default is false.", type = "boolean")
     private Boolean includeDeprecated = false;
+    @Schema(description = "Corresponds to offset on search service", type = "integer")
     private Integer offset;
+    @Schema(description = "Corresponds to limit on search service. Default is to return all found entities.", type = "integer")
     private Integer limit = 10000;
+    @Schema(description = "Whether to return all fields in the record. Default is false and only a subset is returned", type = "boolean")
     private Boolean returnAllFields = false;
     List<String> returnedFields = Arrays.asList(
             "id", "data.Name", "data.Code", "data.InactiveIndicator", "data.Kind", "data.Accuracy",

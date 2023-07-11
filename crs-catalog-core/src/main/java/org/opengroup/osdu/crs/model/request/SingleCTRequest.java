@@ -18,17 +18,21 @@
  */
 package org.opengroup.osdu.crs.model.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.opengroup.osdu.crs.model.SingleCTEssenceImpl;
 
 /**
  *  SingleCTRequest is class which encapsulates the request body for a SingleCT object.
  */
+@Schema(description = "Request to get one SingleCT given its 'persistableReference' (serialized essence) or 'essence' structure. Only one, persistableReference or essence must be provided. If both are provided, essence takes precedence.")
 public class SingleCTRequest {
 
 	@JsonProperty("essence")
+	@Schema(description = "Single cartographic transformation.")
 	private SingleCTEssenceImpl singleCTEssence;
 
 	@JsonProperty("persistableReference")
+	@Schema(description = "The persistable reference string, either the essence of the SingleCT serialized into a JSON string or an encoded string (version 1).", type = "string")
 	private String persistableReference;
 
 	/**

@@ -14,6 +14,7 @@
 
 package org.opengroup.osdu.crs.model.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.opengroup.osdu.core.common.model.search.Point;
 import org.opengroup.osdu.core.common.model.search.SpatialFilter;
@@ -23,11 +24,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Schema(description = "Coordinate Transformations")
 public class InPolygonQuery implements ISearchQuery {
+	@Schema(description = "Record of CRS or CT to check points against", type = "string")
 	private String recordId;
+	@Schema(description = "Searches on id for CRS records", type = "string")
 	private String dataId;
+	@Schema(description = "List of points to check against CRS or CT bounding boxes")
 	private List<Point> points = new ArrayList<>();
+	@Schema(description = "Corresponds to offset on search service", type = "integer")
 	private Integer offset;
+	@Schema(description = "Corresponds to limit on search service. Default is to return all found entities.", type = "integer")
 	private Integer limit;
 	private List<String> returnedFields = new ArrayList<>();
 	@Override
