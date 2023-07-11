@@ -21,14 +21,17 @@ package org.opengroup.osdu.crs.model.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.opengroup.osdu.crs.model.interfaces.EarlyBoundCRS;
 
 /**
  *  An object to hold the list of {@link EarlyBoundCRS} objects from a search
  */
+@Schema(description = "A response containing a list of early-bound CRSes.")
 public class EarlyBoundCRSResults extends SearchResults {
 
-	private List<EarlyBoundCRS>	items;
+    @Schema(description = "An array of EarlyBoundCRS")
+    private List<EarlyBoundCRS>	items;
 
     /**
      * Constructor
@@ -61,5 +64,6 @@ public class EarlyBoundCRSResults extends SearchResults {
      * get the list of {@link EarlyBoundCRS} objects
      * @return {@link EarlyBoundCRS} objects
      */
+    @Schema(description = "The EarlyBoundCRS class.")
     public List<EarlyBoundCRS> getCRSes() { return items;}
 }

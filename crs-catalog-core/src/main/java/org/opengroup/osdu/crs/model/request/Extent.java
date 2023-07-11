@@ -14,10 +14,14 @@
 
 package org.opengroup.osdu.crs.model.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
+@Schema(description = "Description of extent. Corresponds to PreferredUsage.Extent.Description in the record. All entities with PreferredUsage.Extent.Description containing the search string will be returned. Wildcard is not supported.")
 public class Extent {
+	@Schema(type = "string")
 	private String name;
+	@Schema(type = "string")
 	private String description;
 }

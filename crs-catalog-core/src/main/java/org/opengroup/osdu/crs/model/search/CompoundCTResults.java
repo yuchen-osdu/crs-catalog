@@ -21,14 +21,16 @@ package org.opengroup.osdu.crs.model.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.opengroup.osdu.crs.model.interfaces.CompoundCT;
 
 
 /**
  *  An object to hold the list of {@link CompoundCT} objects from a search
  */
+@Schema(description = "A response containing a list of compound cartographic transformations.")
 public class CompoundCTResults extends SearchResults {
-
+    @Schema(description = "An array of CompoundCTs")
 	private List<CompoundCT>	items;
 
     /**

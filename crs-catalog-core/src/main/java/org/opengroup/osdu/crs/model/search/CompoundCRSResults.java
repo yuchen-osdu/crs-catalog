@@ -21,14 +21,17 @@ package org.opengroup.osdu.crs.model.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.opengroup.osdu.crs.model.interfaces.CompoundCRS;
 
 /**
  *  An object to hold the list of {@link CompoundCRS} objects from a search
  */
+@Schema(description = "A response containing a list of compound CRSes.")
 public class CompoundCRSResults extends SearchResults {
 
-	private List<CompoundCRS>	items;
+    @Schema(description = "An array of CompoundCRS")
+    private List<CompoundCRS>	items;
 
     /**
      * Constructor
@@ -61,5 +64,6 @@ public class CompoundCRSResults extends SearchResults {
      * get the list of {@link CompoundCRS} objects
      * @return {@link CompoundCRS} objects
      */
+    @Schema(description = "List of CompoundCRS objects.")
     public List<CompoundCRS> getCRSes() { return items;}
 }

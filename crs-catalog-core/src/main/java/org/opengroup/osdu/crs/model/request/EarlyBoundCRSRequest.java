@@ -18,15 +18,19 @@
  */
 package org.opengroup.osdu.crs.model.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.opengroup.osdu.crs.model.EarlyBoundCRSEssenceImpl;
 
 /**
  *  EarlyBoundCRSRequest is class which encapsulates the request body for a EarlyBoundCRS object.
  */
+@Schema(description = "Request to get one EarlyBoundCRS given its 'persistableReference' (serialized essence) or 'essence' structure. Only one, persistableReference or essence must be provided. If both are provided, essence takes precedence")
 public class EarlyBoundCRSRequest {
 	@JsonProperty("essence")
+	@Schema(description = "Early-bound coordinate reference system, i.e. a CRS with a transformation binding to WGS 84")
 	private EarlyBoundCRSEssenceImpl earlyBoundCRSEssence;
 	@JsonProperty("persistableReference")
+	@Schema(description = "The persistable reference string, either the essence of the EarlyBoundCRS serialized into a JSON string or an encoded string (version 1)")
 	private String persistableReference;
 	/**
 	 * Constructor

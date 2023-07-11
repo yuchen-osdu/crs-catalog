@@ -21,15 +21,18 @@ package org.opengroup.osdu.crs.model.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.opengroup.osdu.crs.model.interfaces.CT;
 
 
 /**
  *  An object to hold the list of {@link CT} objects from a search
  */
+@Schema(description = "A response containing a list of cartographic transformations")
 public class CTResults extends SearchResults {
 
-	private List<CT>	items;
+    @Schema(description = "An array of (any sub-type of) cartographic transforms")
+    private List<CT>	items;
 
     /**
      * Constructor
@@ -62,5 +65,6 @@ public class CTResults extends SearchResults {
      * get the list of {@link CT} objects
      * @return {@link CT} objects
      */
+    @Schema(description = "Generic cartographic transformation")
     public List<CT> getCTs() { return items;}
 }

@@ -18,15 +18,19 @@
 package org.opengroup.osdu.crs.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.opengroup.osdu.crs.model.CRSEssenceImpl;
 
 /**
  *  CRSRequest is class which encapsulates the request body for a CRS object.
  */
+@Schema(description = "Request to get one CRS (any sub-type) given its 'persistableReference' (serialized essence) or 'essence' structure. Only one, persistableReference or essence must be provided. If both are provided, essence takes precedence. If both are provided, essence takes precedence")
 public class CRSRequest {
+    @Schema(description = "Any coordinate reference system essence carrying all possible properties for LateBoundCRSEssence, EarlyBoundCRSEssence and CompoundCRSEssence")
     @JsonProperty("essence")
     private CRSEssenceImpl crsEssenceJson;
 
+    @Schema(description = "The persistable reference string, either the essence of the CRS serialized into a JSON string or an encoded string (version 1)", type = "string")
     @JsonProperty("persistableReference")
     private String persistableReference;
 
@@ -57,6 +61,7 @@ public class CRSRequest {
      * get the json representation of the CRS essence
      * @return the json representation of the CRS essence as {@link CRSEssenceImpl}
      */
+    @Schema(description = "json representation of the CRS essence")
     public CRSEssenceImpl getCRSEssenceJson() {
         return crsEssenceJson;
     }
@@ -65,6 +70,7 @@ public class CRSRequest {
      * Get the persistable reference string as passed through the request
      * @return the persistable reference string
      */
+    @Schema(description = "persistable reference string")
     public String getPersistableReference() {
         return this.persistableReference;
     }

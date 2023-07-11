@@ -14,12 +14,17 @@
 
 package org.opengroup.osdu.crs.model.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.opengroup.osdu.core.common.model.search.Point;
 
 @Data
+@Schema(description = "A point that didn't land in the bounding box for area of use search")
 public class PointsInAouSearchPoint {
+	@Schema(description = "Lat, long point")
 	private Point point;
+	@Schema(description = "A zero-based index of the point in the input \"points\" array")
 	private Integer index;
+	@Schema(description = "Kilometers outside the record's bounding box")
 	private Integer approximateKmDistanceOutside;
 }

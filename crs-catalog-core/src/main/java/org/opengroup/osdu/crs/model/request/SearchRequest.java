@@ -21,13 +21,16 @@ package org.opengroup.osdu.crs.model.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Class representing a search query
  */
+@Schema(description = "Request to containing a Lucene style query string.")
 public class SearchRequest {
     @Expose
     @SerializedName("query")
+    @Schema(description = "The Lucene style query string with keywords.", type = "string")
     private String query;
 
     /**

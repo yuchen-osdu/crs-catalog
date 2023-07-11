@@ -21,11 +21,13 @@ package org.opengroup.osdu.crs.model.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.opengroup.osdu.crs.model.interfaces.LateBoundCRS;
 
 /**
  *  An object to hold the list of {@link LateBoundCRS} objects from a search
  */
+@Schema(description = "A response containing a list of late-bound CRSes.")
 public class LateBoundCRSResults extends SearchResults {
 
 	private List<LateBoundCRS>	items;
@@ -61,5 +63,6 @@ public class LateBoundCRSResults extends SearchResults {
      * get the list of {@link LateBoundCRS} objects
      * @return {@link LateBoundCRS} objects
      */
+    @Schema(description = "An array of LateBoundCRS")
     public List<LateBoundCRS> getCRSes() { return items;}
 }

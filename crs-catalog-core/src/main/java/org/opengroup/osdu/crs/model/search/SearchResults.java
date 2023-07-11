@@ -18,13 +18,21 @@
  */
 package org.opengroup.osdu.crs.model.search;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  *  An abstract base class object to hold the search results
  */
+@Schema(description = "Object to hold the list of `SearchResults` objects from a search")
 public abstract class SearchResults {
 
-	private int offset;
+    @Schema(description = "The offset of the first item in the list of all AreaOfUse. It is optional and is 0 by default.")
+    private int offset;
+
+    @Schema(description = "The maximum number of the AreaOfUse returned. It is optional and is 100 by default.")
     private int count;
+
+    @Schema(description = "The mode of return: 'persistable_reference' (default) string or 'essence' structure or both 'persistable_reference_essence'.")
     private int totalCount;
 
     /**

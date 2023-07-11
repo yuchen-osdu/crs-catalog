@@ -14,6 +14,7 @@
 
 package org.opengroup.osdu.crs.model.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.opengroup.osdu.core.common.model.search.SpatialFilter;
 
@@ -23,27 +24,48 @@ import java.util.List;
 
 
 @Data
+@Schema(description = "Body for searching on CRSs")
 public class CoordinateReferenceSystemsQuery implements ISearchQuery {
+    @Schema(description = "Corresponds to CodeSpace field on CRS records", type = "string")
     private String codeSpace;
+    @Schema(description = "Corresponds to Code field on CRS records", type = "string")
     private String code;
+    @Schema(description = "Corresponds to Code field on CRS records", type = "string")
     private String name;
+    @Schema(description = "Corresponds to ID field on CRS records", type = "string")
     private String id;
+    @Schema(description = "Corresponds to Kind field on CRS records", type = "string")
     private String kind;
+    @Schema(description = "Type of CRS, e.g., BoundCRS, ProjectedCRS, GeodeticCRS, VerticalCRS", type = "string")
     private String coordinateReferenceSystemType;
+    @Schema(description = "Whether or not to only return bound projected type or projected type based on wgs84. If true, it only returns CRS 1. with Kind as \"BoundProjected\" or 2. with Kind as \"projected\" and BaseCRS.AuthorityCode.Code as 4326", type = "boolean")
     private boolean returnBoundProjectedAndProjectedBasedOnWgs84;
+    @Schema(description ="Whether or not to only return bound geopraphic 2d type. If true, it only returns CRS 1. with Kind as \"BoundGeographic2D\" or 2. with Kind as \"geographic 2D\" and Code as 4326 and CodeSpace as \"EPSG\" " , type = "boolean")
     private boolean returnBoundGeographic2DAndWgs84;
+    @Schema(description ="BaseCRS")
     private BaseCRS baseCRS;
+    @Schema(description ="Datum")
     private Datum datum;
+    @Schema(description ="Description of extent. Corresponds to PreferredUsage.Extent.Description in the record. All entities with PreferredUsage.Extent.Description containing the search string will be returned. Wildcard is not supported.", type = "string")
     private Extent extent;
     private String persistableReferenceSearch;
+    @Schema(description ="Corresponds to CoordinateSystem.HorizontalAxisUnitID field on CRS records, e.g., \"osdu:reference-data--UnitOfMeasure:dega:\".", type = "string")
     private String horizontalAxisUnitId;
+    @Schema(description ="CorrespondsCorresponds to CoordinateSystem.VerticalAxisUnitID field on CRS records", type = "string")
     private String verticalAxisUnitId;
+    @Schema(description ="Latitude point for searching on CRS bounding box", type = "number")
     private Double latitude;
+    @Schema(description ="Longitude point for searching on CRS bounding box", type = "number")
     private Double longitude;
+    @Schema(description ="Whether to return deprecated records marked with InactiveIndicator=true. Default is false", type = "boolean")
     private Boolean includeDeprecated = false;
+    @Schema(description ="Corresponds to offset on search service", type = "integer")
     private Integer offset;
+    @Schema(description ="Corresponds to limit on search service. Default is to return all found entities.", type = "integer")
     private Integer limit = 10000;
+    @Schema(description ="Whether to return all fields in the record. Default is false and only a subset is returned", type = "boolean")
     private Boolean returnAllFields = false;
+    @Schema(description ="Return all fields in the record")
     private List<String> returnedFields;
 
     public String constructQuery() {

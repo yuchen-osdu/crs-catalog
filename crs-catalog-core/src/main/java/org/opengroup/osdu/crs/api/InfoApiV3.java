@@ -14,7 +14,13 @@
 
 package org.opengroup.osdu.crs.api;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.opengroup.osdu.core.common.info.VersionInfoBuilder;
+import org.opengroup.osdu.core.common.model.http.AppError;
 import org.opengroup.osdu.core.common.model.info.VersionInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -31,6 +37,13 @@ public class InfoApiV3 {
   @Autowired
   private VersionInfoBuilder versionInfoBuilder;
 
+  @Operation(summary = "${infoApi.infoV3.summary}", description = "${infoApi.infoV3.description}", tags = {"info-api-v3"})
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "Version info.", content = { @Content(schema = @Schema(implementation = VersionInfo.class)) }),
+          @ApiResponse(responseCode = "400", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+          @ApiResponse(responseCode = "403", description = "Forbidden",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+          @ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+  })
   @GetMapping(value = "/info", produces = MediaType.APPLICATION_JSON_VALUE)
   public VersionInfo info() throws IOException {
     return versionInfoBuilder.buildVersionInfo();

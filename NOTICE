@@ -675,13 +675,6 @@ The following software have components provided under the terms of this license:
 - aalto-xml (from https://github.com/FasterXML/aalto-xml, https://repo1.maven.org/maven2/com/fasterxml/aalto-xml)
 
 ========================================================================
-Info-ZIP
-========================================================================
-The following software have components provided under the terms of this license:
-
-- ClassGraph (from https://github.com/classgraph/classgraph)
-
-========================================================================
 LGPL-2.0-only
 ========================================================================
 The following software have components provided under the terms of this license:
@@ -729,7 +722,6 @@ The following software have components provided under the terms of this license:
 - Azure Spring Boot AutoConfigure (from https://github.com/Azure/azure-sdk-for-java, https://github.com/Microsoft/azure-spring-boot)
 - Azure Spring Boot Starter for Azure AD Spring Security Integration (from https://github.com/Azure/azure-sdk-for-java)
 - Checker Qual (from https://checkerframework.org)
-- ClassGraph (from https://github.com/classgraph/classgraph)
 - Core :: Utilities (from https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-util)
 - Default Plexus Container (from https://repo1.maven.org/maven2/org/codehaus/plexus/plexus-container-default)
 - JSch (from http://www.jcraft.com/jsch/)
@@ -780,7 +772,6 @@ The following software have components provided under the terms of this license:
 - msal4j (from https://github.com/AzureAD/microsoft-authentication-library-for-java)
 - msal4j-persistence-extension (from https://github.com/AzureAD/microsoft-authentication-extensions-for-java)
 - qpid-proton-j-extensions (from https://github.com/Azure/qpid-proton-j-extensions)
-- webjars-locator-core (from <http://webjars.org>, http://webjars.org)
 
 ========================================================================
 MPL-1.1

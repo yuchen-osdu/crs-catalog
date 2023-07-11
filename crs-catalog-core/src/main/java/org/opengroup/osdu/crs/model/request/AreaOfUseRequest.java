@@ -18,17 +18,21 @@
  */
 package org.opengroup.osdu.crs.model.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.opengroup.osdu.crs.model.AreaOfUseEssenceImpl;
 
 /**
  *  AreaOfUseRequest is class which encapsulates the request body for an area of use object.
  */
+@Schema(description = "Request to get area of use")
 public class AreaOfUseRequest {
 
 	@JsonProperty("essence")
+	@Schema(description = "Area of use consisting of a bounding box in latitude and longitude WGS 84")
 	private AreaOfUseEssenceImpl areaOfUseEssence;
 
 	@JsonProperty("persistableReference")
+	@Schema(description = "The persistable reference string, either the essence of the AreaOfUse serialized into a JSON string or an encoded string (version 1)",type = "string")
 	private String persistableReference;
 
 	/**
@@ -59,6 +63,7 @@ public class AreaOfUseRequest {
 	 * get the area of use essence
 	 * @return the area of use essence
 	 */
+	@Schema(description = "the area of use essence")
 	public AreaOfUseEssenceImpl getAreaOfUseEssence() {
 		return areaOfUseEssence;
 	}
@@ -67,6 +72,8 @@ public class AreaOfUseRequest {
 	 * Get the persistable reference string as passed through the request
 	 * @return the persistable reference string
 	 */
+
+	@Schema(description = "persistable reference string as passed through the request")
 	public String getPersistableReference() { return this.persistableReference; }
 }
 

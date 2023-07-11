@@ -18,16 +18,20 @@
  */
 package org.opengroup.osdu.crs.model.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.opengroup.osdu.crs.model.CompoundCTEssenceImpl;
 
 /**
  *  CompoundCTRequest is class which encapsulates the request body for a compound CT object.
  */
+@Schema(description = "Request to get one CompoundCT given its 'persistableReference' (serialized essence) or 'essence' structure. Only one, persistableReference or essence must be provided. If both are provided, essence takes precedence.")
 public class CompoundCTRequest {
 	@JsonProperty("essence")
+	@Schema(description = "Compound cartographic transformation")
 	private CompoundCTEssenceImpl compoundCTEssence;
 
 	@JsonProperty("persistableReference")
+	@Schema(description = "The persistable reference string, either the essence of the CompoundCT serialized into a JSON string or an encoded string (version 1).", type = "string")
 	private String persistableReference;
 
 	/**
