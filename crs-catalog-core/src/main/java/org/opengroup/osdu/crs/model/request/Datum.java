@@ -14,11 +14,15 @@
 
 package org.opengroup.osdu.crs.model.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
 public class Datum {
+	@Schema(description = "Code of datum", type = "string")
 	String name;
+	@Schema(description = "Name of datum", type = "string")
 	String codeSpace;
+	@Schema(description = "Codespace of datum", type = "string")
 	String code;
 }

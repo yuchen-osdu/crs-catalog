@@ -14,6 +14,7 @@
 
 package org.opengroup.osdu.crs.model.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.opengroup.osdu.core.common.model.search.Point;
 
@@ -21,8 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Schema(description = "List of failed points, ones that aren't in bounding box")
 public class PointsInAouSearchResult {
+
+	@Schema(description = "A point that didn't land in the bounding box for area of use search")
 	private List<PointsInAouSearchPoint> bboxFailedPoints;
+
+	@Schema(description = "Point distance with highest km outside bounding box", type="integer")
 	private Integer maxDistKmOutsideBBox;
 
 	public PointsInAouSearchResult(){

@@ -14,13 +14,17 @@
 
 package org.opengroup.osdu.crs.model.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.opengroup.osdu.core.common.model.search.QueryResponse;
 
 @Data
 @AllArgsConstructor
+@Schema(description = "Results for most V3 endpoints")
 public class SearchResponse {
+	@Schema(description = "Results from Search service")
 	private QueryResponse searchResults;
+	@Schema(description = "Query string used against Search service")
 	private String query;
 }

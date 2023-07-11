@@ -18,14 +18,18 @@
  */
 package org.opengroup.osdu.crs.model.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.opengroup.osdu.crs.model.LateBoundCRSEssenceImpl;
 
 /**
  *  LateBoundCRSRequest is class which encapsulates the request body for an LateBoundCRS object.
  */
+@Schema(description = "Request to get one LateBoundCRS given its 'persistableReference' (serialized essence) or 'essence' structure. Only one, persistableReference or essence must be provided. If both are provided, essence takes precedence.")
 public class LateBoundCRSRequest {
 
+	@Schema(description = "Late-bound coordinate reference system, i.e. a CRS without a transformation binding to WGS 84")
 	private LateBoundCRSEssenceImpl lateBoundCRSEssence;
+	@Schema(description = "The persistable reference string, either the essence of the LateBoundCRS serialized into a JSON string or an encoded string (version 1).", type = "string")
 	private String persistableReference;
 
 	/**

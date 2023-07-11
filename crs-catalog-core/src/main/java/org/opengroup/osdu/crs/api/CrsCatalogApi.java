@@ -19,35 +19,28 @@
 
 package org.opengroup.osdu.crs.api;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
+import org.opengroup.osdu.core.common.model.http.AppError;
+import org.opengroup.osdu.crs.logging.AuditLogger;
+import org.opengroup.osdu.crs.model.*;
+import org.opengroup.osdu.crs.model.interfaces.*;
+import org.opengroup.osdu.crs.model.request.*;
+import org.opengroup.osdu.crs.model.search.*;
+import org.opengroup.osdu.crs.util.AppException;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.inject.Inject;
-
-import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
-import org.opengroup.osdu.crs.logging.AuditLogger;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import org.opengroup.osdu.crs.model.EssenceImpl;
-import org.opengroup.osdu.crs.util.AppException;
-import org.opengroup.osdu.crs.model.AreaOfUseEssenceImpl;
-import org.opengroup.osdu.crs.model.EarlyBoundCRSEssenceImpl;
-import org.opengroup.osdu.crs.model.CompoundCRSEssenceImpl;
-import org.opengroup.osdu.crs.model.LateBoundCRSEssenceImpl;
-import org.opengroup.osdu.crs.model.CompoundCTEssenceImpl;
-import org.opengroup.osdu.crs.model.SphericalBoundingBoxImpl;
-import org.opengroup.osdu.crs.model.interfaces.*;
-import org.opengroup.osdu.crs.model.request.*;
-import org.opengroup.osdu.crs.model.search.*;
 
 /**
  *  CrsApi is an endpoint class we are exposing so that clients can request or query for
@@ -74,7 +67,21 @@ public class CrsCatalogApi {
      * get the entire catalog content
       * @return Catalog
      */
-	@GetMapping("/catalog")
+
+	@Operation(summary = "${CrsCatalogApi.Catalog.summary}", description = "${CrsCatalogApi.Catalog.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"crs-catalog-api"})
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = Catalog.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad Request",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@GetMapping(value = "/catalog", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Catalog getCatalog() {
    		return catalog.getCatalogResponse();
 	}
@@ -83,7 +90,20 @@ public class CrsCatalogApi {
      * get the catalog attributes
      * @return catalog attributes
      */
-	@GetMapping("/catalog/attributes")
+	@Operation(summary = "${CrsCatalogApi.CatalogAttributes.summary}", description = "${CrsCatalogApi.CatalogAttributes.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"crs-catalog-api"})
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = CatalogAttributes.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad Request",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@GetMapping(value = "/catalog/attributes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public CatalogAttributes getCatalogAttributes() {
    		return catalog.getAttributes();
 	}
@@ -95,7 +115,21 @@ public class CrsCatalogApi {
      * @return AreasOfUseResults
      * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@GetMapping("/area")
+
+	@Operation(summary = "${CrsCatalogApi.AllArea.summary}", description = "${CrsCatalogApi.AllArea.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"areas-of-use-api"})
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = AreaOfUseResults.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad Request",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@GetMapping(value = "/area", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public AreaOfUseResults getAreasOfUse(
 		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
@@ -139,7 +173,21 @@ public class CrsCatalogApi {
      * @return AreaOfUse
 	 * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@PostMapping("/area")
+	@Operation(summary = "${CrsCatalogApi.OneArea.summary}", description = "${CrsCatalogApi.OneArea.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"areas-of-use-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = AreaOfUse.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad Request",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@PostMapping(value = "/area", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public AreaOfUse getAreaOfUse(@RequestBody AreaOfUseRequest request,
 								  @RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		AreaOfUseEssence essence = null;
@@ -175,7 +223,21 @@ public class CrsCatalogApi {
      * @return CRSResults
      * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@GetMapping("/crs")
+	@Operation(summary = "${CrsCatalogApi.CoordinateReferenceSystems.summary}", description = "${CrsCatalogApi.CoordinateReferenceSystems.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"coordinate-reference-systems-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = CRSResults.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad Request",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@GetMapping(value = "/crs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public CRSResults getAllCRSes(
 		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
@@ -219,8 +281,22 @@ public class CrsCatalogApi {
      * @return CRS
 	 * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@PostMapping("/crs")
-	public CRS getCRS(@RequestBody CRSRequest request,
+	@Operation(summary = "${CrsCatalogApi.CoordinateReferenceSystemsOne.summary}", description = "${CrsCatalogApi.CoordinateReferenceSystemsOne.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"coordinate-reference-systems-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = CRS.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad Input format",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@PostMapping(value = "/crs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public 	CRS getCRS(@RequestBody CRSRequest request,
 					  @RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		CRS	crs = null;
 
@@ -256,7 +332,21 @@ public class CrsCatalogApi {
      * @return        LateBoundCRSResults
      * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@GetMapping("/lateboundcrs")
+	@Operation(summary = "${CrsCatalogApi.LateBoundCRS.summary}", description = "${CrsCatalogApi.LateBoundCRS.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"coordinate-reference-systems-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = LateBoundCRSResults.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad Request",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@GetMapping(value = "/lateboundcrs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public LateBoundCRSResults getLateBoundCRSes(
 		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
@@ -300,7 +390,21 @@ public class CrsCatalogApi {
      * @return LateBoundCRS
 	 * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@PostMapping("/lateboundcrs")
+	@Operation(summary = "${CrsCatalogApi.OneLateBoundCRS.summary}", description = "${CrsCatalogApi.OneLateBoundCRS.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"coordinate-reference-systems-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = LateBoundCRS.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad Request",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@PostMapping(value = "/lateboundcrs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public LateBoundCRS getLateBoundCRS(
 		    @RequestBody LateBoundCRSRequest request,
 			@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
@@ -337,7 +441,21 @@ public class CrsCatalogApi {
      * @return EarlyBoundCRSResults
      * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@GetMapping("/earlyboundcrs")
+	@Operation(summary = "${CrsCatalogApi.EarlyBoundCRS.summary}", description = "${CrsCatalogApi.EarlyBoundCRS.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"coordinate-reference-systems-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = EarlyBoundCRSResults.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad Request",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@GetMapping(value = "/earlyboundcrs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public EarlyBoundCRSResults getEarlyBoundCRSes(
 		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
@@ -381,7 +499,21 @@ public class CrsCatalogApi {
      * @return EarlyBoundCRS
 	 * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@PostMapping("/earlyboundcrs")
+	@Operation(summary = "${CrsCatalogApi.OneEarlyBoundCRS.summary}", description = "${CrsCatalogApi.OneEarlyBoundCRS.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"coordinate-reference-systems-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = EarlyBoundCRS.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad Request",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@PostMapping(value = "/earlyboundcrs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public EarlyBoundCRS getEarlyBoundCRS(@RequestBody EarlyBoundCRSRequest request,
 										  @RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		EarlyBoundCRSEssence essence = null;
@@ -417,7 +549,21 @@ public class CrsCatalogApi {
      * @return CompoundCRSResults
      * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@GetMapping("/compoundcrs")
+	@Operation(summary = "${CrsCatalogApi.CompoundCRS.summary}", description = "${CrsCatalogApi.CompoundCRS.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"coordinate-reference-systems-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = CompoundCRSResults.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad Request",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@GetMapping(value = "/compoundcrs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public CompoundCRSResults getCompoundCRSes(
 		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
@@ -461,7 +607,21 @@ public class CrsCatalogApi {
      * @return CompoundCRS
 	 * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@PostMapping("/compoundcrs")
+	@Operation(summary = "${CrsCatalogApi.OneCompoundCRS.summary}", description = "${CrsCatalogApi.OneCompoundCRS.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"coordinate-reference-systems-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = CompoundCRS.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad input format",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@PostMapping(value = "/compoundcrs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public CompoundCRS getCompoundCRS(@RequestBody CompoundCRSRequest request,
 									  @RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		CompoundCRSEssence essence = null;
@@ -497,7 +657,21 @@ public class CrsCatalogApi {
      * @return CTResults
      * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@GetMapping("/ct")
+	@Operation(summary = "${CrsCatalogApi.CT.summary}", description = "${CrsCatalogApi.CT.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"cartographic-transformations-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = CTResults.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad input format",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@GetMapping(value = "/ct", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public CTResults getAllCTs(
 		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
@@ -541,7 +715,21 @@ public class CrsCatalogApi {
      * @return CT
 	 * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@PostMapping("/ct")
+	@Operation(summary = "${CrsCatalogApi.OneCT.summary}", description = "${CrsCatalogApi.OneCT.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"cartographic-transformations-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = CT.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad input format",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@PostMapping(value = "/ct", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public CT getCT(@RequestBody CTRequest request,
 					@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		CT ct = null;
@@ -578,7 +766,21 @@ public class CrsCatalogApi {
      * @return SingleCTResults
      * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@GetMapping("/singlect")
+	@Operation(summary = "${CrsCatalogApi.SingleCT.summary}", description = "${CrsCatalogApi.SingleCT.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"cartographic-transformations-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = SingleCTResults.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad input format",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@GetMapping(value = "/singlect", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public SingleCTResults getSingleCTs(
 		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
@@ -622,7 +824,21 @@ public class CrsCatalogApi {
      * @return SingleCT
 	 * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@PostMapping("/singlect")
+	@Operation(summary = "${CrsCatalogApi.OneSingleCT.summary}", description = "${CrsCatalogApi.OneSingleCT.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"cartographic-transformations-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = SingleCT.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad input format",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@PostMapping(value = "/singlect", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public SingleCT getSingleCT(@RequestBody SingleCTRequest request,
 								@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		SingleCTEssence essence = null;
@@ -658,7 +874,21 @@ public class CrsCatalogApi {
      * @return CompoundCTResults
      * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@GetMapping("/compoundct")
+	@Operation(summary = "${CrsCatalogApi.CompoundCT.summary}", description = "${CrsCatalogApi.CompoundCT.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"cartographic-transformations-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = CompoundCTResults.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad input format",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@GetMapping(value = "/compoundct", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public CompoundCTResults getCompoundCTs(
 		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
@@ -702,7 +932,21 @@ public class CrsCatalogApi {
     * @return CompoundCT
 	* @throws AppException with BadRequest status to indicate a client request is not recognized
 	*/
-	@PostMapping("/compoundct")
+   @Operation(summary = "${CrsCatalogApi.OneCompoundCT.summary}", description = "${CrsCatalogApi.OneCompoundCT.description}",
+		   security = {@SecurityRequirement(name = "Authorization")}, tags = {"cartographic-transformations-api"},
+		   requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+   @ApiResponses(value = {
+		   @ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = CompoundCT.class)) }),
+		   @ApiResponse(responseCode = "400", description = "Bad input format",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+		   @ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+		   @ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+		   @ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+		   @ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+		   @ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+		   @ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+		   @ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+   })
+   @PostMapping(value = "/compoundct", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public CompoundCT getCompoundCT(@RequestBody CompoundCTRequest request,
 									@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		CompoundCTEssence essence = null;
@@ -746,7 +990,22 @@ public class CrsCatalogApi {
 	 * @return AreaOfUseResults
      * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@PostMapping("/search/area")
+
+	@Operation(summary = "${CrsCatalogApi.SearchAreaOfUse.summary}", description = "${CrsCatalogApi.SearchAreaOfUse.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"areas-of-use-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = AreaOfUseResults.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad input format",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@PostMapping(value = "/search/area", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public AreaOfUseResults searchAreasOfUse(@RequestBody SearchRequest request,
 											 @RequestParam(name = "longitudeLeft", required = false, defaultValue = "-180") double longitudeLeft,
 											 @RequestParam(name = "latitudeLower", required = false, defaultValue = "-90") double latitudeLower,
@@ -781,7 +1040,21 @@ public class CrsCatalogApi {
      * @return CRSResults
 	 * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@PostMapping("/search/crs")
+	@Operation(summary = "${CrsCatalogApi.SearchCRS.summary}", description = "${CrsCatalogApi.SearchCRS.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"coordinate-reference-systems-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = CRSResults.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad input format",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@PostMapping(value = "/search/crs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public CRSResults searchCRSes(@RequestBody SearchRequest request,
 								  @RequestParam(name = "longitudeLeft", required = false, defaultValue = "-180") double longitudeLeft,
 								  @RequestParam(name = "latitudeLower", required = false, defaultValue = "-90") double latitudeLower,
@@ -816,7 +1089,21 @@ public class CrsCatalogApi {
      * @return CTResults
 	 * @throws AppException with BadRequest status to indicate a client request is not recognized
      */
-	@PostMapping("/search/ct")
+	@Operation(summary = "${CrsCatalogApi.SearchCT.summary}", description = "${CrsCatalogApi.SearchCT.description}",
+			security = {@SecurityRequirement(name = "Authorization")}, tags = {"cartographic-transformations-api"},
+			requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE)))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "A successful response", content = { @Content(schema = @Schema(implementation = CTResults.class)) }),
+			@ApiResponse(responseCode = "400", description = "Bad input format",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "401", description = "Unauthorized",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "403", description = "User not authorized to perform the action.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "409", description = "A LegalTag with the given name already exists.",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "500", description = "Internal Server Error",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
+			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
+	})
+	@PostMapping(value = "/search/ct", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public CTResults searchCTs(@RequestBody SearchRequest request,
 							   @RequestParam(name = "longitudeLeft", required = false, defaultValue = "-180") double longitudeLeft,
 							   @RequestParam(name = "latitudeLower", required = false, defaultValue = "-90") double latitudeLower,

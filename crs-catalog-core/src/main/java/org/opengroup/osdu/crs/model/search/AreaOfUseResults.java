@@ -21,13 +21,15 @@ package org.opengroup.osdu.crs.model.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.opengroup.osdu.crs.model.interfaces.AreaOfUse;
 
 /**
  *  An object to hold the list of {@link AreaOfUse} objects from a search
  */
+@Schema(description = "Object to hold the list of `AreaOfUse` objects from a search")
 public class AreaOfUseResults extends SearchResults {
-
+    @Schema(description = "A response containing a list of areas of use")
 	private List<AreaOfUse>	items;
 
     /**
@@ -52,6 +54,7 @@ public class AreaOfUseResults extends SearchResults {
      * @param offset offset index from beginning
      * @param totalCount total number of items in the query
      */
+
     public AreaOfUseResults(List<AreaOfUse> items, int offset, int totalCount) {
     	super(offset, items.size(), totalCount);
     	this.items = items;

@@ -20,16 +20,20 @@ package org.opengroup.osdu.crs.model.search;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /*
  * NamedReference is an interface definitions for a simple value container, a name and a persistable reference.
  */
+@Schema(description = "Name and Persistable Reference (the essence converted to a JSON string).")
 public class NamedReference  {
     @Expose
     @SerializedName("name")
+    @Schema(description = "The name of the item.", type = "string")
     private String name;
 
     @Expose @SerializedName("persistableReference")
+    @Schema(description = "The item 'essence' serialized into a JSON string..", type = "string")
     private String persistableReference;
 
     /**
