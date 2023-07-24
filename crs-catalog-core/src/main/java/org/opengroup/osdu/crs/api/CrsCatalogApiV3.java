@@ -70,7 +70,7 @@ public class CrsCatalogApiV3 {
 			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
 			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
 	})
-	@GetMapping(value = "/coordinate-transformation", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/coordinate-transformation", produces = MediaType.APPLICATION_JSON_VALUE)
 	public SearchResponse getCoordinateTransformation(
 			@RequestParam(name = "recordId", required = false) String recordId,
 			@RequestParam(name = "dataId", required = false) String dataId
@@ -114,7 +114,7 @@ public class CrsCatalogApiV3 {
 			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
 			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
 	})
-	@GetMapping(value = "/coordinate-reference-system", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/coordinate-reference-system", produces = MediaType.APPLICATION_JSON_VALUE)
 	public SearchResponse getCoordinateReferenceSystem(
 			@RequestParam(name = "recordId", required = false) String recordId,
 			@RequestParam(name = "dataId", required = false) String dataId
