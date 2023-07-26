@@ -81,7 +81,7 @@ public class CrsCatalogApi {
 			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
 			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
 	})
-	@GetMapping(value = "/catalog", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/catalog", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Catalog getCatalog() {
    		return catalog.getCatalogResponse();
 	}
@@ -103,7 +103,7 @@ public class CrsCatalogApi {
 			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
 			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
 	})
-	@GetMapping(value = "/catalog/attributes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/catalog/attributes",produces = MediaType.APPLICATION_JSON_VALUE)
 	public CatalogAttributes getCatalogAttributes() {
    		return catalog.getAttributes();
 	}
@@ -129,7 +129,7 @@ public class CrsCatalogApi {
 			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
 			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
 	})
-	@GetMapping(value = "/area", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/area", produces = MediaType.APPLICATION_JSON_VALUE)
 	public AreaOfUseResults getAreasOfUse(
 		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
@@ -237,7 +237,7 @@ public class CrsCatalogApi {
 			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
 			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
 	})
-	@GetMapping(value = "/crs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/crs", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CRSResults getAllCRSes(
 		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
@@ -346,7 +346,7 @@ public class CrsCatalogApi {
 			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
 			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
 	})
-	@GetMapping(value = "/lateboundcrs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/lateboundcrs", produces = MediaType.APPLICATION_JSON_VALUE)
 	public LateBoundCRSResults getLateBoundCRSes(
 		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
@@ -455,7 +455,7 @@ public class CrsCatalogApi {
 			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
 			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
 	})
-	@GetMapping(value = "/earlyboundcrs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/earlyboundcrs", produces = MediaType.APPLICATION_JSON_VALUE)
 	public EarlyBoundCRSResults getEarlyBoundCRSes(
 		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
@@ -563,7 +563,7 @@ public class CrsCatalogApi {
 			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
 			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
 	})
-	@GetMapping(value = "/compoundcrs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/compoundcrs",produces = MediaType.APPLICATION_JSON_VALUE)
 	public CompoundCRSResults getCompoundCRSes(
 		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
@@ -671,7 +671,7 @@ public class CrsCatalogApi {
 			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
 			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
 	})
-	@GetMapping(value = "/ct", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/ct", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CTResults getAllCTs(
 		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
@@ -780,7 +780,7 @@ public class CrsCatalogApi {
 			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
 			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
 	})
-	@GetMapping(value = "/singlect", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/singlect",produces = MediaType.APPLICATION_JSON_VALUE)
 	public SingleCTResults getSingleCTs(
 		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
@@ -888,7 +888,7 @@ public class CrsCatalogApi {
 			@ApiResponse(responseCode = "502", description = "Bad Gateway",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
 			@ApiResponse(responseCode = "503", description = "Service Unavailable",  content = {@Content(schema = @Schema(implementation = AppError.class ))})
 	})
-	@GetMapping(value = "/compoundct", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/compoundct", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CompoundCTResults getCompoundCTs(
 		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
 	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,

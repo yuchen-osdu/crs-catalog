@@ -21,6 +21,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.opengroup.osdu.core.common.model.http.AppError;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +38,7 @@ public class HealthCheck {
 					@ApiResponse(responseCode = "403", description = "Forbidden",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
 					@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
 			})
-	@GetMapping("/liveness_check")
+	@GetMapping(value = "/liveness_check",  produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> livenessCheck() {
 		return new ResponseEntity<String>("CRS Catalog service is alive", HttpStatus.OK);
 	}
@@ -50,7 +51,7 @@ public class HealthCheck {
 			@ApiResponse(responseCode = "403", description = "Forbidden",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
 			@ApiResponse(responseCode = "404", description = "Not Found",  content = {@Content(schema = @Schema(implementation = AppError.class ))}),
 	})
-	@GetMapping("/readiness_check")
+	@GetMapping(value = "/readiness_check", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> readinessCheck() {
 		return new ResponseEntity<String>("CRS Catalog service is ready", HttpStatus.OK);
 	}
