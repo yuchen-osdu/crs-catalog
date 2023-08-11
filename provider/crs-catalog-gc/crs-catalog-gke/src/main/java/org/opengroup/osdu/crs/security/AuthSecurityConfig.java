@@ -51,6 +51,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter implements 
         "/actuator/**",
         "/_ah/*",
         "/v2/api-docs",
+        "/api-docs/**",
         "/v3/api-docs",
         "/configuration/ui",
         "/swagger-resources/**",
@@ -63,7 +64,7 @@ public class AuthSecurityConfig extends WebSecurityConfigurerAdapter implements 
         "/csrf",
         "/api/crs/catalog/actuator",
         "/api/crs/catalog/actuator/**",
-        "/api/crs/catalog/actuator/health",
+        "/api/crs/catalog/actuator/health"
     };
 
     //AuthenticationRequestFilter is not a recognized bean, so construct it manually
