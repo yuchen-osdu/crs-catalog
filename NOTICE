@@ -638,7 +638,6 @@ GPL-3.0-only
 The following software have components provided under the terms of this license:
 
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
-- Jakarta Servlet (from https://javaee.github.io/servlet-spec/, https://projects.eclipse.org/projects/ee4j.servlet)
 
 ========================================================================
 GPL-3.0-or-later
