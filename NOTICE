@@ -309,7 +309,7 @@ The following software have components provided under the terms of this license:
 - jackson-databind (from http://github.com/FasterXML/jackson, http://wiki.fasterxml.com/JacksonHome, https://github.com/FasterXML/jackson)
 - java-cloudant (from https://cloudant.com)
 - javatuples (from http://www.javatuples.org)
-- javax.annotation-api (from http://jcp.org/en/jsr/detail?id=250)
+- javax.annotation API (from http://jcp.org/en/jsr/detail?id=250)
 - javax.inject (from http://code.google.com/p/atinject/, https://repo1.maven.org/maven2/org/glassfish/hk2/external/javax.inject)
 - json-path (from http://code.google.com/p/json-path/, https://github.com/jayway/JsonPath)
 - lettuce (from http://github.com/mp911de/lettuce/wiki, https://github.com/lettuce-io/lettuce-core/wiki)
@@ -462,7 +462,7 @@ The following software have components provided under the terms of this license:
 - Jetty :: Websocket :: javax.websocket :: Client Implementation (from <https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-client-impl>, https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-client-impl)
 - Jetty :: Websocket :: javax.websocket.server :: Server Implementation (from <https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-server-impl>, https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-server-impl)
 - Servlet Specification 2.5 API (from http://jetty.mortbay.org, https://repo1.maven.org/maven2/org/mortbay/jetty/servlet-api-2.5)
-- javax.annotation-api (from http://jcp.org/en/jsr/detail?id=250)
+- javax.annotation API (from http://jcp.org/en/jsr/detail?id=250)
 
 ========================================================================
 CDDL-1.1
@@ -472,7 +472,7 @@ The following software have components provided under the terms of this license:
 - Jakarta Servlet (from https://javaee.github.io/servlet-spec/, https://projects.eclipse.org/projects/ee4j.servlet)
 - Java Architecture for XML Binding (from http://jaxb.java.net/, https://repo1.maven.org/maven2/javax/xml/bind/jaxb-api)
 - JavaBeans Activation Framework (from <http://java.sun.com/javase/technologies/desktop/javabeans/jaf/index.jsp>, http://java.sun.com/javase/technologies/desktop/javabeans/jaf/index.jsp, https://repo1.maven.org/maven2/com/sun/activation/javax.activation)
-- javax.annotation-api (from http://jcp.org/en/jsr/detail?id=250)
+- javax.annotation API (from http://jcp.org/en/jsr/detail?id=250)
 
 ========================================================================
 CPL-1.0
@@ -630,7 +630,7 @@ The following software have components provided under the terms of this license:
 - Jetty :: Websocket :: Servlet (from <https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/websocket-servlet>, https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/websocket-servlet)
 - Jetty :: Websocket :: javax.websocket :: Client Implementation (from <https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-client-impl>, https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-client-impl)
 - Jetty :: Websocket :: javax.websocket.server :: Server Implementation (from <https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-server-impl>, https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-server-impl)
-- javax.annotation-api (from http://jcp.org/en/jsr/detail?id=250)
+- javax.annotation API (from http://jcp.org/en/jsr/detail?id=250)
 
 ========================================================================
 GPL-3.0-only
