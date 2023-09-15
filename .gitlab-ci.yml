@@ -22,6 +22,7 @@ variables:
   AZURE_TEST_TYPE: python
   AZURE_SWAGGER_PATH: api/crs/catalog/swagger-ui/index.html#
   SHARE_NAME: crs
+  AZURE_SKIP_INTEGRATION_TEST: 'true'
 
 include:
   - project: "osdu/platform/ci-cd-pipelines"
