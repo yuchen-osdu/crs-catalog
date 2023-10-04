@@ -127,8 +127,8 @@ The following software have components provided under the terms of this license:
 - JCIP Annotations under Apache License (from http://stephenc.github.com/jcip-annotations)
 - JDO API (from https://repo1.maven.org/maven2/javax/jdo/jdo-api)
 - JDOM
+- JJWT :: Legacy Transitive Dependency Jar (from https://repo1.maven.org/maven2/io/jsonwebtoken/jjwt)
 - JSON Small and Fast Parser (from https://repo1.maven.org/maven2/net/minidev/json-smart, https://urielch.github.io/)
-- JSON Web Token support for the JVM (from https://github.com/jwtk/jjwt)
 - JSON library from Android SDK (from http://developer.android.com/sdk)
 - JSONassert (from http://github.com/skyscreamer/yoga, https://github.com/skyscreamer/JSONassert)
 - JSR107 API and SPI (from https://github.com/jsr107/jsr107spec)
