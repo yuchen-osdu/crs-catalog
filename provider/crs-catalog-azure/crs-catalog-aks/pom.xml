@@ -26,11 +26,11 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <osdu.corelibazure.version>0.23.1</osdu.corelibazure.version>
-        <jackson-databind.version>2.13.2.2</jackson-databind.version>
-        <jackson.version>2.13.2</jackson.version>
+        <jackson-databind.version>2.15.2</jackson-databind.version>
+        <jackson.version>2.15.2</jackson.version>
         <spring-webmvc.version>5.3.22</spring-webmvc.version>
         <net-minidev.version>2.4.9</net-minidev.version>
-        <netty.version>4.1.96.Final</netty.version>
+        <netty.version>4.1.98.Final</netty.version>
     </properties>
 
     <prerequisites>
@@ -100,8 +100,12 @@
             <version>${osdu.corelibazure.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>json-smart</artifactId>
                     <groupId>net.minidev</groupId>
+                    <artifactId>json-smart</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.microsoft.azure</groupId>
+                    <artifactId>documentdb-bulkexecutor</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
