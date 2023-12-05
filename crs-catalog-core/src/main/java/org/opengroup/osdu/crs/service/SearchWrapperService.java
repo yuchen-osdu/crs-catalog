@@ -16,10 +16,7 @@ package org.opengroup.osdu.crs.service;
 
 import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
-import org.opengroup.osdu.core.common.model.search.QueryRequest;
-import org.opengroup.osdu.core.common.model.search.QueryResponse;
-import org.opengroup.osdu.core.common.model.search.SearchException;
-import org.opengroup.osdu.core.common.model.search.SpatialFilter;
+import org.opengroup.osdu.core.common.model.search.*;
 import org.opengroup.osdu.core.common.search.ISearchFactory;
 import org.opengroup.osdu.core.common.search.ISearchService;
 import org.opengroup.osdu.crs.model.request.ISearchQuery;
@@ -123,7 +120,29 @@ public class SearchWrapperService {
 
         return new SearchResponse(sendToSearch(queryRequest), query);
     }
+    public SearchResponse searchWithCursor(ISearchQuery searchQuery, String kind) {
+        CursorQueryRequest cursorqueryRequest = new CursorQueryRequest ();
 
+        String query = searchQuery.constructQuery();
+        cursorqueryRequest.setQuery(query);
+        cursorqueryRequest.setKind(kind);
+
+        List<String> returnedFields = searchQuery.getReturnedFields();
+        if (returnedFields.size() > 0) {
+            cursorqueryRequest.setReturnedFields(returnedFields);
+        }
+
+        SpatialFilter spatialFilter = searchQuery.constructSpatialFilter();
+        if (spatialFilter != null) {
+            cursorqueryRequest.setSpatialFilter(searchQuery.constructSpatialFilter());
+        }
+
+        if (searchQuery.getLimit() != null) {
+            cursorqueryRequest.setLimit(searchQuery.getLimit());
+        }
+
+        return new SearchResponse(sendToSearchWithCursor(cursorqueryRequest), query);
+    }
     private QueryResponse sendToSearch(QueryRequest queryRequest) {
         QueryResponse queryResponse = null;
         try {
@@ -148,6 +167,31 @@ public class SearchWrapperService {
             handleSearchError("Failed to call search service", e);
         }
         return queryResponse;
+    }
+    private CursorQueryResponse sendToSearchWithCursor(CursorQueryRequest queryRequest) {
+        CursorQueryResponse cursorqueryResponse = null;
+        try {
+            logger.debug(String.format("Sending query to search service: %s", queryRequest.toString()));
+           
+            cursorqueryResponse = searchService.searchCursor(queryRequest);
+            List<Map<String, Object>> searchResultList = new ArrayList<Map<String, Object>>();
+            searchResultList = cursorqueryResponse.getResults();
+            String cursor_value = cursorqueryResponse.getCursor();
+            int default_Count = searchResultList.size();
+            long totalCount = cursorqueryResponse.getTotalCount();
+            while (default_Count < totalCount && queryRequest.getLimit() > DEFAULT_QUERY_LIMIT) {
+                queryRequest.setCursor(cursor_value);
+                cursorqueryResponse = searchService.searchCursor(queryRequest);
+                searchResultList.addAll(cursorqueryResponse.getResults());
+                default_Count += default_Count;
+
+            }
+            cursorqueryResponse.setResults(searchResultList);
+            logger.debug(String.format("Received response from search service: %s", cursorqueryResponse.toString()));
+        } catch (SearchException e) {
+            handleSearchError("Failed to call search service", e);
+        }
+        return cursorqueryResponse;
     }
 
     private void handleSearchError(String errorMsg, Exception e) {
