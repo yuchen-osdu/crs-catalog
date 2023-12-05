@@ -17,14 +17,27 @@ package org.opengroup.osdu.crs.model.response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.opengroup.osdu.core.common.model.search.CursorQueryResponse;
 import org.opengroup.osdu.core.common.model.search.QueryResponse;
 
 @Data
-@AllArgsConstructor
 @Schema(description = "Results for most V3 endpoints")
 public class SearchResponse {
-	@Schema(description = "Results from Search service")
-	private QueryResponse searchResults;
-	@Schema(description = "Query string used against Search service")
-	private String query;
+    @Schema(description = "Results from Search service")
+    private QueryResponse searchResults;
+    private CursorQueryResponse cursorSearchResults;
+    @Schema(description = "Query string used against Search service")
+    private String query;
+
+
+    public SearchResponse(QueryResponse searchResults, String query) {
+        this.searchResults = searchResults;
+        this.query = query;
+
+    }
+
+    public SearchResponse(CursorQueryResponse cursorSearchResults, String qurey) {
+        this.cursorSearchResults = cursorSearchResults;
+        this.query = query;
+    }
 }

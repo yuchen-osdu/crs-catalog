@@ -128,7 +128,7 @@ class TestCrsCatalog(unittest.TestCase):
             time.sleep(10)
 
     @staticmethod
-    def check_search_response_count(response, expected_count, test_name):
+    def check_get_search_response_count(response, expected_count, test_name):
         response_body = json.loads(response.content)
         assert response.status_code == 200
         response_count = len(response_body["searchResults"]["results"])
@@ -141,12 +141,28 @@ class TestCrsCatalog(unittest.TestCase):
             print(f'Error: Test {test_name} Expects {expected_count} records. Got {response_count} records.')
         assert response_count == expected_count
 
+    @staticmethod
+    def check_search_response_count(response, expected_count, test_name):
+        response_body = json.loads(response.content)
+        assert response.status_code == 200
+
+        response_count = len(response_body["cursorSearchResults"]["results"])
+
+        for test_response in response_body["cursorSearchResults"]["results"]:
+            if test_response["id"] not in record_id_set:
+                response_count -= 1
+
+        if response_count != expected_count:
+            print(f'Error: Test {test_name} Expects {expected_count} records. Got {response_count} records.')
+        assert response_count == expected_count
+
     def test_get_coordinate_transformation_dataId(self):
         with open(f'{self.path}v3/GetCoordinateTransformationTestData.json') as test_data_file:
             test_data = json.loads(test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT))
             response = self.client.make_request('GET', f'{ct_endpoint_path}?dataId={test_data["dataId"]}')
             response_body = json.loads(response.content)
-            self.check_search_response_count(response, 1, "test_get_coordinate_transformation_dataId")
+        
+            self.check_get_search_response_count(response, 1, "test_get_coordinate_transformation_dataId")
             assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
             assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
             for record_property in ('kind', 'version', 'acl', 'legal', 'namespace'):
@@ -161,7 +177,7 @@ class TestCrsCatalog(unittest.TestCase):
             test_data = json.loads(test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT))
             response = self.client.make_request('GET', f'{ct_endpoint_path}?recordId={test_data["recordId"]}')
             response_body = json.loads(response.content)
-            self.check_search_response_count(response, 1, "test_get_coordinate_transformation_recordId")
+            self.check_get_search_response_count(response, 1, "test_get_coordinate_transformation_recordId")
             assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
             assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
 
@@ -171,7 +187,7 @@ class TestCrsCatalog(unittest.TestCase):
             response = self.client.make_request('GET',
                                                 f'{ct_endpoint_path}?dataId={test_data["dataId"]}&recordId={test_data["recordId"]}')
             response_body = json.loads(response.content)
-            self.check_search_response_count(response, 1, "test_get_coordinate_transformation_dataId_recordId")
+            self.check_get_search_response_count(response, 1, "test_get_coordinate_transformation_dataId_recordId")
             assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
             assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
 
@@ -180,7 +196,8 @@ class TestCrsCatalog(unittest.TestCase):
             test_data = json.loads(test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT))
             response = self.client.make_request('GET', f'{crs_endpoint_path}?dataId={test_data["dataId"]}')
             response_body = json.loads(response.content)
-            self.check_search_response_count(response, 1, "test_get_coordinate_reference_system_dataId")
+    
+            self.check_get_search_response_count(response, 1, "test_get_coordinate_reference_system_dataId")
             assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
             assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
             for record_property in ('kind', 'version', 'acl', 'legal', 'namespace'):
@@ -195,7 +212,7 @@ class TestCrsCatalog(unittest.TestCase):
             test_data = json.loads(test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT))
             response = self.client.make_request('GET', f'{crs_endpoint_path}?recordId={test_data["recordId"]}')
             response_body = json.loads(response.content)
-            self.check_search_response_count(response, 1, "test_get_coordinate_reference_system_recordId")
+            self.check_get_search_response_count(response, 1, "test_get_coordinate_reference_system_recordId")
             assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
             assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
 
@@ -205,7 +222,7 @@ class TestCrsCatalog(unittest.TestCase):
             response = self.client.make_request('GET',
                                                 f'{crs_endpoint_path}?dataId={test_data["dataId"]}&recordId={test_data["recordId"]}')
             response_body = json.loads(response.content)
-            self.check_search_response_count(response, 1, "test_get_coordinate_reference_system_dataId_recordId")
+            self.check_get_search_response_count(response, 1, "test_get_coordinate_reference_system_dataId_recordId")
             assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
             assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
 
@@ -228,7 +245,8 @@ class TestCrsCatalog(unittest.TestCase):
     def test_search_coordinate_transformations_with_common_partial_name(self):
         with open(f'{self.path}v3/SearchCoordinateTransformationsWithCommonPartialName.json') as test_data:
             response = self.client.make_request('POST', ct_endpoint_path, test_data)
-            self.check_search_response_count(response, 2, "test_search_coordinate_transformations_with_common_partial_name")
+            self.check_search_response_count(response, 2,
+                                             "test_search_coordinate_transformations_with_common_partial_name")
 
     def test_search_coordinate_transformations_with_wrong_name(self):
         with open(f'{self.path}v3/SearchCoordinateTransformationsWithWrongName.json') as test_data:
@@ -239,14 +257,15 @@ class TestCrsCatalog(unittest.TestCase):
         with open(f'{self.path}v3/SearchCoordinateTransformationsReverseSourceAndTarget.json') as test_data_file:
             test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
             response = self.client.make_request('POST', ct_endpoint_path, test_data)
-            self.check_search_response_count(response, 1, "test_search_coordinate_transformations_with_reversed_source_and_target_crs")
+            self.check_search_response_count(response, 1,
+                                             "test_search_coordinate_transformations_with_reversed_source_and_target_crs")
 
     def test_search_coordinate_transformations_find_horizontal(self):
         test_data = "{}"
         response = self.client.make_request('POST', ct_endpoint_path, test_data)
         response_body = json.loads(response.content)
         self.check_search_response_count(response, 1, "test_search_coordinate_transformations_find_horizontal")
-        assert response_body["searchResults"]["results"][0]["data"]["Code"] == "1111"
+        assert response_body["cursorSearchResults"]["results"][0]["data"]["Code"] == "1111"
 
     def test_search_coordinate_transformations_find_vertical(self):
         with open(f'{self.path}v3/SearchCoordinateTransformationsVertical.json') as test_data_file:
@@ -254,21 +273,22 @@ class TestCrsCatalog(unittest.TestCase):
             response = self.client.make_request('POST', ct_endpoint_path, test_data)
             response_body = json.loads(response.content)
             self.check_search_response_count(response, 1, "test_search_coordinate_transformations_find_vertical")
-            assert response_body["searchResults"]["results"][0]["data"]["Code"] == "5429"
+            assert response_body["cursorSearchResults"]["results"][0]["data"]["Code"] == "5429"
             for record_property in ('Code', 'Name', 'Kind', 'InactiveIndicator', 'CodeSpace', 'PreferredUsage.Name',
                                     'PreferredUsage.Extent.Description', 'PreferredUsage.Extent.Name',
                                     'CoordinateTransformationType', 'SourceCRS.Name', 'SourceCRS.AuthorityCode.Code',
                                     'TargetCRS.Name', 'TargetCRS.AuthorityCode.Code'):
-                assert record_property in response_body["searchResults"]["results"][0]['data']
-            assert "InformationSource" not in response_body["searchResults"]["results"][0]['data']
+                assert record_property in response_body["cursorSearchResults"]["results"][0]['data']
+            assert "InformationSource" not in response_body["cursorSearchResults"]["results"][0]['data']
 
     def test_search_coordinate_transformations_find_vertical_return_all_fields(self):
         with open(f'{self.path}v3/SearchCoordinateTransformationsVerticalReturnAllFields.json') as test_data_file:
             test_data = test_data_file.read()
             response = self.client.make_request('POST', ct_endpoint_path, test_data)
             response_body = json.loads(response.content)
-            self.check_search_response_count(response, 1, "test_search_coordinate_transformations_find_vertical_return_all_fields")
-            assert "InformationSource" in response_body["searchResults"]["results"][0]['data']
+            self.check_search_response_count(response, 1,
+                                             "test_search_coordinate_transformations_find_vertical_return_all_fields")
+            assert "InformationSource" in response_body["cursorSearchResults"]["results"][0]['data']
 
     def test_search_coordinate_transformations_find_all(self):
         with open(f'{self.path}v3/SearchCoordinateTransformationsAllKinds.json') as test_data_file:
@@ -280,7 +300,8 @@ class TestCrsCatalog(unittest.TestCase):
         with open(f'{self.path}v3/SearchCoordinateTransformationsIncludeDeprecated.json') as test_data_file:
             test_data = test_data_file.read()
             response = self.client.make_request('POST', ct_endpoint_path, test_data)
-            self.check_search_response_count(response, 3, "test_search_coordinate_transformations_find_all_include_deprecated")
+            self.check_search_response_count(response, 3,
+                                             "test_search_coordinate_transformations_find_all_include_deprecated")
 
     def test_search_coordinate_reference_systems(self):
         with open(f'{self.path}v3/SearchCoordinateReferenceSystems.json') as test_data_file:
@@ -299,19 +320,20 @@ class TestCrsCatalog(unittest.TestCase):
             response = self.client.make_request('POST', crs_endpoint_path, test_data)
             self.check_search_response_count(response, 1, "test_search_coordinate_reference_systems_bound_projected")
             response_body = json.loads(response.content)
-            assert response_body["searchResults"]["results"][0]["data"]["Code"] == "24600001"
+            assert response_body["cursorSearchResults"]["results"][0]["data"]["Code"] == "24600001"
             for record_property in ('Code', 'Name', 'Kind', 'InactiveIndicator', 'CodeSpace', 'PreferredUsage.Name',
                                     'PreferredUsage.Extent.Description', 'PreferredUsage.Scope.Name',
                                     'CoordinateSystem.Name', 'Datum.Name', 'RevisionDate'):
-                assert record_property in response_body["searchResults"]["results"][0]['data']
-            assert "InformationSource" not in response_body["searchResults"]["results"][0]['data']
+                assert record_property in response_body["cursorSearchResults"]["results"][0]['data']
+            assert "InformationSource" not in response_body["cursorSearchResults"]["results"][0]['data']
 
     def test_search_coordinate_reference_systems_bound_projected_return_all_fields(self):
         with open(f'{self.path}v3/SearchCoordinateReferenceSystemsBoundProjectedReturnAllFields.json') as test_data:
             response = self.client.make_request('POST', crs_endpoint_path, test_data)
-            self.check_search_response_count(response, 1, "test_search_coordinate_reference_systems_bound_projected_return_all_fields")
+            self.check_search_response_count(response, 1,
+                                             "test_search_coordinate_reference_systems_bound_projected_return_all_fields")
             response_body = json.loads(response.content)
-            assert "InformationSource" in response_body["searchResults"]["results"][0]['data']
+            assert "InformationSource" in response_body["cursorSearchResults"]["results"][0]['data']
 
     def test_search_coordinate_reference_systems_bound_geographic2d(self):
         with open(f'{self.path}v3/SearchCoordinateReferenceSystemsBoundGeographic2D.json') as test_data:

@@ -75,6 +75,9 @@ public class CrsCatalogApiV3 {
 			@RequestParam(name = "recordId", required = false) String recordId,
 			@RequestParam(name = "dataId", required = false) String dataId
 			) {
+		if(recordId != null && recordId.endsWith(":")){
+			recordId= RemoveTerminatingColon(recordId);
+		}
 		return searchWrapperService.getSingleCrsOrCt(recordId, dataId, SearchWrapperService.getCoordinateTransformationKind());
 	}
 
@@ -97,7 +100,11 @@ public class CrsCatalogApiV3 {
 	public SearchResponse getCoordinateTransformations(
 			@RequestBody(required=false) CoordinateTransformationsQuery coordinateTransformationsQuery
 			) {
-		return searchWrapperService.search(coordinateTransformationsQuery, SearchWrapperService.getCoordinateTransformationKind());
+		if(coordinateTransformationsQuery.getOffset()!=null){
+			return searchWrapperService.search(coordinateTransformationsQuery, SearchWrapperService.getCoordinateTransformationKind());
+
+		}
+			return searchWrapperService.searchWithCursor(coordinateTransformationsQuery, SearchWrapperService.getCoordinateTransformationKind());
 	}
 
 
@@ -119,6 +126,9 @@ public class CrsCatalogApiV3 {
 			@RequestParam(name = "recordId", required = false) String recordId,
 			@RequestParam(name = "dataId", required = false) String dataId
 	) {
+		if(recordId != null && recordId.endsWith(":")){
+			recordId= RemoveTerminatingColon(recordId);
+		}
 		return searchWrapperService.getSingleCrsOrCt(recordId, dataId, SearchWrapperService.getCoordinateReferenceSystemKind());
 	}
 
@@ -140,7 +150,11 @@ public class CrsCatalogApiV3 {
 	public SearchResponse getCoordinateReferenceSystems(
 			@RequestBody(required=false) CoordinateReferenceSystemsQuery coordinateReferenceSystemsQuery
 	) {
+	if(coordinateReferenceSystemsQuery.getOffset()!=null){
 		return searchWrapperService.search(coordinateReferenceSystemsQuery, SearchWrapperService.getCoordinateReferenceSystemKind());
+
+	}
+		return searchWrapperService.searchWithCursor(coordinateReferenceSystemsQuery, SearchWrapperService.getCoordinateReferenceSystemKind());
 	}
 
 	@Operation(summary = "${CrsCatalogApiV3.CoordinateReferenceSystems.summary}", description = "${CrsCatalogApiV3.CoordinateReferenceSystems.description}",
@@ -160,8 +174,16 @@ public class CrsCatalogApiV3 {
 	@PostMapping(value = "/points-in-aou", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public PointsInAouSearchResult getAouInfo(
 			@RequestBody InPolygonQuery inPolygonQuery
-			) {
+	) {
+		if (inPolygonQuery.getRecordId() !=null && inPolygonQuery.getRecordId().endsWith(":")) {
+
+			inPolygonQuery.setRecordId(RemoveTerminatingColon(inPolygonQuery.getRecordId()));
+		}
 		return pointsInAouService.searchPointsInAou(inPolygonQuery);
 	}
 
+	public String RemoveTerminatingColon(String record_id) {
+		record_id = record_id.substring(0, record_id.length() - 1);
+		return record_id;
+	}
 }
