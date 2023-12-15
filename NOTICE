@@ -189,11 +189,11 @@ The following software have components provided under the terms of this license:
 - Lucene Queries (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queries)
 - Lucene QueryParsers (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queryparser)
 - Lucene Sandbox (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-sandbox)
-- Maven Artifact (from https://maven.apache.org/ref/4.0.0-alpha-8/maven-artifact/, https://repo1.maven.org/maven2/org/apache/maven/maven-artifact)
+- Maven Artifact (from https://repo1.maven.org/maven2/org/apache/maven/maven-artifact)
 - Maven Artifact Manager (from https://repo1.maven.org/maven2/org/apache/maven/maven-artifact-manager)
 - Maven Core (from https://maven.apache.org/ref/4.0.0-alpha-8/maven-core/, https://repo1.maven.org/maven2/org/apache/maven/maven-core)
 - Maven Error Diagnostics (from https://repo1.maven.org/maven2/org/apache/maven/maven-error-diagnostics)
-- Maven Model (from https://maven.apache.org/ref/4.0.0-alpha-8/maven-model/, https://repo1.maven.org/maven2/org/apache/maven/maven-model)
+- Maven Model (from https://repo1.maven.org/maven2/org/apache/maven/maven-model)
 - Maven Monitor (from https://repo1.maven.org/maven2/org/apache/maven/maven-monitor)
 - Maven Plugin API (from https://maven.apache.org/ref/4.0.0-alpha-8/maven-plugin-api/, https://repo1.maven.org/maven2/org/apache/maven/maven-plugin-api)
 - Maven Plugin Descriptor Model (from https://repo1.maven.org/maven2/org/apache/maven/maven-plugin-descriptor)
@@ -201,8 +201,8 @@ The following software have components provided under the terms of this license:
 - Maven Plugin Registry Model (from https://repo1.maven.org/maven2/org/apache/maven/maven-plugin-registry)
 - Maven Profile Model (from https://repo1.maven.org/maven2/org/apache/maven/maven-profile)
 - Maven Project (from https://repo1.maven.org/maven2/org/apache/maven/maven-project)
-- Maven Repository Metadata Model (from https://maven.apache.org/ref/4.0.0-alpha-8/maven-repository-metadata/, https://repo1.maven.org/maven2/org/apache/maven/maven-repository-metadata)
-- Maven Settings (from https://maven.apache.org/ref/4.0.0-alpha-8/maven-settings/, https://repo1.maven.org/maven2/org/apache/maven/maven-settings)
+- Maven Repository Metadata Model (from https://repo1.maven.org/maven2/org/apache/maven/maven-repository-metadata)
+- Maven Settings (from https://repo1.maven.org/maven2/org/apache/maven/maven-settings)
 - Metrics Core (from https://repo1.maven.org/maven2/io/dropwizard/metrics/metrics-core)
 - Microsoft Application Insights Java Agent (from https://github.com/Microsoft/ApplicationInsights-Java)
 - Microsoft Application Insights Java SDK Spring Boot starter (from https://github.com/Microsoft/ApplicationInsights-Java)
@@ -762,7 +762,7 @@ The following software have components provided under the terms of this license:
 - QpidJMS Client (from https://repo1.maven.org/maven2/org/apache/qpid/qpid-jms-client)
 - SLF4J API Module (from http://www.slf4j.org)
 - Spongy Castle (from http://rtyley.github.io/spongycastle/)
-- Spring Data for Azure Cosmos DB SQL API (from https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos)
+- Spring Data for Azure Cosmos DB SQL API (from https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cosmos/azure-spring-data-cosmos, https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-data-cosmos)
 - adal4j (from https://github.com/AzureAD/azure-activedirectory-library-for-java)
 - micrometer-core (from https://github.com/micrometer-metrics/micrometer)
 - mockito-junit-jupiter (from https://github.com/mockito/mockito)
@@ -832,13 +832,6 @@ The following software have components provided under the terms of this license:
 - Netty/Codec (from https://repo1.maven.org/maven2/io/netty/netty-codec)
 
 ========================================================================
-mit-old-style-no-advert
-========================================================================
-The following software have components provided under the terms of this license:
-
-- Brave (from https://repo1.maven.org/maven2/io/zipkin/brave/brave)
-
-========================================================================
 proprietary-license
 ========================================================================
 The following software have components provided under the terms of this license:
@@ -851,7 +844,6 @@ public-domain
 The following software have components provided under the terms of this license:
 
 - HdrHistogram (from http://hdrhistogram.github.io/HdrHistogram/)
-- JBoss Logging 3 (from http://www.jboss.org)
 - JSON in Java (from https://github.com/douglascrockford/JSON-java)
 - Microsoft Azure client library for Blob Storage (from https://github.com/Azure/azure-sdk-for-java)
 
