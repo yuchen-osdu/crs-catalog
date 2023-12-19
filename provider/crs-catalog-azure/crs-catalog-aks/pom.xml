@@ -28,8 +28,6 @@
         <osdu.corelibazure.version>0.25.0</osdu.corelibazure.version>
         <jackson-databind.version>2.15.2</jackson-databind.version>
         <jackson.version>2.15.2</jackson.version>
-        <spring-webmvc.version>5.3.22</spring-webmvc.version>
-        <spring-security-core.version>5.8.2</spring-security-core.version>
         <net-minidev.version>2.4.9</net-minidev.version>
         <netty.version>4.1.101.Final</netty.version>
         <reactor-netty-http.version>1.1.13</reactor-netty-http.version>
@@ -58,8 +56,16 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-crypto</artifactId>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
@@ -113,26 +119,32 @@
             <artifactId>azure-spring-boot-starter-active-directory</artifactId>
             <exclusions>
                 <exclusion>
-                    <artifactId>json-smart</artifactId>
                     <groupId>net.minidev</groupId>
+                    <artifactId>json-smart</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-logging</artifactId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>spring-boot-starter-webflux</artifactId>
                     <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-webflux</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.security</groupId>
+                    <artifactId>spring-security-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.security</groupId>
+                    <artifactId>spring-security-config</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.security</groupId>
+                    <artifactId>spring-security-web</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>${spring-security-core.version}</version>
-        </dependency>
-
+        
         <dependency>
             <groupId>io.projectreactor.netty</groupId>
             <artifactId>reactor-netty-http</artifactId>
@@ -212,11 +224,6 @@
             <artifactId>plexus-utils</artifactId>
             <version>3.0.16</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring-webmvc.version}</version>
         </dependency>
         <dependency>
     		<groupId>org.mortbay.jetty</groupId>
