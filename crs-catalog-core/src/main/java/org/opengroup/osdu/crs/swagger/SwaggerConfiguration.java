@@ -9,7 +9,6 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.tags.Tag;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.springdoc.core.GroupedOpenApi;
@@ -18,8 +17,6 @@ import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Arrays;
 
 
 
@@ -55,8 +52,7 @@ public class SwaggerConfiguration {
                         .bearerFormat("Authorization")
                         .in(SecurityScheme.In.HEADER)
                         .name("Authorization")))
-                .info(apiInfo())
-                .servers(Arrays.asList(new Server().url("/api/crs/catalog/")));
+                .info(apiInfo());
 
     }
 
