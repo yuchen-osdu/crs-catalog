@@ -16,6 +16,7 @@
         <lucene.version>8.10.0</lucene.version>
         <log4j.version>2.17.1</log4j.version>
         <logback.version>1.4.14</logback.version>
+        <json-smart.version>2.5.0</json-smart.version>
     </properties>
 
     <licenses>
@@ -123,6 +124,11 @@
                 <artifactId>springdoc-openapi-ui</artifactId>
                 <version>${openapi.version}</version>
     	    </dependency>
+            <dependency>
+                <groupId>net.minidev</groupId>
+                <artifactId>json-smart</artifactId>
+                <version>${json-smart.version}</version>
+            </dependency>
         </dependencies>
 
 
