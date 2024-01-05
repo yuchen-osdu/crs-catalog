@@ -28,7 +28,6 @@
         <osdu.corelibazure.version>0.25.0</osdu.corelibazure.version>
         <jackson-databind.version>2.15.2</jackson-databind.version>
         <jackson.version>2.15.2</jackson.version>
-        <net-minidev.version>2.4.9</net-minidev.version>
         <netty.version>4.1.101.Final</netty.version>
         <reactor-netty-http.version>1.1.13</reactor-netty-http.version>
     </properties>
@@ -230,11 +229,6 @@
     		<artifactId>jetty</artifactId>
     		<version>6.1.23</version>
 		</dependency>
-        <dependency>
-            <groupId>net.minidev</groupId>
-            <artifactId>json-smart</artifactId>
-            <version>${net-minidev.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
