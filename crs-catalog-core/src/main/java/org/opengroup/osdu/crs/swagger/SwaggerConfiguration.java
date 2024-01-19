@@ -9,6 +9,7 @@ import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.tags.Tag;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.springdoc.core.GroupedOpenApi;
@@ -18,6 +19,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 @Configuration
@@ -41,10 +45,16 @@ public class SwaggerConfiguration {
     @Value("${api.license.url}")
     private String licenseUrl;
 
+    @Value("${api.server.url}")
+    private String apiServerUrl;
+
+    @Value("${api.server.fullUrl.enabled:false}")
+    private boolean isServerFullUrlEnabled;
+
     @Bean
     public OpenAPI customOpenAPI() {
         final String securitySchemeName = "Authorization";
-        return new OpenAPI()
+        OpenAPI openAPI = new OpenAPI()
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .components(new Components().addSecuritySchemes(securitySchemeName, new SecurityScheme()
                         .type(SecurityScheme.Type.HTTP)
@@ -53,6 +63,10 @@ public class SwaggerConfiguration {
                         .in(SecurityScheme.In.HEADER)
                         .name("Authorization")))
                 .info(apiInfo());
+        if (isServerFullUrlEnabled)
+            return openAPI;
+        return openAPI
+                .servers(Arrays.asList(new Server().url(apiServerUrl)));
 
     }
 
