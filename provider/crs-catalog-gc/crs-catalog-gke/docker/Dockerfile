@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM azul/zulu-openjdk:17-latest
 
 ARG ENTITLEMENT_URL
 
