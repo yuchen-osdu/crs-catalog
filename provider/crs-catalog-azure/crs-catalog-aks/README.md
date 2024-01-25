@@ -6,7 +6,7 @@
 
 In order to run this service locally, you will need the following:
 
-- [Maven 3.6.0+](https://maven.apache.org/download.cgi)
+- [Maven 3.8.0+](https://maven.apache.org/download.cgi)
 - [AdoptOpenJDK8](https://adoptopenjdk.net/)
 - Infrastructure dependencies, deployable through the relevant [infrastructure template](https://dev.azure.com/slb-des-ext-collaboration/open-data-ecosystem/_git/infrastructure-templates?path=%2Finfra&version=GBmaster&_a=contents)
 - While not a strict dependency, example commands in this document use [bash](https://www.gnu.org/software/bash/)
@@ -67,9 +67,9 @@ az keyvault secret show --vault-name $KEY_VAULT_NAME --name $KEY_VAULT_SECRET_NA
 Check that maven is installed:
 ```bash
 $ mvn --version
-Apache Maven 3.6.0
+Apache Maven 3.8.0
 Maven home: /usr/share/maven
-Java version: 1.8.0_212, vendor: AdoptOpenJDK, runtime: /usr/lib/jvm/jdk8u212-b04/jre
+Java version: 17.0.7, vendor: AdoptOpenJDK, runtime: /usr/lib/jvm/jdk17*/jre
 ...
 ```
 

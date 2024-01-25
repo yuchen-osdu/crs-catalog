@@ -23,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 
 public class TestUtils {
     public static String readFile(String fileName) throws IOException {
-        InputStream inputStream = TestUtils.class.getClass().getResourceAsStream("/v2/" + fileName);
+        InputStream inputStream = TestUtils.class.getClassLoader().getResourceAsStream(fileName);
         if(inputStream == null) {
             throw new IOException();
         }
@@ -43,7 +43,7 @@ public class TestUtils {
 	 * @throws Exception indicates failure to create the catalog
 	 */
     public static CatalogImpl createTestCatalog(String fileName) throws Exception {
-        InputStream inputStream = TestUtils.class.getClass().getResourceAsStream("/v2/" + fileName);
+        InputStream inputStream = TestUtils.class.getClassLoader().getResourceAsStream(fileName);
         if(inputStream == null) {
             throw new IOException();
         }
