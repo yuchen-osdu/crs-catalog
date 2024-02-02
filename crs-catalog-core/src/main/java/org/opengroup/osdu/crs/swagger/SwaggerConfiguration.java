@@ -114,10 +114,10 @@ public class SwaggerConfiguration {
         return new Info()
                 .title(configurationProperties.getApiTitle())
                 .description(configurationProperties.getApiDescription())
-                .license(new License().name(configurationProperties.getLicenseName())
-                        .url(configurationProperties.getLicenseUrl()))
-                .contact(new Contact().name(configurationProperties.getContactName())
-                        .email(configurationProperties.getContactEmail()));
+                .license(new License().name(configurationProperties.getApiLicenseName())
+                        .url(configurationProperties.getApiLicenseUrl()))
+                .contact(new Contact().name(configurationProperties.getApiContactName())
+                        .email(configurationProperties.getApiContactEmail()));
     }
 
 }
