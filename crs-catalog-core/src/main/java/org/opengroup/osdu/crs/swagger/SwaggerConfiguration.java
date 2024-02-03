@@ -42,7 +42,7 @@ public class SwaggerConfiguration {
         if (configurationProperties.isApiServerFullUrlEnabled())
             return openAPI;
         return openAPI
-                .servers(Arrays.asList(new Server().url(configurationProperties.getApiServerUrl())));
+                .servers(Arrays.asList(new Server().url("/api/crs/catalog/")));
 
     }
 

@@ -18,7 +18,6 @@ public class SwaggerConfigurationProperties {
     private String apiContactEmail;
     private String apiLicenseName;
     private String apiLicenseUrl;
-    private String apiServerUrl;
     private boolean apiServerFullUrlEnabled;
 
 }
