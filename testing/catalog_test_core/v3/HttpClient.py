@@ -11,8 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import json
+import math
+from typing import Set
 
 import requests
+
 
 class HttpClient(object):
 
@@ -58,3 +62,33 @@ class HttpClient(object):
         self.unauth_retries = 0
 
         return response
+
+    def get_all_ids_of_kind(self, kind: str) -> Set[str]:
+        """
+        Uses the search query by cursor to return the list of all IDs from a given `kind`
+        """
+        search_response_id_set = set()
+
+        cursor = ""
+        total_count = math.inf
+        search_params = {
+            "kind": kind,
+            "limit": 1000,
+            "returnedFields":["id"]
+        }
+        while len(search_response_id_set) < total_count:
+            if cursor:
+                search_params['cursor'] = cursor
+
+            search_response = self.make_request('POST', '/api/search/v2/query_with_cursor', json.dumps(search_params))
+            if search_response.status_code != 200:
+                raise Exception(f"Could not search. received {search_response.status_code} from search service")
+
+            search_response_body = json.loads(search_response.content)
+            total_count = search_response_body['totalCount']
+            cursor = search_response_body.get("cursor", "")
+
+            for search_response_result in search_response_body["results"]:
+                search_response_id_set.add(search_response_result["id"])
+
+        return search_response_id_set
