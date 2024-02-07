@@ -102,21 +102,9 @@ class TestCrsCatalog(unittest.TestCase):
             while not found:
                 if checks >= max_checks:
                     raise Exception(f"Could not find records indexed against search after {max_checks} checks")
-                search_response = cls.client.make_request('POST', '/api/search/v2/query', f"""
-                    {{
-                        "kind":"{constants.SCHEMA_AUTHORITY}:wks:reference-data--Coordinate*:1.1.0"
-                    }}
-                    """)
-                
-                if search_response.status_code != 200:
-                    raise Exception(f"Could not search. received {search_response.status_code} from search service")
-                
-                search_response_body = json.loads(search_response.content)
-                print(f"Found {search_response_body['totalCount']} records")
-                
-                search_response_id_set = set()
-                for search_response_result in search_response_body["results"]:
-                    search_response_id_set.add(search_response_result["id"])
+
+                search_response_id_set = cls.client.get_all_ids_of_kind(f"{constants.SCHEMA_AUTHORITY}:wks:reference-data--Coordinate*:1.1.0")
+
                 if record_id_set.issubset(search_response_id_set):
                     found = True
                 else:
