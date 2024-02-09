@@ -253,7 +253,9 @@ class TestCrsCatalog(unittest.TestCase):
         response = self.client.make_request('POST', ct_endpoint_path, test_data)
         response_body = json.loads(response.content)
         self.check_search_response_count(response, 1, "test_search_coordinate_transformations_find_horizontal")
-        assert response_body["cursorSearchResults"]["results"][0]["data"]["Code"] == "1111"
+        expected_record_code_to_be_found_from_json_file = "1111"
+        self._get_record_by_code(response_body["cursorSearchResults"]["results"],
+                                 expected_record_code_to_be_found_from_json_file)
 
     def test_search_coordinate_transformations_find_vertical(self):
         with open(f'{self.path}v3/SearchCoordinateTransformationsVertical.json') as test_data_file:
@@ -306,13 +308,16 @@ class TestCrsCatalog(unittest.TestCase):
     def test_search_coordinate_reference_systems_bound_projected(self):
         with open(f'{self.path}v3/SearchCoordinateReferenceSystemsBoundProjected.json') as test_data:
             response = self.client.make_request('POST', crs_endpoint_path, test_data)
+
             self.check_search_response_count(response, 1, "test_search_coordinate_reference_systems_bound_projected")
             response_body = json.loads(response.content)
-            assert response_body["cursorSearchResults"]["results"][0]["data"]["Code"] == "24600001"
+            expected_record_code_to_be_found_from_json_file = "24600001"
+            record = self._get_record_by_code(response_body["cursorSearchResults"]["results"],
+                                              expected_record_code_to_be_found_from_json_file)
             for record_property in ('Code', 'Name', 'Kind', 'InactiveIndicator', 'CodeSpace', 'PreferredUsage.Name',
                                     'PreferredUsage.Extent.Description', 'PreferredUsage.Scope.Name',
                                     'CoordinateSystem.Name', 'Datum.Name', 'RevisionDate'):
-                assert record_property in response_body["cursorSearchResults"]["results"][0]['data']
+                assert record_property in record['data']
             assert "InformationSource" not in response_body["cursorSearchResults"]["results"][0]['data']
 
     def test_search_coordinate_reference_systems_bound_projected_return_all_fields(self):
@@ -396,3 +401,10 @@ class TestCrsCatalog(unittest.TestCase):
                     raise Exception(
                         f"Could not delete record on teardown. Received {storage_delete_response.status_code} from storage service")
             record_id_set.clear()
+
+    @staticmethod
+    def _get_record_by_code(records_list, code):
+        for record in records_list:
+            if record["data"]["Code"] == code:
+                return record
+        assert False, f"No record found with code {code}"
