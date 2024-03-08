@@ -18,7 +18,7 @@ future context.
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Requirements
-* Java 8
+* Java 17
 * [Maven 3.6.0+](https://maven.apache.org/download.cgi)
 * GCloud command line tool
 * GCloud access to opendes project
