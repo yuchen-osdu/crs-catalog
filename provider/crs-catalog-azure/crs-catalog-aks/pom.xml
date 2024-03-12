@@ -25,7 +25,7 @@
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <osdu.corelibazure.version>0.25.0</osdu.corelibazure.version>
+        <osdu.corelibazure.version>0.26.0-rc5</osdu.corelibazure.version>
         <jackson-databind.version>2.15.2</jackson-databind.version>
         <jackson.version>2.15.2</jackson.version>
         <netty.version>4.1.101.Final</netty.version>
