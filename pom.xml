@@ -9,7 +9,7 @@
         <docker.image.prefix>org.opengroup.osdu</docker.image.prefix>
         <powermock.version>2.0.6</powermock.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <os-core-common.version>0.25.0</os-core-common.version>
+        <os-core-common.version>0.26.0-rc8</os-core-common.version>
         <snakeyaml.version>2.0</snakeyaml.version>
         <nimbus-jose-jwt.version>7.9</nimbus-jose-jwt.version>
         <openapi.version>1.7.0</openapi.version>
@@ -40,6 +40,7 @@
         <module>provider/crs-catalog-gc/crs-catalog-gke</module>
         <module>provider/crs-catalog-ibm/crs-catalog-ocp</module>
         <module>provider/crs-catalog-aws</module>
+        <module>crs-catalog-core-plus</module>
     </modules>
 
     <repositories>
