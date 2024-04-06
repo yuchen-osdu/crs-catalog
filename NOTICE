@@ -857,6 +857,7 @@ public-domain
 The following software have components provided under the terms of this license:
 
 - HdrHistogram (from http://hdrhistogram.github.io/HdrHistogram/)
+- JBoss Logging 3 (from http://www.jboss.org)
 - JSON in Java (from https://github.com/douglascrockford/JSON-java)
 - Microsoft Azure client library for Blob Storage (from https://github.com/Azure/azure-sdk-for-java)
 
@@ -865,26 +866,6 @@ unknown
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Jetty :: Asynchronous HTTP Client (from http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-client)
-- Jetty :: Continuation (from http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-continuation)
-- Jetty :: Http Utility (from http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-http)
-- Jetty :: IO Utility (from http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-io)
-- Jetty :: Plus (from http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-plus)
-- Jetty :: Security (from http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-security)
-- Jetty :: Servlet Annotations (from http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-annotations)
-- Jetty :: Servlet Handling (from http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-servlet)
-- Jetty :: Utilities (from http://jetty.mortbay.org, http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-util, https://repo1.maven.org/maven2/org/mortbay/jetty/jetty-util)
-- Jetty :: Utilities :: Ajax(JSON) (from http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-util-ajax)
-- Jetty :: Utility Servlets and Filters (from http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-servlets)
-- Jetty :: Webapp Application Support (from http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-webapp)
-- Jetty :: Websocket :: API (from <https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/websocket-api>, https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/websocket-api)
-- Jetty :: Websocket :: Client (from <https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/websocket-client>, https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/websocket-client)
-- Jetty :: Websocket :: Common (from <https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/websocket-common>, https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/websocket-common)
-- Jetty :: Websocket :: Server (from <https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/websocket-server>, https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/websocket-server)
-- Jetty :: Websocket :: Servlet (from <https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/websocket-servlet>, https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/websocket-servlet)
-- Jetty :: Websocket :: javax.websocket :: Client Implementation (from <https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-client-impl>, https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-client-impl)
-- Jetty :: Websocket :: javax.websocket.server :: Server Implementation (from <https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-server-impl>, https://repo1.maven.org/maven2/org/eclipse/jetty/websocket/javax-websocket-server-impl)
-- Jetty :: XML utilities (from http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-xml)
 - xml-apis (from https://repo1.maven.org/maven2/xml-apis/xml-apis)
 
 ========================================================================
