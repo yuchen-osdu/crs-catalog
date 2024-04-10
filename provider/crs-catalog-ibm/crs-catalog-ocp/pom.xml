@@ -21,7 +21,7 @@
         <app.id>crs-catalog-ocp</app.id>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <objectify.version>5.1.22</objectify.version>
-        <os-core-lib-ibm.version>0.25.0</os-core-lib-ibm.version>
+        <os-core-lib-ibm.version>0.26.0</os-core-lib-ibm.version>
         <slf4j.version>1.7.25</slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
