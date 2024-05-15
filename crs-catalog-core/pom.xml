@@ -207,7 +207,11 @@
 					<groupId>ch.qos.logback</groupId>
 				    <artifactId>logback-classic</artifactId>
 				</exclusion>
-			</exclusions>
+                <exclusion>
+                    <artifactId>maven-core</artifactId>
+                    <groupId>org.apache.maven</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
             <dependency>
 			<groupId>xerces</groupId>
