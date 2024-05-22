@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -35,14 +35,17 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 @Configuration
 public class AuthSecurityConfig implements AccessDeniedHandler, AuthenticationEntryPoint {
       
@@ -77,19 +80,23 @@ public class AuthSecurityConfig implements AccessDeniedHandler, AuthenticationEn
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
-                .and()
-                .authorizeRequests()
-                .antMatchers(AUTH_WHITELIST).permitAll()
-                .and()
-                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
+        http.csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(requests -> requests
+        .requestMatchers(AUTH_WHITELIST).permitAll()
+        .anyRequest().authenticated())
+        .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.NEVER))
+        .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().antMatchers(AUTH_WHITELIST);
+        return web -> web.ignoring().requestMatchers(AUTH_WHITELIST);
+    }
+
+    @Bean
+    public HandlerMappingIntrospector mvcHandlerMappingIntrospector() {
+        return new HandlerMappingIntrospector();
     }
 
     @Override

@@ -18,13 +18,13 @@ import org.opengroup.osdu.crs.model.interfaces.*;
 import org.opengroup.osdu.crs.model.request.SearchRequest;
 import org.opengroup.osdu.crs.model.search.*;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CatalogImplTest {
 
@@ -36,7 +36,7 @@ public class CatalogImplTest {
 
     private static CatalogImpl catalogImpl = null;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpBeforeClass() {
         try {
             catalogImpl = TestUtils.createTestCatalog("TestCatalog.json");

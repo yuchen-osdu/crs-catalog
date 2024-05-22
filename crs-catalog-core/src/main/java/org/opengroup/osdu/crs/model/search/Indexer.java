@@ -193,12 +193,10 @@ public class Indexer {
         CRSEssence crsEssence = (CRSEssence)crs.getEssence();
         StringBuilder name = new StringBuilder();
         name.append(crsEssence.getName());
-        if (crsEssence instanceof EarlyBoundCRSEssence) {
-            EarlyBoundCRSEssence eb = (EarlyBoundCRSEssence) crsEssence;
+        if (crsEssence instanceof EarlyBoundCRSEssence eb) {
             name.append(" ");
             name.append(eb.getLateBoundCRSEssence().getName());  // make the lateBoundCRS name searchable
-        } else if (crsEssence instanceof CompoundCRSEssence) {
-            CompoundCRSEssence cc = (CompoundCRSEssence)crsEssence;
+        } else if (crsEssence instanceof CompoundCRSEssence cc) {
             name.append(" ");
             name.append(cc.getHorizontalCRSEssence().getName());  // make the horizCRS name searchable
             name.append(" ");
@@ -226,14 +224,12 @@ public class Indexer {
             doc.add(new TextField(Remarks, deprecationInfo.getRemarks(), Field.Store.NO));
         }
 
-        if(crs instanceof LateBoundCRS) {
-            LateBoundCRS lateBoundCRS = (LateBoundCRS)crs;
+        if(crs instanceof LateBoundCRS lateBoundCRS) {
             LateBoundCRSEssence lbCRSEssence = lateBoundCRS.getLateBoundCRSEssence();
             if(lbCRSEssence != null)
                 doc.add(new TextField(WellKnownText, lbCRSEssence.getWellKnownText(), Field.Store.NO));
         }
-        else if(crs instanceof EarlyBoundCRS) {
-            EarlyBoundCRS earlyBoundCRS = (EarlyBoundCRS)crs;
+        else if(crs instanceof EarlyBoundCRS earlyBoundCRS) {
             EarlyBoundCRSEssence ebCRSEssence = earlyBoundCRS.getEarlyBoundCRSEssence();
             if(ebCRSEssence != null) {
                 indexAuthorityCode(doc, LateBoundCRSAuthority, LateBoundCRSCode, ebCRSEssence.getLateBoundCRSAuthorityCode());
@@ -241,8 +237,7 @@ public class Indexer {
                 addWellKnownTextIndex(ebCRSEssence, doc);
             }
         }
-        else if(crs instanceof CompoundCRS) {
-            CompoundCRS compoundCRS = (CompoundCRS)crs;
+        else if(crs instanceof CompoundCRS compoundCRS) {
             CompoundCRSEssence cCRSEssence = compoundCRS.getCompoundCRSEssence();
             if(cCRSEssence != null) {
                 indexAuthorityCode(doc, HorizontalCRSAuthority, HorizontalCRSCode, cCRSEssence.getHorizontalCRSAuthorityCode());
@@ -283,14 +278,12 @@ public class Indexer {
             indexBoundingBox(doc, areaOfUseEssence.getBoundingBox());
         }
 
-        if(ct instanceof SingleCT) {
-            SingleCT singleCT = (SingleCT)ct;
+        if(ct instanceof SingleCT singleCT) {
             SingleCTEssence singleCTEssence = singleCT.getSingleCTEssence();
             if(singleCTEssence != null)
                 doc.add(new TextField(WellKnownText, singleCTEssence.getWellKnownText(), Field.Store.NO));
         }
-        else if(ct instanceof CompoundCT) {
-            CompoundCT compoundCT = (CompoundCT)ct;
+        else if(ct instanceof CompoundCT compoundCT) {
             CompoundCTEssence compoundCTEssence = compoundCT.getCompoundCTEssence();
             if(compoundCTEssence != null)
                 doc.add(new TextField(Policy, compoundCTEssence.getPolicy(), Field.Store.NO));
@@ -367,13 +360,13 @@ public class Indexer {
     private void addWellKnownTextIndex(CRSEssence essence, Document doc) {
         StringBuilder sb = new StringBuilder();
         try {
-            if (essence instanceof EarlyBoundCRSEssence) {
-                aggregateWellKnownText((EarlyBoundCRSEssence) essence, sb);
+            if (essence instanceof EarlyBoundCRSEssence sEssence) {
+                aggregateWellKnownText(sEssence, sb);
                 doc.add(new TextField(WellKnownText, sb.toString(), Field.Store.NO));
-            } else if (essence instanceof LateBoundCRSEssence) {
-                aggregateWellKnownText((LateBoundCRSEssence) essence, sb);
-            } else if (essence instanceof CompoundCRSEssence) {
-                aggregateWellKnownText((CompoundCRSEssence) essence, sb);
+            } else if (essence instanceof LateBoundCRSEssence sEssence) {
+                aggregateWellKnownText(sEssence, sb);
+            } else if (essence instanceof CompoundCRSEssence sEssence) {
+                aggregateWellKnownText(sEssence, sb);
             }
             doc.add(new TextField(WellKnownText, sb.toString(), Field.Store.NO));
         }
@@ -417,13 +410,11 @@ public class Indexer {
     }
 
     private void aggregateWellKnownText(CTEssence essence, StringBuilder sb) {
-        if (essence instanceof SingleCTEssence) {
-            SingleCTEssence ct = (SingleCTEssence) essence;
+        if (essence instanceof SingleCTEssence ct) {
             if (ct.getWellKnownText() != null) {
                 sb.append(ct.getWellKnownText());
             }
-        } else if (essence instanceof CompoundCTEssence) {
-            CompoundCTEssence ct = (CompoundCTEssence) essence;
+        } else if (essence instanceof CompoundCTEssence ct) {
             for (CTEssence cte: ct.getCTEssences()){
                 aggregateWellKnownText(cte, sb);
             }

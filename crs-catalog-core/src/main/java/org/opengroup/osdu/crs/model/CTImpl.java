@@ -118,8 +118,8 @@ public abstract class CTImpl extends CRSCTBaseImpl implements CT{
 	 */
 	public CT convert(RepresentationMode mode) {
 		if (mode == RepresentationMode.ESSENCE) return this;
-		if (this instanceof SingleCTImpl) return ((SingleCTImpl)this).convert(mode);
-		else if (this instanceof CompoundCTImpl) return ((CompoundCTImpl)this).convert(mode);
+		if (this instanceof SingleCTImpl impl) return impl.convert(mode);
+		else if (this instanceof CompoundCTImpl impl) return impl.convert(mode);
 		return this;
 	}
 

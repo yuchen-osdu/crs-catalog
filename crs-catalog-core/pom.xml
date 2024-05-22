@@ -19,136 +19,107 @@
     <properties>
         <app.version>1</app.version>
         <app.id>crs-catalog-core</app.id>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <objectify.version>5.1.22</objectify.version>
-        <slf4j.version>1.7.25</slf4j.version>
-        <spring.version>5.2.4.RELEASE</spring.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <osdu.oscorecommon.version>0.26.0</osdu.oscorecommon.version>
-        <jackson-databind.version>2.14.0</jackson-databind.version>
-        <jackson.version>2.13.2</jackson.version>
-        <spring-webmvc.version>5.3.22</spring-webmvc.version>
+        <osdu.oscorecommon.version>0.26.0-rc2</osdu.oscorecommon.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
-        <org-eclipse-jetty.version>9.4.51.v20230217</org-eclipse-jetty.version>
+        <org-eclipse-jetty.version>11.0.20</org-eclipse-jetty.version>
     </properties>
 
     <prerequisites>
         <maven>3.1.0</maven>
     </prerequisites>
 
-    <dependencies>
-        <!-- Compile/runtime dependencies -->
-        <dependency>
-            <groupId>org.opengroup.osdu</groupId>
-            <artifactId>os-core-common</artifactId>
-            <version>${osdu.oscorecommon.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson-databind.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>ch.qos.logback</groupId>
-				    <artifactId>logback-classic</artifactId>
-				</exclusion>
-			</exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jetty</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>jetty-server</artifactId>
-                    <groupId>org.eclipse.jetty</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring-webmvc.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.jdo</groupId>
-            <artifactId>jdo-api</artifactId>
-            <version>3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-        </dependency>
+  <dependencies>
+    <!-- Compile/runtime dependencies -->
+    <dependency>
+      <groupId>org.opengroup.osdu</groupId>
+      <artifactId>os-core-common-spring6</artifactId>
+      <version>${osdu.oscorecommon.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-config</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jetty</artifactId>
+      <exclusions>
+        <exclusion>
+          <artifactId>jetty-server</artifactId>
+          <groupId>org.eclipse.jetty</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.jdo</groupId>
+      <artifactId>jdo-api</artifactId>
+      <version>3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.26</version>
-            <scope>provided</scope>
-        </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.32</version>
+      <scope>provided</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>org.opengroup.osdu</groupId>
-            <artifactId>os-core-common</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>com.googlecode.objectify</groupId>
+      <artifactId>objectify</artifactId>
+      <version>${objectify.version}</version>
+    </dependency>
 
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>${commons-beanutils.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.inject</groupId>
+      <artifactId>jakarta.inject-api</artifactId>
+      <version>2.0.1</version>
+    </dependency>
         <dependency>
-            <groupId>com.googlecode.objectify</groupId>
-            <artifactId>objectify</artifactId>
-            <version>${objectify.version}</version>
-        </dependency>
-
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>${commons-beanutils.version}</version>
-		</dependency>
-        <dependency>
-    		<groupId>org.mortbay.jetty</groupId>
-    		<artifactId>jetty</artifactId>
-    		<version>6.1.23</version>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>${commons-beanutils.version}</version>
         </dependency>
 
         <!-- Lucene Indexing Dependencies -->
@@ -169,17 +140,17 @@
         </dependency>
 
         <!-- Test Dependencies -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>${powermock.version}</version>
-            <scope>test</scope>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-module-junit4</artifactId>
+      <version>${powermock.version}</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>
@@ -190,7 +161,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>3.3.3</version>
+            <version>4.11.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -199,26 +170,26 @@
             <version>2.7</version>
             <scope>test</scope>
             <exclusions>
-				<exclusion>
-					<groupId>com.sun</groupId>
-					<artifactId>tools</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>ch.qos.logback</groupId>
-				    <artifactId>logback-classic</artifactId>
-				</exclusion>
+                <exclusion>
+                    <groupId>com.sun</groupId>
+                    <artifactId>tools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
                 <exclusion>
                     <artifactId>maven-core</artifactId>
                     <groupId>org.apache.maven</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
-            <dependency>
-			<groupId>xerces</groupId>
-			<artifactId>xercesImpl</artifactId>
-			<version>2.12.2</version>
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.12.2</version>
             <scope>test</scope>
-		</dependency>
+        </dependency>
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
@@ -254,15 +225,17 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <version>3.7.0</version>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>17</source>
-                    <target>17</target>
+        <configuration>
+        <compilerArgs>
+             <arg>-parameters</arg>
+         </compilerArgs>
+          <release>${java.version}</release>
                 </configuration>
             </plugin>
             <plugin>
                  <groupId>org.jacoco</groupId>
                  <artifactId>jacoco-maven-plugin</artifactId>
-                 <version>0.8.10</version>
+                 <version>0.8.12</version>
                  <executions>
                      <execution>
                          <goals>
@@ -280,7 +253,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.21.0</version>
+                <version>3.1.2</version>
                 <configuration>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                 </configuration>

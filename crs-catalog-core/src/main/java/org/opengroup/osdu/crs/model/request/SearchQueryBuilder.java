@@ -28,7 +28,7 @@ public class SearchQueryBuilder {
 
     public static String buildPhraseQuery(String recordBodyAttrName, Object attribute) {
         if (attribute == null) return null;
-        return String.format("%s: \"%s\"", recordBodyAttrName, attribute);
+        return "%s: \"%s\"".formatted(recordBodyAttrName, attribute);
     }
 
     public void addPhraseQuery(String recordBodyAttrName, Object attribute) {
@@ -36,7 +36,7 @@ public class SearchQueryBuilder {
     }
     public static String buildNegativePhraseQuery(String recordBodyAttrName, Object attribute) {
         if (attribute == null) return null;
-        return String.format("NOT %s: \"%s\"", recordBodyAttrName, attribute);
+        return "NOT %s: \"%s\"".formatted(recordBodyAttrName, attribute);
     }
 
     public void addNegativePhraseQuery(String recordBodyAttrName, Object attribute) {
@@ -70,7 +70,7 @@ public class SearchQueryBuilder {
     }
 
     public static String connectMultipleQueries(String connector, List<String> queriesToConnect) {
-        connector = String.format(" %s ", connector);
+        connector = " %s ".formatted(connector);
         StringBuilder builder = new StringBuilder();
         boolean firstItem = true;
         for (String query : queriesToConnect) {
@@ -79,7 +79,7 @@ public class SearchQueryBuilder {
             } else {
                 builder.append(connector);
             }
-            builder.append(String.format("(%s)", query));
+            builder.append("(%s)".formatted(query));
         }
         return builder.toString();
     }

@@ -14,7 +14,7 @@
 
 package org.opengroup.osdu.crs.api;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.opengroup.osdu.crs.model.CRSEssenceImpl;
 import org.opengroup.osdu.crs.model.CTEssenceImpl;
@@ -25,8 +25,8 @@ import org.opengroup.osdu.crs.model.request.CRSRequest;
 import org.opengroup.osdu.crs.model.request.CTRequest;
 import org.opengroup.osdu.crs.model.search.CRSResults;
 import org.opengroup.osdu.crs.model.search.CTResults;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
@@ -34,7 +34,7 @@ public class CrsCatalogApiTestSmallCatalog {
     private static CatalogImpl catalogImpl = null;
     private static CrsCatalogApi crsCatalogApi;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpBeforeClass() {
         try {
             catalogImpl = TestUtils.createTestCatalog("TestCatalog.json");

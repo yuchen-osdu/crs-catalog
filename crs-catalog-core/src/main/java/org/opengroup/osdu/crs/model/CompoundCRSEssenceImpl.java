@@ -73,8 +73,8 @@ public class CompoundCRSEssenceImpl extends CRSEssenceImpl implements CompoundCR
      * @param horizontalCRS {@link CRSEssenceImpl}
      */
     public void setHorizontalCRS(Essence horizontalCRS) {
-        if (horizontalCRS instanceof LateBoundCRSEssenceImpl) this.horizontalLbCRSEssence = (LateBoundCRSEssenceImpl)horizontalCRS;
-        else if (horizontalCRS instanceof EarlyBoundCRSEssenceImpl) this.horizontalEbCRSEssence = (EarlyBoundCRSEssenceImpl)horizontalCRS;
+        if (horizontalCRS instanceof LateBoundCRSEssenceImpl impl) this.horizontalLbCRSEssence = impl;
+        else if (horizontalCRS instanceof EarlyBoundCRSEssenceImpl impl) this.horizontalEbCRSEssence = impl;
     }
 
     /**
@@ -82,8 +82,8 @@ public class CompoundCRSEssenceImpl extends CRSEssenceImpl implements CompoundCR
      * @param verticalCRS {@link CRSImpl}
      */
     public void setVerticalCRS(Essence verticalCRS) {
-		if (verticalCRS instanceof LateBoundCRSEssenceImpl) this.verticalLbCRSEssence = (LateBoundCRSEssenceImpl)verticalCRS;
-		else if (verticalCRS instanceof EarlyBoundCRSEssenceImpl) this.verticalEbCRSEssence = (EarlyBoundCRSEssenceImpl)verticalCRS;
+		if (verticalCRS instanceof LateBoundCRSEssenceImpl impl) this.verticalLbCRSEssence = impl;
+		else if (verticalCRS instanceof EarlyBoundCRSEssenceImpl impl) this.verticalEbCRSEssence = impl;
     }
 
 	/*

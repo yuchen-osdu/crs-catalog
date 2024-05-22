@@ -74,11 +74,11 @@ public class EarlyBoundCRSEssenceImpl extends CRSEssenceImpl implements EarlyBou
 	@JsonIgnore
 	public void setLateBoundCRSEssence(Essence lb_crs)
 	{
-		if (lb_crs instanceof LateBoundCRSEssenceImpl) this.lbCRSEssence = (LateBoundCRSEssenceImpl) lb_crs;
+		if (lb_crs instanceof LateBoundCRSEssenceImpl impl) this.lbCRSEssence = impl;
 	}
 	public void setCTEssence(EssenceImpl ct){
-		if (ct instanceof SingleCTEssenceImpl) this.sctEssence = (SingleCTEssenceImpl) ct;
-		else if (ct instanceof CompoundCTEssenceImpl) this.cctEssence = (CompoundCTEssenceImpl) ct;
+		if (ct instanceof SingleCTEssenceImpl impl) this.sctEssence = impl;
+		else if (ct instanceof CompoundCTEssenceImpl impl) this.cctEssence = impl;
 	}
 	/**
 	 * get the cartographic transform

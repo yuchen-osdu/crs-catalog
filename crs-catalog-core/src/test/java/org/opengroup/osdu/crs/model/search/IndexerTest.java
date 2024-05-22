@@ -23,20 +23,20 @@ import org.opengroup.osdu.crs.model.interfaces.AreaOfUse;
 import org.opengroup.osdu.crs.model.interfaces.CRS;
 import org.opengroup.osdu.crs.model.interfaces.CT;
 import org.apache.lucene.index.IndexWriter;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by SYang on 7/7/2016.
  */
 public class IndexerTest {
     private static CatalogImpl catalogImpl = null;
-    @BeforeClass
+    @BeforeAll
     public static void setUpBeforeClass() {
         try {
             catalogImpl = TestUtils.createTestCatalog("TestCatalog.json");
@@ -49,22 +49,28 @@ public class IndexerTest {
         }
     }
 
-    @Test(expected = java.lang.Exception.class)
+    @Test
     public void testNullCRSImplThrows() throws Exception {
-        Indexer indexer = new Indexer();
-        indexer.indexCRS(null);
+        assertThrows(java.lang.Exception.class, () -> {
+            Indexer indexer = new Indexer();
+            indexer.indexCRS(null);
+        });
     }
 
-    @Test(expected = java.lang.Exception.class)
+    @Test
     public void testNullCTImplThrows() throws Exception {
-        Indexer indexer = new Indexer();
-        indexer.indexCT(null);
+        assertThrows(java.lang.Exception.class, () -> {
+            Indexer indexer = new Indexer();
+            indexer.indexCT(null);
+        });
     }
 
-    @Test(expected = java.lang.Exception.class)
+    @Test
     public void testNullAreaOfUseImplThrows() throws Exception {
-        Indexer indexer = new Indexer();
-        indexer.indexAreaOfUse(null);
+        assertThrows(java.lang.Exception.class, () -> {
+            Indexer indexer = new Indexer();
+            indexer.indexAreaOfUse(null);
+        });
     }
 
     @Test
@@ -77,7 +83,7 @@ public class IndexerTest {
             indexer.closeIndexWriter();
 
         } catch (Exception ex) {
-            fail(String.format("Unexpected Exception %s", ex.toString()));
+            fail("Unexpected Exception %s".formatted(ex.toString()));
         }
     }
 
@@ -101,7 +107,7 @@ public class IndexerTest {
                 assertEquals(count, stats.numDocs);
             }
         } catch (Exception ex) {
-            fail(String.format("Unexpected Exception %s", ex.toString()));
+            fail("Unexpected Exception %s".formatted(ex.toString()));
         }
     }
 
@@ -125,7 +131,7 @@ public class IndexerTest {
                 assertEquals(count, stats.numDocs);
             }
         } catch (Exception ex) {
-            fail(String.format("Unexpected Exception %s", ex.toString()));
+            fail("Unexpected Exception %s".formatted(ex.toString()));
         }
     }
 
@@ -149,7 +155,7 @@ public class IndexerTest {
                 assertEquals(count, stats.numDocs);
             }
         } catch (Exception ex) {
-            fail(String.format("Unexpected Exception %s", ex.toString()));
+            fail("Unexpected Exception %s".formatted(ex.toString()));
         }
     }
 }

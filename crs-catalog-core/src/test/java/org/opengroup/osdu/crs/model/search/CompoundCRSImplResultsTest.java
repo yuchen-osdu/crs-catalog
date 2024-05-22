@@ -16,12 +16,13 @@ package org.opengroup.osdu.crs.model.search;
 
 import org.opengroup.osdu.crs.model.CompoundCRSImpl;
 import org.opengroup.osdu.crs.model.interfaces.CompoundCRS;
-import org.junit.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+import java.util.List;
 
 /**
  * Created by SYang on 7/12/2016.

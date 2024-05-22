@@ -16,18 +16,18 @@ package org.opengroup.osdu.crs.api;
 
 import org.opengroup.osdu.crs.logging.AuditLogger;
 import org.opengroup.osdu.crs.model.request.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 import org.opengroup.osdu.crs.util.AppException;
 import org.opengroup.osdu.crs.model.AreaOfUseEssenceImpl;
@@ -61,12 +61,12 @@ public class CrsCatalogApiTestMock {
 	@InjectMocks
     private static CrsCatalogApi crsCatalogApi;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpBeforeClass() {
         crsCatalogApi = new CrsCatalogApi(catalogMock);
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
     }
@@ -140,21 +140,23 @@ public class CrsCatalogApiTestMock {
         }
     }
 
-    @Test(expected = AppException.class)
+    @Test
     public void testGetCRSBadRequest() {
-        assertNotNull(crsCatalogApi);
-        CRSEssenceImpl essence = null;
-        try {
-            String essenceJson = TestUtils.readFile("LateBoundCRSEssence.json");
-            essence = CRSEssenceImpl.fromJson(essenceJson);
-        }
-        catch(Exception ex) {
-            ex.printStackTrace();
-            fail();
-        }
-        when(catalogMock.getCRS(any())).thenThrow(AppException.class);
-        CRSRequest  request = new CRSRequest(essence);
-        crsCatalogApi.getCRS(request, "essence");
+        assertThrows(AppException.class, () -> {
+            assertNotNull(crsCatalogApi);
+            CRSEssenceImpl essence = null;
+            try {
+                String essenceJson = TestUtils.readFile("LateBoundCRSEssence.json");
+                essence = CRSEssenceImpl.fromJson(essenceJson);
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+                fail();
+            }
+            when(catalogMock.getCRS(any())).thenThrow(AppException.class);
+            CRSRequest  request = new CRSRequest(essence);
+            crsCatalogApi.getCRS(request, "essence");
+        });
     }
 
     @Test
@@ -194,12 +196,14 @@ public class CrsCatalogApiTestMock {
         }
     }
 
-    @Test(expected = AppException.class)
+    @Test
     public void testGetLateBoundCRSBadRequest() {
-        assertNotNull(crsCatalogApi);
-        when(catalogMock.getLateBoundCRS(any())).thenThrow(AppException.class);
-        LateBoundCRSRequest  request = new LateBoundCRSRequest(null, null);
-        crsCatalogApi.getLateBoundCRS(request, null);
+        assertThrows(AppException.class, () -> {
+            assertNotNull(crsCatalogApi);
+            when(catalogMock.getLateBoundCRS(any())).thenThrow(AppException.class);
+            LateBoundCRSRequest  request = new LateBoundCRSRequest(null, null);
+            crsCatalogApi.getLateBoundCRS(request, null);
+        });
     }
 
 
@@ -240,12 +244,14 @@ public class CrsCatalogApiTestMock {
         }
     }
 
-    @Test(expected = AppException.class)
+    @Test
     public void testGetEarlyBoundCRSBadRequest() {
-        assertNotNull(crsCatalogApi);
-        when(catalogMock.getEarlyBoundCRS(any())).thenThrow(AppException.class);
-        EarlyBoundCRSRequest  request = new EarlyBoundCRSRequest(null, null);
-        crsCatalogApi.getEarlyBoundCRS(request, "essence");
+        assertThrows(AppException.class, () -> {
+            assertNotNull(crsCatalogApi);
+            when(catalogMock.getEarlyBoundCRS(any())).thenThrow(AppException.class);
+            EarlyBoundCRSRequest  request = new EarlyBoundCRSRequest(null, null);
+            crsCatalogApi.getEarlyBoundCRS(request, "essence");
+        });
     }
 
 
@@ -286,12 +292,14 @@ public class CrsCatalogApiTestMock {
         }
     }
 
-    @Test(expected = AppException.class)
+    @Test
     public void testGetCompoundCRSBadRequest() {
-        assertNotNull(crsCatalogApi);
-        when(catalogMock.getCompoundCRS(any())).thenThrow(AppException.class);
-        CompoundCRSRequest  request = new CompoundCRSRequest(null);
-        crsCatalogApi.getCompoundCRS(request, "essence");
+        assertThrows(AppException.class, () -> {
+            assertNotNull(crsCatalogApi);
+            when(catalogMock.getCompoundCRS(any())).thenThrow(AppException.class);
+            CompoundCRSRequest  request = new CompoundCRSRequest(null);
+            crsCatalogApi.getCompoundCRS(request, "essence");
+        });
     }
 
 
@@ -350,12 +358,14 @@ public class CrsCatalogApiTestMock {
         }
     }
 
-    @Test(expected = AppException.class)
+    @Test
     public void testGetSingleCTBadRequest() {
-        assertNotNull(crsCatalogApi);
-        when(catalogMock.getSingleCT(any())).thenThrow(AppException.class);
-        SingleCTRequest  request = new SingleCTRequest(null);
-        crsCatalogApi.getSingleCT(request, "essence");
+        assertThrows(AppException.class, () -> {
+            assertNotNull(crsCatalogApi);
+            when(catalogMock.getSingleCT(any())).thenThrow(AppException.class);
+            SingleCTRequest  request = new SingleCTRequest(null);
+            crsCatalogApi.getSingleCT(request, "essence");
+        });
     }
 
 
@@ -396,12 +406,14 @@ public class CrsCatalogApiTestMock {
         }
     }
 
-    @Test(expected = AppException.class)
+    @Test
     public void testGetCompoundCTBadRequest() {
-        assertNotNull(crsCatalogApi);
-        when(catalogMock.getCompoundCT(any())).thenThrow(AppException.class);
-        CompoundCTRequest  request = new CompoundCTRequest(null);
-        crsCatalogApi.getCompoundCT(request, "essence");
+        assertThrows(AppException.class, () -> {
+            assertNotNull(crsCatalogApi);
+            when(catalogMock.getCompoundCT(any())).thenThrow(AppException.class);
+            CompoundCTRequest  request = new CompoundCTRequest(null);
+            crsCatalogApi.getCompoundCT(request, "essence");
+        });
     }
 
 
@@ -442,12 +454,14 @@ public class CrsCatalogApiTestMock {
         }
     }
 
-    @Test(expected = AppException.class)
+    @Test
     public void testGetAreaOfUseBadRequest() {
-        assertNotNull(crsCatalogApi);
-        when(catalogMock.getAreaOfUse(any())).thenThrow(AppException.class);
-        AreaOfUseRequest  request = new AreaOfUseRequest(null);
-        crsCatalogApi.getAreaOfUse(request, "essence");
+        assertThrows(AppException.class, () -> {
+            assertNotNull(crsCatalogApi);
+            when(catalogMock.getAreaOfUse(any())).thenThrow(AppException.class);
+            AreaOfUseRequest  request = new AreaOfUseRequest(null);
+            crsCatalogApi.getAreaOfUse(request, "essence");
+        });
     }
 
     @Test

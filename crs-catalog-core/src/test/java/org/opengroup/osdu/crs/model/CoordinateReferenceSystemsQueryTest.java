@@ -1,17 +1,18 @@
 package org.opengroup.osdu.crs.model;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import org.opengroup.osdu.core.common.model.search.SpatialFilter;
 import org.opengroup.osdu.crs.model.request.BaseCRS;
 import org.opengroup.osdu.crs.model.request.CoordinateReferenceSystemsQuery;
 import org.opengroup.osdu.crs.model.request.Datum;
 import org.opengroup.osdu.crs.model.request.Extent;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class CoordinateReferenceSystemsQueryTest {
 
 	@InjectMocks
@@ -45,7 +46,7 @@ public class CoordinateReferenceSystemsQueryTest {
 		String query = coordinateReferenceSystemsQuery.constructQuery();
 
 		// assert
-		Assert.assertEquals(expectedQuery, query);
+		Assertions.assertEquals(expectedQuery, query);
 	}
 
 	@Test
@@ -55,7 +56,7 @@ public class CoordinateReferenceSystemsQueryTest {
 		// act
 		String query = coordinateReferenceSystemsQuery.constructQuery();
 		// assert
-		Assert.assertTrue(query.isEmpty());
+		Assertions.assertTrue(query.isEmpty());
 	}
 	@Test
 	public void testConstructQueryBoundProjected(){
@@ -68,7 +69,7 @@ public class CoordinateReferenceSystemsQueryTest {
 		String query = coordinateReferenceSystemsQuery.constructQuery();
 
 		// assert
-		Assert.assertEquals(expectedQuery, query);
+		Assertions.assertEquals(expectedQuery, query);
 	}
 
 	@Test
@@ -81,7 +82,7 @@ public class CoordinateReferenceSystemsQueryTest {
 		String query = coordinateReferenceSystemsQuery.constructQuery();
 
 		// assert
-		Assert.assertEquals(expectedQuery, query);
+		Assertions.assertEquals(expectedQuery, query);
 	}
 
 	@Test
@@ -96,9 +97,9 @@ public class CoordinateReferenceSystemsQueryTest {
 		SpatialFilter spatialFilter = coordinateReferenceSystemsQuery.constructSpatialFilter();
 
 		// assert
-		Assert.assertNotNull(spatialFilter.getByWithinPolygon());
-		Assert.assertEquals(1, spatialFilter.getByWithinPolygon().getPoints().size());
-		Assert.assertEquals(latitude, spatialFilter.getByWithinPolygon().getPoints().get(0).getLatitude(), 0d);
-		Assert.assertEquals(longitude,spatialFilter.getByWithinPolygon().getPoints().get(0).getLongitude(), 0d);
+		Assertions.assertNotNull(spatialFilter.getByWithinPolygon());
+		Assertions.assertEquals(1, spatialFilter.getByWithinPolygon().getPoints().size());
+		Assertions.assertEquals(latitude, spatialFilter.getByWithinPolygon().getPoints().get(0).getLatitude(), 0d);
+		Assertions.assertEquals(longitude,spatialFilter.getByWithinPolygon().getPoints().get(0).getLongitude(), 0d);
 	}
 }

@@ -17,8 +17,6 @@
 
 package org.opengroup.osdu.crs.logging;
 
-import static java.lang.String.format;
-
 import com.google.common.base.Strings;
 import java.util.List;
 import org.opengroup.osdu.core.common.logging.audit.AuditAction;
@@ -307,6 +305,6 @@ public class AuditEvents {
   }
 
   private String getStatusMessage(AuditStatus status, String message) {
-    return format("%s - %s", message, status.name().toLowerCase());
+    return "%s - %s".formatted(message, status.name().toLowerCase());
   }
 }
