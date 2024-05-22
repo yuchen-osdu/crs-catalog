@@ -26,7 +26,7 @@ import org.opengroup.osdu.crs.util.PointDistanceCalculator;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,13 +54,13 @@ public class PointsInAouService {
                 }
             }
             if (kmDistance > 0.5) { // Not using zero as the threshold because the error is roughly 1 km
-                logger.debug(String.format("Point outside polygon: %s, %s", testPoint.toString(), kmDistance));
+                logger.debug("Point outside polygon: %s, %s".formatted(testPoint.toString(), kmDistance));
                 addFailedPoint(index, testPoint, kmDistance, pointsInAouSearchResult);
                 if (kmDistance > maxDistanceOutKm) {
                     maxDistanceOutKm = kmDistance;
                 }
             } else {
-                logger.debug(String.format("Point inside polygon: %s", testPoint.toString()));
+                logger.debug("Point inside polygon: %s".formatted(testPoint.toString()));
             }
             index++;
         }
@@ -122,7 +122,7 @@ public class PointsInAouService {
             List<List<Double>> coordinatesList = coordinates.stream()
                                                             .flatMap(List::stream).collect(Collectors.toList());
 
-            logger.debug(String.format("Successfully retrieved polygon"));
+            logger.debug("Successfully retrieved polygon".formatted());
 
             List<Point> points = new ArrayList<>();
             for (List<Double> coordinate : coordinatesList) {
@@ -131,7 +131,7 @@ public class PointsInAouService {
                             "Record has coordinate value with invalid amount of points. Query: %s"
                             , searchResponse.getQuery()));
                 }
-                logger.debug(String.format("Polygon coordinate: %s, %s", coordinate.get(1), coordinate.get(0)));
+                logger.debug("Polygon coordinate: %s, %s".formatted(coordinate.get(1), coordinate.get(0)));
 
                 points.add(new Point(coordinate.get(1), coordinate.get(0)));
             }
@@ -139,7 +139,7 @@ public class PointsInAouService {
         } else {
             List<List<List<List<Double>>>> multiCoordinatesList = (List) geometry.get("coordinates");
 
-            logger.debug(String.format("Successfully retrieved polygon"));
+            logger.debug("Successfully retrieved polygon".formatted());
 
             for (List<List<Double>> coordinatesList : multiCoordinatesList.get(0)) {
                 List<Point> points = new ArrayList<>();
@@ -149,7 +149,7 @@ public class PointsInAouService {
                                 "Record has coordinate value with invalid amount of points. Query: %s"
                                 , searchResponse.getQuery()));
                     }
-                    logger.debug(String.format("Polygon coordinate: %s, %s", coordinate.get(1), coordinate.get(0)));
+                    logger.debug("Polygon coordinate: %s, %s".formatted(coordinate.get(1), coordinate.get(0)));
 
                     points.add(new Point(coordinate.get(1), coordinate.get(0)));
                 }

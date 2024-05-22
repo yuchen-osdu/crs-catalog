@@ -14,11 +14,11 @@
 
 package org.opengroup.osdu.crs.model;
 
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.opengroup.osdu.crs.model.interfaces.AuthorityCode;
+
+import org.junit.jupiter.api.Test;
 
 public class CompoundCRSEssenceImplTest {
 

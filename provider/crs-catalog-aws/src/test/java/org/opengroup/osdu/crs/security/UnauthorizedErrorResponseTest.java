@@ -16,24 +16,24 @@
 
 package org.opengroup.osdu.crs.security;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import java.io.IOException;
 
 import java.io.PrintWriter;
 import org.springframework.security.core.AuthenticationException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.opengroup.osdu.crs.middleware.AuthenticationService;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class UnauthorizedErrorResponseTest {
 
     @Mock
@@ -51,14 +51,14 @@ public class UnauthorizedErrorResponseTest {
     private PrintWriter writer;
 
     @Test
-    public void shouldReturnUnauthorizedWhenAuthenticationException() throws IOException {
+    void shouldReturnUnauthorizedWhenAuthenticationException() throws IOException {
         when(response.getWriter()).thenReturn(writer);
         sut.commence(request, response, authenticationException);
         verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
 
     @Test
-    public void shouldReturnUnauthorizedWhenAccessDenied() throws IOException {
+    void shouldReturnUnauthorizedWhenAccessDenied() throws IOException {
         when(response.getWriter()).thenReturn(writer);
         sut.handle(request, response, null);
         verify(response).setStatus(HttpServletResponse.SC_UNAUTHORIZED);

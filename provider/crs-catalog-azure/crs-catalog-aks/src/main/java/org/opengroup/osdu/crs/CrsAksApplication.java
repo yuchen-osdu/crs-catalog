@@ -14,21 +14,21 @@
 
 package org.opengroup.osdu.crs;
 
+import jakarta.inject.Named;
+import org.opengroup.osdu.azure.entitlements.EntilementsAPIConfigBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.PropertySource;
 
-import javax.inject.Named;
-
 @SpringBootApplication
-@ComponentScan({
-        "org.opengroup.osdu.crs",
-        "org.opengroup.osdu.core",
-        "org.opengroup.osdu.azure"
-})
+@ComponentScan(basePackages = {"org.opengroup.osdu.crs", "org.opengroup.osdu.core", "org.opengroup.osdu.azure"},
+        excludeFilters = {
+                @ComponentScan.Filter(type= FilterType.ASSIGNABLE_TYPE, value= EntilementsAPIConfigBean.class)}
+)
 @PropertySource("classpath:swagger.properties")
 public class CrsAksApplication {
 

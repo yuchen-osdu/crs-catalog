@@ -172,9 +172,9 @@ public abstract class CRSImpl extends CRSCTBaseImpl implements CRS {
 	 */
 	public CRS convert(RepresentationMode mode) {
 		if (mode == RepresentationMode.ESSENCE) return this;
-		if (this instanceof LateBoundCRSImpl) return ((LateBoundCRSImpl)this).convert(mode);
-		else if (this instanceof EarlyBoundCRSImpl) return ((EarlyBoundCRSImpl)this).convert(mode);
-		else if (this instanceof CompoundCRSImpl) return ((CompoundCRSImpl)this).convert(mode);
+		if (this instanceof LateBoundCRSImpl impl) return impl.convert(mode);
+		else if (this instanceof EarlyBoundCRSImpl impl) return impl.convert(mode);
+		else if (this instanceof CompoundCRSImpl impl) return impl.convert(mode);
 		return this;
 	}
 	/**

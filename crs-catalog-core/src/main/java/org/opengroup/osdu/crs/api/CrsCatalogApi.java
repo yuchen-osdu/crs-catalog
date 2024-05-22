@@ -36,7 +36,7 @@ import org.opengroup.osdu.crs.util.AppException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -131,8 +131,8 @@ public class CrsCatalogApi {
 	})
 	@GetMapping(value = "/area", produces = MediaType.APPLICATION_JSON_VALUE)
 	public AreaOfUseResults getAreasOfUse(
-		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
-	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
+		@RequestParam(required = false, defaultValue = "0") int offset,
+	    @RequestParam(required = false, defaultValue = "100") int limit,
 		@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
 		AreaOfUseResults	results = null;
@@ -239,8 +239,8 @@ public class CrsCatalogApi {
 	})
 	@GetMapping(value = "/crs", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CRSResults getAllCRSes(
-		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
-	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
+		@RequestParam(required = false, defaultValue = "0") int offset,
+	    @RequestParam(required = false, defaultValue = "100") int limit,
 		@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
 		CRSResults	results = null;
@@ -348,8 +348,8 @@ public class CrsCatalogApi {
 	})
 	@GetMapping(value = "/lateboundcrs", produces = MediaType.APPLICATION_JSON_VALUE)
 	public LateBoundCRSResults getLateBoundCRSes(
-		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
-	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
+		@RequestParam(required = false, defaultValue = "0") int offset,
+	    @RequestParam(required = false, defaultValue = "100") int limit,
 		@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
 		LateBoundCRSResults	results = null;
@@ -457,8 +457,8 @@ public class CrsCatalogApi {
 	})
 	@GetMapping(value = "/earlyboundcrs", produces = MediaType.APPLICATION_JSON_VALUE)
 	public EarlyBoundCRSResults getEarlyBoundCRSes(
-		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
-	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
+		@RequestParam(required = false, defaultValue = "0") int offset,
+	    @RequestParam(required = false, defaultValue = "100") int limit,
 		@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
 		EarlyBoundCRSResults	results = null;
@@ -565,8 +565,8 @@ public class CrsCatalogApi {
 	})
 	@GetMapping(value = "/compoundcrs",produces = MediaType.APPLICATION_JSON_VALUE)
 	public CompoundCRSResults getCompoundCRSes(
-		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
-	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
+		@RequestParam(required = false, defaultValue = "0") int offset,
+	    @RequestParam(required = false, defaultValue = "100") int limit,
 		@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
 		CompoundCRSResults	results = null;
@@ -673,8 +673,8 @@ public class CrsCatalogApi {
 	})
 	@GetMapping(value = "/ct", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CTResults getAllCTs(
-		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
-	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
+		@RequestParam(required = false, defaultValue = "0") int offset,
+	    @RequestParam(required = false, defaultValue = "100") int limit,
 		@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
 		CTResults	results = null;
@@ -782,8 +782,8 @@ public class CrsCatalogApi {
 	})
 	@GetMapping(value = "/singlect",produces = MediaType.APPLICATION_JSON_VALUE)
 	public SingleCTResults getSingleCTs(
-		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
-	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
+		@RequestParam(required = false, defaultValue = "0") int offset,
+	    @RequestParam(required = false, defaultValue = "100") int limit,
 		@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
 		SingleCTResults	results = null;
@@ -890,8 +890,8 @@ public class CrsCatalogApi {
 	})
 	@GetMapping(value = "/compoundct", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CompoundCTResults getCompoundCTs(
-		@RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
-	    @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
+		@RequestParam(required = false, defaultValue = "0") int offset,
+	    @RequestParam(required = false, defaultValue = "100") int limit,
 		@RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
 		CompoundCTResults results = null;
@@ -1007,12 +1007,12 @@ public class CrsCatalogApi {
 	})
 	@PostMapping(value = "/search/area", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public AreaOfUseResults searchAreasOfUse(@RequestBody SearchRequest request,
-											 @RequestParam(name = "longitudeLeft", required = false, defaultValue = "-180") double longitudeLeft,
-											 @RequestParam(name = "latitudeLower", required = false, defaultValue = "-90") double latitudeLower,
-											 @RequestParam(name = "longitudeRight", required = false, defaultValue = "180")double longitudeRight,
-											 @RequestParam(name = "latitudeUpper", required = false, defaultValue = "90") double latitudeUpper,
-											 @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
-											 @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
+											 @RequestParam(required = false, defaultValue = "-180") double longitudeLeft,
+											 @RequestParam(required = false, defaultValue = "-90") double latitudeLower,
+											 @RequestParam(required = false, defaultValue = "180")double longitudeRight,
+											 @RequestParam(required = false, defaultValue = "90") double latitudeUpper,
+											 @RequestParam(required = false, defaultValue = "0") int offset,
+											 @RequestParam(required = false, defaultValue = "100") int limit,
 											 @RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
 		try{
@@ -1056,12 +1056,12 @@ public class CrsCatalogApi {
 	})
 	@PostMapping(value = "/search/crs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public CRSResults searchCRSes(@RequestBody SearchRequest request,
-								  @RequestParam(name = "longitudeLeft", required = false, defaultValue = "-180") double longitudeLeft,
-								  @RequestParam(name = "latitudeLower", required = false, defaultValue = "-90") double latitudeLower,
-								  @RequestParam(name = "longitudeRight", required = false, defaultValue = "180") double longitudeRight,
-								  @RequestParam(name = "latitudeUpper", required = false, defaultValue = "90") double latitudeUpper,
-								  @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
-								  @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
+								  @RequestParam(required = false, defaultValue = "-180") double longitudeLeft,
+								  @RequestParam(required = false, defaultValue = "-90") double latitudeLower,
+								  @RequestParam(required = false, defaultValue = "180") double longitudeRight,
+								  @RequestParam(required = false, defaultValue = "90") double latitudeUpper,
+								  @RequestParam(required = false, defaultValue = "0") int offset,
+								  @RequestParam(required = false, defaultValue = "100") int limit,
 								  @RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
 		try {
@@ -1105,12 +1105,12 @@ public class CrsCatalogApi {
 	})
 	@PostMapping(value = "/search/ct", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public CTResults searchCTs(@RequestBody SearchRequest request,
-							   @RequestParam(name = "longitudeLeft", required = false, defaultValue = "-180") double longitudeLeft,
-							   @RequestParam(name = "latitudeLower", required = false, defaultValue = "-90") double latitudeLower,
-							   @RequestParam(name = "longitudeRight", required = false, defaultValue = "180") double longitudeRight,
-							   @RequestParam(name = "latitudeUpper", required = false, defaultValue = "90") double latitudeUpper,
-							   @RequestParam(name = "offset", required = false, defaultValue = "0") int offset,
-							   @RequestParam(name = "limit", required = false, defaultValue = "100") int limit,
+							   @RequestParam(required = false, defaultValue = "-180") double longitudeLeft,
+							   @RequestParam(required = false, defaultValue = "-90") double latitudeLower,
+							   @RequestParam(required = false, defaultValue = "180") double longitudeRight,
+							   @RequestParam(required = false, defaultValue = "90") double latitudeUpper,
+							   @RequestParam(required = false, defaultValue = "0") int offset,
+							   @RequestParam(required = false, defaultValue = "100") int limit,
 							   @RequestParam(name = "mode", required = false, defaultValue = "persistableReference") String reprMode) {
 		assertRange(offset, limit);
 		try {

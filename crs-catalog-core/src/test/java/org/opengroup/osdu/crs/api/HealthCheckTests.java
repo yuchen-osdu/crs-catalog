@@ -1,16 +1,17 @@
 package org.opengroup.osdu.crs.api;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.Test;
 import org.springframework.http.HttpStatus;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HealthCheckTests {
 
 	private HealthCheck sut;
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		this.sut = new HealthCheck();
 	}

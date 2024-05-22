@@ -1,7 +1,8 @@
 package org.opengroup.osdu.crs.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import org.opengroup.osdu.core.common.model.search.Point;
 
 import java.util.Arrays;
@@ -25,7 +26,7 @@ public class PointsDistanceCalculatorTest {
         List<Double> longitude = Arrays.asList(179.0, -179.1, -159.0, -170.0);
         List<Double> distance = Arrays.asList(2.0, 0.1, 1.0, 0.0);
         for (int i = 0; i < longitude.size(); i++) {
-            Assert.assertEquals(distance.get(i), PointDistanceCalculator.longitudeDistance(longitude.get(i), westBound, eastBound).doubleValue(), eps);
+            Assertions.assertEquals(distance.get(i), PointDistanceCalculator.longitudeDistance(longitude.get(i), westBound, eastBound).doubleValue(), eps);
         }
 
         westBound = 10.0;
@@ -33,7 +34,7 @@ public class PointsDistanceCalculatorTest {
         longitude = Arrays.asList(179.0, -179.1, -169.9, 11.0);
         distance = Arrays.asList(159.0, 160.9, 170.1, 0.0);
         for (int i = 0; i < longitude.size(); i++) {
-            Assert.assertEquals(distance.get(i), PointDistanceCalculator.longitudeDistance(longitude.get(i), westBound, eastBound).doubleValue(), eps);
+            Assertions.assertEquals(distance.get(i), PointDistanceCalculator.longitudeDistance(longitude.get(i), westBound, eastBound).doubleValue(), eps);
         }
 
         westBound = 170.0;
@@ -41,7 +42,7 @@ public class PointsDistanceCalculatorTest {
         longitude = Arrays.asList(179.0, -179.1, -159.0, 178.0);
         distance = Arrays.asList(1.0, 2.9, 23.0, 0.0);
         for (int i = 0; i < longitude.size(); i++) {
-            Assert.assertEquals(distance.get(i), PointDistanceCalculator.longitudeDistance(longitude.get(i), westBound, eastBound), eps);
+            Assertions.assertEquals(distance.get(i), PointDistanceCalculator.longitudeDistance(longitude.get(i), westBound, eastBound), eps);
         }
     }
 
@@ -53,7 +54,7 @@ public class PointsDistanceCalculatorTest {
         List<Double> latitude = Arrays.asList(-90.0, -70.0, -50.0, -10.0, -30.0, 0.0, 10.0, 30.0, 70.0, 90.0);
         List<Double> distance = Arrays.asList(40.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 20.0, 60.0, 80.0);
         for (int i = 0; i < latitude.size(); i++) {
-            Assert.assertEquals(distance.get(i), PointDistanceCalculator.latitudeDistance(latitude.get(i), southBound, northBound), eps);
+            Assertions.assertEquals(distance.get(i), PointDistanceCalculator.latitudeDistance(latitude.get(i), southBound, northBound), eps);
         }
     }
 
@@ -62,7 +63,7 @@ public class PointsDistanceCalculatorTest {
         List<Double> latitude = Arrays.asList(45.0, 40.0, 50.0, 40.0, 50.0);
         List<Double> longitude = Arrays.asList(25.0, 20.0, 20.0, 30.0, 30.0);
         for (int i = 0; i < latitude.size(); i++) {
-            Assert.assertEquals(0, PointDistanceCalculator.kmDistance(new Point(latitude.get(i), longitude.get(i)), polygon), 0.0);
+            Assertions.assertEquals(0, PointDistanceCalculator.kmDistance(new Point(latitude.get(i), longitude.get(i)), polygon), 0.0);
         }
     }
 
@@ -73,7 +74,7 @@ public class PointsDistanceCalculatorTest {
         List<Double> longitude = Arrays.asList(25.0, 31.0, 0.0, 10.0, -30.0, 170.0, -90.0, 73.0);
         List<Double> distance = Arrays.asList(110.0, 77.7817, 4919.350, 3473.257, 9054.143, 5708.104, 4400.0, 14300.0);
         for (int i = 0; i < latitude.size(); i++) {
-            Assert.assertEquals(distance.get(i), PointDistanceCalculator.kmDistance(new Point(latitude.get(i), longitude.get(i)), polygon), eps);
+            Assertions.assertEquals(distance.get(i), PointDistanceCalculator.kmDistance(new Point(latitude.get(i), longitude.get(i)), polygon), eps);
         }
     }
 }

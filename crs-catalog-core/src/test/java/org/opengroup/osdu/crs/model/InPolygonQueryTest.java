@@ -1,14 +1,15 @@
 package org.opengroup.osdu.crs.model;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import org.opengroup.osdu.core.common.model.search.SpatialFilter;
 import org.opengroup.osdu.crs.model.request.InPolygonQuery;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class InPolygonQueryTest {
 
 	@InjectMocks
@@ -26,7 +27,7 @@ public class InPolygonQueryTest {
 		String query = inPolygonQuery.constructQuery();
 
 		// assert
-		Assert.assertEquals(expectedQuery, query);
+		Assertions.assertEquals(expectedQuery, query);
 	}
 
 	@Test
@@ -35,7 +36,7 @@ public class InPolygonQueryTest {
 		SpatialFilter spatialFilter = inPolygonQuery.constructSpatialFilter();
 
 		// assert
-		Assert.assertNull(spatialFilter);
+		Assertions.assertNull(spatialFilter);
 	}
 
 }

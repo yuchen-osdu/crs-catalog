@@ -42,8 +42,8 @@ public class Rectangle {
 
 	private void verify(List<Point> points){
 		if(points.size() != 5){
-			throw AppException.createBadRequest(String.format(
-					"Record polygon must be bounding box with 5 points (the last one being the same as first to close polygon)"));
+			throw AppException.createBadRequest(
+            "Record polygon must be bounding box with 5 points (the last one being the same as first to close polygon)".formatted());
 		}
 	}
 

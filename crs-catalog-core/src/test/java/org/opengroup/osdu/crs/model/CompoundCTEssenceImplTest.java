@@ -16,11 +16,11 @@ package org.opengroup.osdu.crs.model;
 
 import org.opengroup.osdu.crs.model.interfaces.*;
 
-import org.junit.Test;
-
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CompoundCTEssenceImplTest {
 

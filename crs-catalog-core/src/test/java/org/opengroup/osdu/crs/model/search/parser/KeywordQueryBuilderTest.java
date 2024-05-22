@@ -23,12 +23,10 @@ import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
 import org.apache.lucene.analysis.custom.CustomAnalyzer;
 import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilterFactory;
 import org.apache.lucene.search.Query;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class KeywordQueryBuilderTest {
@@ -38,7 +36,7 @@ public class KeywordQueryBuilderTest {
     private String[] supportedFields = {"id", "content", "type", "reference", "name", "namespace", "source", "symbol",
             "ancestry", "code", "dimensionCode", "quantityCode", "dimensionAnalysis", "state"};;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() {
         try {
             analyzer = CustomAnalyzer.builder()
@@ -85,27 +83,33 @@ public class KeywordQueryBuilderTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void createFieldQueryTestWithoutKeywordAndDataTypeTest() throws Exception {
-        assertNotNull(analyzer);
-        SearchCriteria searchInput = new SearchCriteria(null);
-        Query query = KeywordQueryBuilder.createQuery(searchInput, analyzer, Indexer.Content);
+        assertThrows(IllegalArgumentException.class, () -> {
+            assertNotNull(analyzer);
+            SearchCriteria searchInput = new SearchCriteria(null);
+            Query query = KeywordQueryBuilder.createQuery(searchInput, analyzer, Indexer.Content);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void createFieldQueryTestWithInvalidFieldOperatorTest1() throws  Exception
     {
-        assertNotNull(analyzer);
-        SearchCriteria searchInput = new SearchCriteria("Name: A10");
-        Query query = KeywordQueryBuilder.createQuery(searchInput, analyzer, Indexer.Content);
+        assertThrows(IllegalArgumentException.class, () -> {
+            assertNotNull(analyzer);
+            SearchCriteria searchInput = new SearchCriteria("Name: A10");
+            Query query = KeywordQueryBuilder.createQuery(searchInput, analyzer, Indexer.Content);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void createFieldQueryTestWithInvalidFieldOperatorTest2() throws  Exception
     {
-        assertNotNull(analyzer);
-        SearchCriteria searchInput = new SearchCriteria("Name :A10");
-        Query query = KeywordQueryBuilder.createQuery(searchInput, analyzer, Indexer.Content);
+        assertThrows(IllegalArgumentException.class, () -> {
+            assertNotNull(analyzer);
+            SearchCriteria searchInput = new SearchCriteria("Name :A10");
+            Query query = KeywordQueryBuilder.createQuery(searchInput, analyzer, Indexer.Content);
+        });
     }
 
 }

@@ -14,9 +14,9 @@
 
 package org.opengroup.osdu.crs.model;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by SYang on 7/11/2016.

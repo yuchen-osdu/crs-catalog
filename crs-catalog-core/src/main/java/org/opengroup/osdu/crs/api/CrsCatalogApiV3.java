@@ -33,7 +33,7 @@ import org.opengroup.osdu.crs.service.SearchWrapperService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  *  CrsApi is an endpoint class we are exposing so that clients can request or query for
@@ -72,8 +72,8 @@ public class CrsCatalogApiV3 {
 	})
 	@GetMapping(value = "/coordinate-transformation", produces = MediaType.APPLICATION_JSON_VALUE)
 	public SearchResponse getCoordinateTransformation(
-			@RequestParam(name = "recordId", required = false) String recordId,
-			@RequestParam(name = "dataId", required = false) String dataId
+			@RequestParam(required = false) String recordId,
+			@RequestParam(required = false) String dataId
 			) {
 		if(recordId != null && recordId.endsWith(":")){
 			recordId= RemoveTerminatingColon(recordId);
@@ -123,8 +123,8 @@ public class CrsCatalogApiV3 {
 	})
 	@GetMapping(value = "/coordinate-reference-system", produces = MediaType.APPLICATION_JSON_VALUE)
 	public SearchResponse getCoordinateReferenceSystem(
-			@RequestParam(name = "recordId", required = false) String recordId,
-			@RequestParam(name = "dataId", required = false) String dataId
+			@RequestParam(required = false) String recordId,
+			@RequestParam(required = false) String dataId
 	) {
 		if(recordId != null && recordId.endsWith(":")){
 			recordId= RemoveTerminatingColon(recordId);

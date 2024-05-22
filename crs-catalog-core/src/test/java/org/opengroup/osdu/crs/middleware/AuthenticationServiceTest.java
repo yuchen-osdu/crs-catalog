@@ -1,12 +1,13 @@
 package org.opengroup.osdu.crs.middleware;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import org.opengroup.osdu.core.common.entitlements.EntitlementsFactory;
 import org.opengroup.osdu.core.common.entitlements.IEntitlementsService;
 import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
@@ -17,11 +18,11 @@ import org.opengroup.osdu.crs.util.AppException;
 import org.powermock.reflect.Whitebox;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class AuthenticationServiceTest {
     @InjectMocks
     private AuthenticationService sut;
@@ -32,7 +33,7 @@ public class AuthenticationServiceTest {
     @Mock
     private HandlerExceptionResolver handlerExceptionResolver;
 
-    @Before
+    @BeforeEach
     public void init() {
         Whitebox.setInternalState(sut, "entitlementsUrl", "entitlementsUrl");
     }
@@ -48,7 +49,7 @@ public class AuthenticationServiceTest {
         sut.initEntitlementsFactory();
         boolean result = sut.isAuthorized(httpServletRequest, httpServletResponse);
 
-        Assert.assertFalse(result);
+        Assertions.assertFalse(result);
         Mockito.verify(logger).warning("User not authenticated. Response: HttpResponse(headers=null, body=, contentType=, responseCode=0, exception=org.apache.http.client.ClientProtocolException, request=entitlementsUrl/groups, httpMethod=GET, latency=0)");
         Mockito.verify(handlerExceptionResolver).resolveException(Mockito.eq(httpServletRequest),
                 Mockito.eq(httpServletResponse), Mockito.eq(null), Mockito.any(AppException.class));
@@ -69,7 +70,7 @@ public class AuthenticationServiceTest {
 
         boolean result = sut.isAuthorized(httpServletRequest, httpServletResponse);
 
-        Assert.assertFalse(result);
+        Assertions.assertFalse(result);
         Mockito.verify(logger).warning("User not authenticated. Null pointer exception: null");
         Mockito.verify(handlerExceptionResolver).resolveException(Mockito.eq(httpServletRequest),
                 Mockito.eq(httpServletResponse), Mockito.eq(null), Mockito.any(AppException.class));
@@ -92,7 +93,7 @@ public class AuthenticationServiceTest {
 
         boolean result = sut.isAuthorized(httpServletRequest, httpServletResponse);
 
-        Assert.assertTrue(result);
+        Assertions.assertTrue(result);
         Mockito.verify(logger).info("User authenticated | User: email");
         Mockito.verifyNoMoreInteractions(handlerExceptionResolver);
     }

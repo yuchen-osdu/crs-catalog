@@ -14,11 +14,12 @@
 
 package org.opengroup.osdu.crs.model.search;
 
+import org.junit.jupiter.api.Test;
+
 import org.opengroup.osdu.crs.model.Utility;
 import org.opengroup.osdu.crs.model.request.SearchRequest;
-import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SearchRequestTest {
     @Test

@@ -16,12 +16,13 @@ package org.opengroup.osdu.crs.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Test;
+
 import org.opengroup.osdu.crs.model.interfaces.CT;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.opengroup.osdu.crs.model.search.NamedReference;
-import org.junit.Test;
 
 /**
  * Created by SYang on 7/11/2016.

@@ -1,12 +1,13 @@
 package org.opengroup.osdu.crs.service;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.opengroup.osdu.core.common.model.search.Point;
 import org.opengroup.osdu.core.common.model.search.QueryResponse;
@@ -16,7 +17,7 @@ import org.opengroup.osdu.crs.model.response.SearchResponse;
 
 import java.util.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class PointsInAouServiceTest {
 
 	@InjectMocks
@@ -68,10 +69,10 @@ public class PointsInAouServiceTest {
 		PointsInAouSearchResult result = pointsInAouService.searchPointsInAou(inPolygonQuery);
 
 		// assert
-		Assert.assertEquals(1, result.getBboxFailedPoints().size());
-		Assert.assertEquals(0, result.getBboxFailedPoints().get(0).getIndex().intValue());
-		Assert.assertEquals(196, result.getBboxFailedPoints().get(0).getApproximateKmDistanceOutside().intValue());
-		Assert.assertEquals(196, result.getMaxDistKmOutsideBBox(), 0d);
+		Assertions.assertEquals(1, result.getBboxFailedPoints().size());
+		Assertions.assertEquals(0, result.getBboxFailedPoints().get(0).getIndex().intValue());
+		Assertions.assertEquals(196, result.getBboxFailedPoints().get(0).getApproximateKmDistanceOutside().intValue());
+		Assertions.assertEquals(196, result.getMaxDistKmOutsideBBox(), 0d);
 	}
 
 	@Test
@@ -130,14 +131,14 @@ public class PointsInAouServiceTest {
 		PointsInAouSearchResult result = pointsInAouService.searchPointsInAou(inPolygonQuery);
 
 		// assert
-		Assert.assertEquals(3, result.getBboxFailedPoints().size());
-		Assert.assertEquals(1, result.getBboxFailedPoints().get(0).getIndex().intValue());
-		Assert.assertEquals(7506, result.getBboxFailedPoints().get(0).getApproximateKmDistanceOutside().intValue());
-		Assert.assertEquals(2, result.getBboxFailedPoints().get(1).getIndex().intValue());
-		Assert.assertEquals(1002, result.getBboxFailedPoints().get(1).getApproximateKmDistanceOutside().intValue());
-		Assert.assertEquals(3, result.getBboxFailedPoints().get(2).getIndex().intValue());
-		Assert.assertEquals(8285, result.getBboxFailedPoints().get(2).getApproximateKmDistanceOutside().intValue());
-		Assert.assertEquals(8285, result.getMaxDistKmOutsideBBox().intValue());
+		Assertions.assertEquals(3, result.getBboxFailedPoints().size());
+		Assertions.assertEquals(1, result.getBboxFailedPoints().get(0).getIndex().intValue());
+		Assertions.assertEquals(7506, result.getBboxFailedPoints().get(0).getApproximateKmDistanceOutside().intValue());
+		Assertions.assertEquals(2, result.getBboxFailedPoints().get(1).getIndex().intValue());
+		Assertions.assertEquals(1002, result.getBboxFailedPoints().get(1).getApproximateKmDistanceOutside().intValue());
+		Assertions.assertEquals(3, result.getBboxFailedPoints().get(2).getIndex().intValue());
+		Assertions.assertEquals(8285, result.getBboxFailedPoints().get(2).getApproximateKmDistanceOutside().intValue());
+		Assertions.assertEquals(8285, result.getMaxDistKmOutsideBBox().intValue());
 	}
 
 
@@ -195,9 +196,9 @@ public class PointsInAouServiceTest {
 		PointsInAouSearchResult result = pointsInAouService.searchPointsInAou(inPolygonQuery);
 
 		// assert
-		Assert.assertEquals(1, result.getBboxFailedPoints().size());
-		Assert.assertEquals(2, result.getBboxFailedPoints().get(0).getIndex().intValue());
-		Assert.assertEquals(1459, result.getBboxFailedPoints().get(0).getApproximateKmDistanceOutside().intValue());
-		Assert.assertEquals(1459, result.getMaxDistKmOutsideBBox(), 0d);
+		Assertions.assertEquals(1, result.getBboxFailedPoints().size());
+		Assertions.assertEquals(2, result.getBboxFailedPoints().get(0).getIndex().intValue());
+		Assertions.assertEquals(1459, result.getBboxFailedPoints().get(0).getApproximateKmDistanceOutside().intValue());
+		Assertions.assertEquals(1459, result.getMaxDistKmOutsideBBox(), 0d);
 	}
 }

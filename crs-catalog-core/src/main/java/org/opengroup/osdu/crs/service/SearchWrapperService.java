@@ -26,10 +26,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -52,15 +51,15 @@ public class SearchWrapperService {
     private int DEFAULT_QUERY_LIMIT=1000;
 
     public static String getCoordinateReferenceSystemKind() {
-        return String.format("%s:wks:reference-data--CoordinateReferenceSystem:1.1.0", schemaAuthority);
+        return "%s:wks:reference-data--CoordinateReferenceSystem:1.1.0".formatted(schemaAuthority);
     }
 
     public static String getCoordinateTransformationKind() {
-        return String.format("%s:wks:reference-data--CoordinateTransformation:1.1.0", schemaAuthority);
+        return "%s:wks:reference-data--CoordinateTransformation:1.1.0".formatted(schemaAuthority);
     }
 
     public static String getCtAndCrsKind() {
-        return String.format("%s:wks:reference-data--*:1.1.0", schemaAuthority);
+        return "%s:wks:reference-data--*:1.1.0".formatted(schemaAuthority);
     }
 
     @PostConstruct
@@ -76,11 +75,11 @@ public class SearchWrapperService {
     public SearchResponse getSingleCrsOrCt(String recordId, String dataId, String kind) {
         String query;
         if (recordId != null && dataId != null) {
-            query = String.format("id: \"%s\" && data.ID: \"%s\"", recordId, dataId);
+            query = "id: \"%s\" && data.ID: \"%s\"".formatted(recordId, dataId);
         } else if (recordId != null) {
-            query = String.format("id: \"%s\"", recordId);
+            query = "id: \"%s\"".formatted(recordId);
         } else if (dataId != null) {
-            query = String.format("data.ID: \"%s\"", dataId);
+            query = "data.ID: \"%s\"".formatted(dataId);
         } else {
             throw AppException.createBadRequest("Must supply either recordId or dataId as request param");
         }
@@ -146,7 +145,7 @@ public class SearchWrapperService {
     private QueryResponse sendToSearch(QueryRequest queryRequest) {
         QueryResponse queryResponse = null;
         try {
-            logger.debug(String.format("Sending query to search service: %s", queryRequest.toString()));
+            logger.debug("Sending query to search service: %s".formatted(queryRequest.toString()));
             queryResponse = searchService.search(queryRequest);
             List<Map<String, Object>> searchResultList = new ArrayList<Map<String, Object>>();
             searchResultList = queryResponse.getResults();
@@ -162,7 +161,7 @@ public class SearchWrapperService {
                 }
             }
             queryResponse.setResults(searchResultList);
-            logger.debug(String.format("Received response from search service: %s", queryResponse.toString()));
+            logger.debug("Received response from search service: %s".formatted(queryResponse.toString()));
         } catch (SearchException e) {
             handleSearchError("Failed to call search service", e);
         }
@@ -171,7 +170,7 @@ public class SearchWrapperService {
     private CursorQueryResponse sendToSearchWithCursor(CursorQueryRequest queryRequest) {
         CursorQueryResponse cursorqueryResponse = null;
         try {
-            logger.debug(String.format("Sending query to search service: %s", queryRequest.toString()));
+            logger.debug("Sending query to search service: %s".formatted(queryRequest.toString()));
            
             cursorqueryResponse = searchService.searchCursor(queryRequest);
             List<Map<String, Object>> searchResultList = new ArrayList<Map<String, Object>>();
@@ -187,7 +186,7 @@ public class SearchWrapperService {
 
             }
             cursorqueryResponse.setResults(searchResultList);
-            logger.debug(String.format("Received response from search service: %s", cursorqueryResponse.toString()));
+            logger.debug("Received response from search service: %s".formatted(cursorqueryResponse.toString()));
         } catch (SearchException e) {
             handleSearchError("Failed to call search service", e);
         }

@@ -17,7 +17,9 @@ package org.opengroup.osdu.crs.model;
 import org.opengroup.osdu.crs.model.interfaces.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -25,8 +27,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static junit.framework.TestCase.fail;
 
 /**
  * This class is to detect any inconsistency between the API class/interface and implementation class

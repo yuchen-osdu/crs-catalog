@@ -1,13 +1,14 @@
 package org.opengroup.osdu.crs.service;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 import org.opengroup.osdu.core.common.model.search.*;
@@ -21,7 +22,7 @@ import org.opengroup.osdu.crs.model.response.SearchResponse;
 
 import java.util.Arrays;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class SearchWrapperServiceTest {
 
 	@InjectMocks
@@ -85,10 +86,10 @@ public class SearchWrapperServiceTest {
 		ArgumentCaptor<QueryRequest> queryRequestArg = ArgumentCaptor.forClass(QueryRequest.class);
 		Mockito.verify(searchService).search(queryRequestArg.capture());
 		QueryRequest actualQueryRequest = queryRequestArg.getValue();
-		Assert.assertEquals(expectedQueryRequest.getQuery(), actualQueryRequest.getQuery());
-		Assert.assertEquals(expectedQueryRequest.getSpatialFilter().getByWithinPolygon().getPoints().get(0).getLongitude(),
+		Assertions.assertEquals(expectedQueryRequest.getQuery(), actualQueryRequest.getQuery());
+		Assertions.assertEquals(expectedQueryRequest.getSpatialFilter().getByWithinPolygon().getPoints().get(0).getLongitude(),
 				actualQueryRequest.getSpatialFilter().getByWithinPolygon().getPoints().get(0).getLongitude(), 0d);
-		Assert.assertEquals(expectedQueryRequest.getSpatialFilter().getByWithinPolygon().getPoints().get(0).getLongitude(),
+		Assertions.assertEquals(expectedQueryRequest.getSpatialFilter().getByWithinPolygon().getPoints().get(0).getLongitude(),
 				actualQueryRequest.getSpatialFilter().getByWithinPolygon().getPoints().get(0).getLongitude(), 0d);
 	}
 
