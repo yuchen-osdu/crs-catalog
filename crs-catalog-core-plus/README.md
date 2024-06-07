@@ -36,13 +36,20 @@ This project uses [Lombok](https://projectlombok.org/) for code generation. You 
 ### Installation
 In order to run the service locally or remotely, you will need to have the following environment variables defined.
  
-| name | value | description | sensitive? | source |
-| ---  | ---   | ---         | ---        | ---    |
- | `LOG_PREFIX` | `service` | Logging prefix | no | - |
- | `SERVER_SERVLET_CONTEXPATH` | `/api/crs/catalog/` | CRS Catalog service context path | no | - |
- | `CRS_CATALOG_FILENAME` | ex `C:\\osdu-delfi\\os-crs-catalog-service\\data\\crs_catalog_v2.json` | Crs Catalog V2 file | no | output of infrastructure deployment |
- | `ENTITLEMENTS_API` | `http://entitlements/api/entitlements/v2/` | Entitlements service endpoint | no | - |
- | `SEARCH_API` | `http://search/api/search/v2` | Search service endpoint | no | - |
+| name                        | value                                                                  | description                      | sensitive? | source                              |
+|-----------------------------|------------------------------------------------------------------------|----------------------------------|------------|-------------------------------------|
+| `LOG_PREFIX`                | `service`                                                              | Logging prefix                   | no         | -                                   |
+| `SERVER_SERVLET_CONTEXPATH` | `/api/crs/catalog/`                                                    | CRS Catalog service context path | no         | -                                   |
+| `CRS_CATALOG_FILENAME`      | ex `C:\\osdu-delfi\\os-crs-catalog-service\\data\\crs_catalog_v2.json` | Crs Catalog V2 file              | no         | output of infrastructure deployment |
+| `ENTITLEMENTS_API`          | `http://entitlements/api/entitlements/v2/`                             | Entitlements service endpoint    | no         | -                                   |
+| `SEARCH_API`                | `http://search/api/search/v2`                                          | Search service endpoint          | no         | -                                   |
+
+Defined in default application property file but possible to override:
+
+| name                              | value                                        | description                         | sensitive? | source        |
+|-----------------------------------|----------------------------------------------|-------------------------------------|------------|---------------|
+| `MANAGEMENT_ENDPOINTS_WEB_BASE`   | ex `/`                                       | Web base for Actuator               | no         | -             |
+| `MANAGEMENT_SERVER_PORT`          | ex `8081`                                    | Port for Actuator                   | no         | -             |
 
 ### Run Locally
 Check that maven is installed:
