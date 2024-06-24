@@ -25,24 +25,31 @@ These instructions will get you a copy of the project up and running on your loc
 
 **Environment Variable Management**
 The following tools make environment variable configuration simpler
- - [direnv](https://direnv.net/) - for a shell/terminal environment
- - [EnvFile](https://plugins.jetbrains.com/plugin/7861-envfile) - for [Intellij IDEA](https://www.jetbrains.com/idea/)
+- [direnv](https://direnv.net/) - for a shell/terminal environment
+- [EnvFile](https://plugins.jetbrains.com/plugin/7861-envfile) - for [Intellij IDEA](https://www.jetbrains.com/idea/)
 
 **Lombok**
 This project uses [Lombok](https://projectlombok.org/) for code generation. You may need to configure your IDE to take advantage of this tool.
- - [Intellij configuration](https://projectlombok.org/setup/intellij)
- - [VSCode configuration](https://projectlombok.org/setup/vscode)
- 
+- [Intellij configuration](https://projectlombok.org/setup/intellij)
+- [VSCode configuration](https://projectlombok.org/setup/vscode)
+
 ### Installation
 In order to run the service locally or remotely, you will need to have the following environment variables defined.
- 
-| name | value | description | sensitive? | source |
-| ---  | ---   | ---         | ---        | ---    |
- | `LOG_PREFIX` | `service` | Logging prefix | no | - |
- | `SERVER_SERVLET_CONTEXPATH` | `/api/crs/catalog/` | CRS Catalog service context path | no | - |
- | `CRS_CATALOG_FILENAME` | ex `C:\\osdu-delfi\\os-crs-catalog-service\\data\\crs_catalog_v2.json` | Crs Catalog V2 file | no | output of infrastructure deployment |
- | `ENTITLEMENTS_API` | `http://entitlements/api/entitlements/v2/` | Entitlements service endpoint | no | - |
- | `SEARCH_API` | `http://search/api/search/v2` | Search service endpoint | no | - |
+
+| name                        | value                                                                  | description                      | sensitive? | source                              |
+|-----------------------------|------------------------------------------------------------------------|----------------------------------|------------|-------------------------------------|
+| `LOG_PREFIX`                | `service`                                                              | Logging prefix                   | no         | -                                   |
+| `SERVER_SERVLET_CONTEXPATH` | `/api/crs/catalog/`                                                    | CRS Catalog service context path | no         | -                                   |
+| `CRS_CATALOG_FILENAME`      | ex `C:\\osdu-delfi\\os-crs-catalog-service\\data\\crs_catalog_v2.json` | Crs Catalog V2 file              | no         | output of infrastructure deployment |
+| `ENTITLEMENTS_API`          | `http://entitlements/api/entitlements/v2/`                             | Entitlements service endpoint    | no         | -                                   |
+| `SEARCH_API`                | `http://search/api/search/v2`                                          | Search service endpoint          | no         | -                                   |
+
+Defined in default application property file but possible to override:
+
+| name                              | value                                        | description                         | sensitive? | source        |
+|-----------------------------------|----------------------------------------------|-------------------------------------|------------|---------------|
+| `MANAGEMENT_ENDPOINTS_WEB_BASE`   | ex `/`                                       | Web base for Actuator               | no         | -             |
+| `MANAGEMENT_SERVER_PORT`          | ex `8081`                                    | Port for Actuator                   | no         | -             |
 
 ### Run Locally
 Check that maven is installed:

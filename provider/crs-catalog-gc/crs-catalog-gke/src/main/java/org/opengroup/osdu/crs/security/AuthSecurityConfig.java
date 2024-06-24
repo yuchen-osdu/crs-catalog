@@ -1,6 +1,6 @@
 /*
-  Copyright 2020 Google LLC
-  Copyright 2020 EPAM Systems, Inc
+  Copyright 2020-2024 Google LLC
+  Copyright 2020-2024 EPAM Systems, Inc
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ public class AuthSecurityConfig implements AccessDeniedHandler, AuthenticationEn
 
     private static final String[] AUTH_WHITELIST = {
         "/",
-        "/actuator/**",
+        "/health/**",
         "/_ah/*",
         "/v2/api-docs",
         "/api-docs/**",
