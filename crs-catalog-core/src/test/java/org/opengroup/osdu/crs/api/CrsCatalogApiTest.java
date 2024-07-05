@@ -14,6 +14,9 @@
 
 package org.opengroup.osdu.crs.api;
 
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.opengroup.osdu.crs.logging.AuditLogger;
 import org.opengroup.osdu.crs.model.request.*;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,10 +28,8 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.opengroup.osdu.crs.util.AppException;
 import org.opengroup.osdu.crs.model.AreaOfUseEssenceImpl;
 import org.opengroup.osdu.crs.model.AreaOfUseImpl;
@@ -50,13 +51,17 @@ import org.opengroup.osdu.crs.model.TestUtils;
 import org.opengroup.osdu.crs.model.interfaces.*;
 import org.opengroup.osdu.crs.model.search.*;
 
-public class CrsCatalogApiTestMock {
+@ExtendWith(MockitoExtension.class)
+public class CrsCatalogApiTest {
 
 	@Mock
 	private static Catalog	catalogMock;
 
 	@Mock
 	private AuditLogger auditLogger;
+
+    @Mock
+    private JaxRsDpsLog jaxRsDpsLog;
 
 	@InjectMocks
     private static CrsCatalogApi crsCatalogApi;

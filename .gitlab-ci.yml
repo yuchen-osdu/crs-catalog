@@ -1,4 +1,5 @@
 variables:
+  CORE_BUILD_SUBDIR: crs-catalog-core
   AWS_BUILD_SUBDIR: provider/crs-catalog-aws/build-aws
   AWS_TEST_SUBDIR: testing/catalog_test_aws
   AWS_CHART_SUBDIR: devops/aws/chart
