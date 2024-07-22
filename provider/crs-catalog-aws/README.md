@@ -30,7 +30,6 @@ In order to run the service locally or remotely, you will need to have the follo
 | `AWS_ACCESS_KEY_ID` | `ASIAXXXXXXXXXXXXXX` | yes | The AWS Access Key for a user with access to Backend Resources required by the service | yes |
 | `AWS_SECRET_ACCESS_KEY` | `super-secret-key==` | yes | The AWS Secret Key for a user with access to Backend Resources required by the service | yes |
 | `AWS_SESSION_TOKEN` | `session-token-xxxxxxxxxx` | no | AWS Session token needed if using an SSO user session to authenticate | yes |
-| `ENVIRONMENT` | `osdu-prefix` | yes | The Resource Prefix defined during deployment | no |
 | `LOG_LEVEL` | `DEBUG` | yes | The Log Level severity to use (https://www.tutorialspoint.com/log4j/log4j_logging_levels.htm) | no |
 | `SSM_ENABLED` | `true` | yes | Set to 'true' to use SSM to resolve config properties, otherwise use env vars | no |
 | `SSL_ENABLED` | `false` | no | Set to 'false' to disable SSL for local development | no |
@@ -82,15 +81,15 @@ This section describes how to run OSDU Integration tests (testing/crs-catalog-te
 You will need to have the following environment variables defined.
 
 | name | example value | description | sensitive?
- | ---  | ---   | ---         | ---        |
+| ---  | ---   | ---         | ---        |
+| `AWS_COGNITO_REGION` | `us-east-1` | The region of the Cognito instance | no |
 | `AWS_ACCESS_KEY_ID` | `ASIAXXXXXXXXXXXXXX` | The AWS Access Key for a user with access to Backend Resources required by the service | yes |
 | `AWS_SECRET_ACCESS_KEY` | `super-secret-key==` | The AWS Secret Key for a user with access to Backend Resources required by the service | yes |
 | `AWS_SESSION_TOKEN` | `session-token-xxxxxxxxx` | AWS Session token needed if using an SSO user session to authenticate | yes |
-| `AWS_COGNITO_USER_POOL_ID` | `us-east-1_xxxxxxxx` | User Pool Id for the reference cognito | no |
 | `AWS_COGNITO_CLIENT_ID` | `xxxxxxxxxxxx` | Client ID for the Auth Flow integrated with the Cognito User Pool | no |
-| `ADMIN_USER` | `int-test-user@testing.com` | Int Test Username | no |
+| `ADMIN_USER` | `int-test-user@testing.com` | Username | no |
 | `USER_NO_ACCESS` | `no-access-user@testing.com` | Int Test No Access Username | no |
-| `ADMIN_PASSWORD` | `some-secure-password` | Int Test User/NoAccessUser Password | yes |
+| `ADMIN_PASSWORD` | `some-secure-password` | User Password | yes |
 | `CRS_CATALOG_HOST` | `localhost:8080` | The url where the CRS Catalog API is hosted | no |
 
 
