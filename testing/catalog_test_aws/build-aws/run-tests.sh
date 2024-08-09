@@ -50,6 +50,9 @@ pushd "$SCRIPT_SOURCE_DIR"/../
 rm -rf test-reports/
 mkdir test-reports
 chmod +x run-integration-tests.sh
+python3.11 -m venv python3_11
+source python3_11/bin/activate
+
 echo Running CRS Catalog Service Integration Tests...
 ./run-integration-tests.sh
 TEST_EXIT_CODE=$?
