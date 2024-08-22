@@ -39,8 +39,8 @@ export AWS_COGNITO_AUTH_PARAMS_PASSWORD=$ADMIN_PASSWORD
 export AWS_COGNITO_AUTH_PARAMS_USER=$ADMIN_USER
 export AWS_COGNITO_AUTH_PARAMS_USER_NO_ACCESS=$USER_NO_ACCESS
 export VIRTUAL_SERVICE_HOST_NAME=$CRS_CATALOG_HOST
-export MY_TENANT=osdu
-export ACL_DOMAIN=osdu.example.com
+export MY_TENANT=int-test-crs-catalog
+export ACL_DOMAIN=int-test-crs-catalog.example.com
 export SCHEMA_AUTHORITY=osdu
 
 #### RUN INTEGRATION TEST #########################################################################
