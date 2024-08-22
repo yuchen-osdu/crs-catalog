@@ -17,3 +17,27 @@ aws-test-python:
     MY_TENANT: "osdu"
     ACL_DOMAIN: "osdu.example.com"
     SCHEMA_AUTHORITY: "osdu"
+
+
+aws-crs-catalog-v3:
+  stage: "integration"
+  image: $CI_REGISTRY/osdu/platform/deployment-and-operations/base-containers-aws/aws-python/aws-python:v1.0-py3.11
+  needs: [{ job: 'aws-update-tf', optional: true }, { job: 'aws-update-helm', optional: true }, { job: 'aws-update-eks', optional: true }, { job: 'aws-test-python', optional: true}]
+  variables:
+    MY_TENANT: "osdu"
+    ACL_DOMAIN: "osdu.example.com"
+    SCHEMA_AUTHORITY: "osdu"
+  extends:
+    - .aws
+    - .aws_common_variables
+    - .aws_variables
+  allow_failure: true
+  script:
+    - cd $INTEGRATION_TEST_DIR
+    - chmod +x ./run-integration-tests.sh
+    - export RUN_V3_TESTS=true
+    - export FAIL_ON_V3_TESTS=true
+    - ./run-integration-tests.sh
+  only:
+    variables:
+      - $AWS_SKIP_DEPLOY != 'true' && $AWS_SKIP_TESTS != 'true' && $AWS == '1'
