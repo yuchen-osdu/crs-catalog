@@ -72,7 +72,7 @@
         <dependency>
             <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
             <artifactId>crs-catalog-core</artifactId>
-            <version>${project.version}</version>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.opengroup.osdu</groupId>
