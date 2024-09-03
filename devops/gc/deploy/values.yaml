@@ -2,10 +2,11 @@ global:
   domain: ""
   onPremEnabled: false
   limitsEnabled: true
+  logLevel: "ERROR"
 
 data:
   # configmaps
-  logLevel: "ERROR"
+  logLevel: ""
   entitlementsHost: "http://entitlements"
   # deployments
   requestsCpu: "5m"
