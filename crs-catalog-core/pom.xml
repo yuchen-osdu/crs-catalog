@@ -36,8 +36,8 @@
     <!-- Compile/runtime dependencies -->
     <dependency>
       <groupId>org.opengroup.osdu</groupId>
-      <artifactId>os-core-common-spring6</artifactId>
-      <version>${os-core-common-spring6.version}</version>
+      <artifactId>os-core-common</artifactId>
+      <version>${os-core-common.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>

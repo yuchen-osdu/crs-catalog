@@ -9,14 +9,14 @@
         <docker.image.prefix>org.opengroup.osdu</docker.image.prefix>
         <powermock.version>2.0.6</powermock.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <os-core-common-spring6.version>0.27.0-rc4</os-core-common-spring6.version>
+        <os-core-common.version>3.0.0</os-core-common.version>
         <snakeyaml.version>2.0</snakeyaml.version>
         <nimbus-jose-jwt.version>7.9</nimbus-jose-jwt.version>
         <openapi.version>2.5.0</openapi.version>
         <lucene.version>8.10.0</lucene.version>
-        <logback.version>1.4.14</logback.version>
+        <logback.version>1.5.8</logback.version>
         <json-smart.version>2.5.0</json-smart.version>
-        <spring-boot.version>3.2.5</spring-boot.version>
+        <spring-boot.version>3.3.4</spring-boot.version>
     </properties>
 
     <licenses>
@@ -85,7 +85,7 @@
         <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>6.1.5</version>
+                <version>6.1.13</version>
                 <type>pom</type>
             </dependency>
             <dependency>
@@ -98,7 +98,7 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-bom</artifactId>
-                <version>6.2.4</version> 
+                <version>6.3.3</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -123,8 +123,8 @@
     <dependencies>
     <dependency>
                 <groupId>org.opengroup.osdu</groupId>
-                <artifactId>os-core-common-spring6</artifactId>
-                <version>${os-core-common-spring6.version}</version>
+                <artifactId>os-core-common</artifactId>
+                <version>${os-core-common.version}</version>
             </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
