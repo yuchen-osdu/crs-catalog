@@ -22,9 +22,7 @@ The following software have components provided under the terms of this license:
 - Doxia :: FML Module (from https://repo1.maven.org/maven2/org/apache/maven/doxia/doxia-module-fml)
 - Doxia :: Sink API (from https://repo1.maven.org/maven2/org/apache/maven/doxia/doxia-sink-api)
 - Doxia :: XDoc Module (from https://repo1.maven.org/maven2/org/apache/maven/doxia/doxia-module-xdoc)
-- Lucene Common Analyzers (from <https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common>, https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common)
 - Lucene Queries (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queries)
-- Lucene QueryParsers (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queryparser)
 - Lucene Sandbox (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-sandbox)
 - Maven Core (from https://repo1.maven.org/maven2/org/apache/maven/maven-core)
 - Maven Error Diagnostics (from https://repo1.maven.org/maven2/org/apache/maven/maven-error-diagnostics)
@@ -330,7 +328,6 @@ BSD-2-Clause
 The following software have components provided under the terms of this license:
 
 - Apache Log4j Core (from https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core)
-- Hamcrest (from http://hamcrest.org/JavaHamcrest/)
 - Hamcrest Core (from http://hamcrest.org/, http://hamcrest.org/JavaHamcrest/, https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core)
 - HdrHistogram (from http://hdrhistogram.github.io/HdrHistogram/)
 - JSch (from http://www.jcraft.com/jsch/)
@@ -511,6 +508,7 @@ The following software have components provided under the terms of this license:
 - JUnit Platform Engine API (from http://junit.org/junit5/, https://junit.org/junit5/)
 - Jakarta Activation API (from https://github.com/eclipse-ee4j/jaf, https://github.com/jakartaee/jaf-api, https://repo1.maven.org/maven2/jakarta/activation/jakarta.activation-api)
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
+- Jakarta Dependency Injection (from https://github.com/eclipse-ee4j/injection-api)
 - Jakarta Interceptors (from https://github.com/jakartaee/interceptors)
 - Jakarta Messaging API (from https://projects.eclipse.org/projects/ee4j.jms)
 - Jakarta Persistence API (from https://github.com/jakartaee/persistence)
@@ -561,6 +559,7 @@ The following software have components provided under the terms of this license:
 - CDI Language Model (from https://repo1.maven.org/maven2/jakarta/enterprise/jakarta.enterprise.lang-model)
 - Jakarta Activation API (from https://github.com/eclipse-ee4j/jaf, https://github.com/jakartaee/jaf-api, https://repo1.maven.org/maven2/jakarta/activation/jakarta.activation-api)
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
+- Jakarta Dependency Injection (from https://github.com/eclipse-ee4j/injection-api)
 - Jakarta Interceptors (from https://github.com/jakartaee/interceptors)
 - Jakarta Messaging API (from https://projects.eclipse.org/projects/ee4j.jms)
 - Jakarta Servlet (from https://projects.eclipse.org/projects/ee4j.servlet)
@@ -608,19 +607,10 @@ The following software have components provided under the terms of this license:
 - Lucene Sandbox (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-sandbox)
 
 ========================================================================
-IPA
-========================================================================
-The following software have components provided under the terms of this license:
-
-- Lucene Common Analyzers (from <https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common>, https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common)
-- Xerces2-j (from https://repo1.maven.org/maven2/xerces/xercesImpl, https://xerces.apache.org/xerces2-j/)
-
-========================================================================
 ISC
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Java Native Access Platform (from https://github.com/java-native-access/jna)
 - Spring Security - Core (from http://spring.io/spring-security, https://repo1.maven.org/maven2/org/springframework/security/spring-security-core, https://spring.io/projects/spring-security, https://spring.io/spring-security)
 
 ========================================================================
@@ -651,6 +641,7 @@ LGPL-2.1-or-later
 The following software have components provided under the terms of this license:
 
 - Java Native Access (from https://github.com/java-native-access/jna, https://github.com/twall/jna)
+- Java Native Access Platform (from https://github.com/java-native-access/jna)
 - Javassist (from http://www.javassist.org/, https://www.javassist.org/)
 - SpotBugs Annotations (from https://spotbugs.github.io/)
 
@@ -789,6 +780,14 @@ The following software have components provided under the terms of this license:
 - Jakarta Annotations API (from https://projects.eclipse.org/projects/ee4j.ca)
 
 ========================================================================
+naist-2003
+========================================================================
+The following software have components provided under the terms of this license:
+
+- Lucene Common Analyzers (from <https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common>, https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common)
+- Lucene QueryParsers (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queryparser)
+
+========================================================================
 proprietary-license
 ========================================================================
 The following software have components provided under the terms of this license:
@@ -800,7 +799,6 @@ public-domain
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- HdrHistogram (from http://hdrhistogram.github.io/HdrHistogram/)
 - JBoss Logging 3 (from http://www.jboss.org)
 - JSON in Java (from https://github.com/douglascrockford/JSON-java)
 
