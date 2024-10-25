@@ -22,7 +22,7 @@
           <timestampFormatTimezoneId>Etc/UTC</timestampFormatTimezoneId>
           <appendLineSeparator>true</appendLineSeparator>
 
-          <jsonFormatter class="org.opengroup.osdu.crs.logging.formater.GoogleJsonFormatter">
+          <jsonFormatter class="org.opengroup.osdu.crs.logging.formatter.GoogleJsonFormatter">
             <prettyPrint>false</prettyPrint>
           </jsonFormatter>
         </layout>

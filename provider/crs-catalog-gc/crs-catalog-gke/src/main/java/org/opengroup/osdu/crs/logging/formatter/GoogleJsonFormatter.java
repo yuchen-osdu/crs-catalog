@@ -15,7 +15,7 @@
   limitations under the License.
  */
 
-package org.opengroup.osdu.crs.logging.formater;
+package org.opengroup.osdu.crs.logging.formatter;
 
 
 import ch.qos.logback.contrib.jackson.JacksonJsonFormatter;
