@@ -15,7 +15,10 @@
 # https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html
 FROM public.ecr.aws/amazoncorretto/amazoncorretto:17
 
-RUN yum update -y
+RUN yum update -y && yum install -y shadow-utils
+
+RUN groupadd -g 10001 -r appgroup \
+  && useradd -M -g 10001 -r -u 10001 appuser
 
 ARG JAR_FILE=provider/crs-catalog-aws/target/crs-catalog-aws-*.jar
 WORKDIR /
@@ -27,4 +30,7 @@ COPY /data/crs_catalog_v2.json /data/crs_catalog_v2.json
 COPY /provider/crs-catalog-aws/build-aws/entrypoint.sh /entrypoint.sh
 
 EXPOSE 8080
+
+USER 10001:10001
+
 ENTRYPOINT ["/bin/sh", "-c", ". /entrypoint.sh"]
