@@ -44,7 +44,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <junit.version>4.13.2</junit.version>
         <spring-framework.version>6.1.13</spring-framework.version>
-        <spring-security.version>6.3.3</spring-security.version>
+        <spring-security.version>6.3.4</spring-security.version>
     </properties>
 
     <prerequisites>
@@ -144,6 +144,11 @@
 			<artifactId>tomcat-embed-core</artifactId>
 			<version>10.1.25</version>
 		</dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-common</artifactId>
+            <version>4.1.115.Final</version>
+        </dependency>
     </dependencies>
 
     <build>
