@@ -61,6 +61,7 @@ Before installing deploy Helm chart you need to set variables in **values.yaml**
 | Name | Description | Type | Default |Required |
 |------|-------------|------|---------|---------|
 | **conf.appName** | Service name | string | `crs-catalog` | yes |
+| **conf.replicas** | Number of pods for service | integer | 2 | yes |
 
 ### ISTIO variables
 
