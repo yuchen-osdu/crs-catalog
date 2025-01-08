@@ -30,10 +30,10 @@ istio:
   proxyMemoryLimit: "256Mi"
 
 hpa:
-  minReplicas: 6
+  minReplicas: 3
   maxReplicas: 15
   targetType: "AverageValue"
-  targetValue: 360  # 210*0.86*2 rps
+  targetValue: 130
   behaviorScaleUpStabilizationWindowSeconds: 10
   behaviorScaleUpPoliciesValue: 50
   behaviorScaleUpPoliciesPeriodSeconds: 15
@@ -42,6 +42,6 @@ hpa:
   behaviorScaleDownPoliciesPeriodSeconds: 60
 
 limits:
-  maxTokens: 210
-  tokensPerFill: 210
+  maxTokens: 98
+  tokensPerFill: 98
   fillInterval: "1s"
