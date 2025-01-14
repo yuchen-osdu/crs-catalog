@@ -47,7 +47,7 @@ The following software have components provided under the terms of this license:
 - Apache Ant + JUnit (from http://ant.apache.org/, https://ant.apache.org/)
 - Apache Ant Core
 - Apache Ant Launcher (from https://ant.apache.org/)
-- Apache Commons BeanUtils (from http://commons.apache.org/proper/commons-beanutils/, https://commons.apache.org/proper/commons-beanutils/, https://repo1.maven.org/maven2/commons-beanutils/commons-beanutils)
+- Apache Commons BeanUtils (from http://commons.apache.org/proper/commons-beanutils/, https://commons.apache.org/proper/commons-beanutils, https://repo1.maven.org/maven2/commons-beanutils/commons-beanutils)
 - Apache Commons Codec (from http://commons.apache.org/proper/commons-codec/, https://commons.apache.org/proper/commons-codec/)
 - Apache Commons IO (from http://commons.apache.org/io/, https://commons.apache.org/proper/commons-io/, https://repo1.maven.org/maven2/commons-io/commons-io)
 - Apache Commons Lang (from https://commons.apache.org/proper/commons-lang/)
