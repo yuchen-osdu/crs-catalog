@@ -34,15 +34,6 @@
     <name>crs-catalog-service</name>
     <description>crs-catalog service</description>
 
-    <modules>
-        <module>crs-catalog-core</module>
-        <module>provider/crs-catalog-azure/crs-catalog-aks</module>
-        <module>provider/crs-catalog-gc/crs-catalog-gke</module>
-        <module>provider/crs-catalog-ibm/crs-catalog-ocp</module>
-        <module>provider/crs-catalog-aws</module>
-        <module>crs-catalog-core-plus</module>
-    </modules>
-
     <repositories>
         <repository>
             <id>${repo.releases.id}</id>
@@ -77,6 +68,40 @@
                 <publish.snapshots.url>https://community.opengroup.org/api/v4/projects/21/packages/maven</publish.snapshots.url>
                 <publish.releases.url>https://community.opengroup.org/api/v4/projects/21/packages/maven</publish.releases.url>
             </properties>
+        </profile>
+        <profile>
+            <id>core</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>crs-catalog-core</module>
+                <module>crs-catalog-core-plus</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>aws</id>
+            <modules>
+                <module>provider/crs-catalog-aws</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>azure</id>
+            <modules>
+                <module>provider/crs-catalog-azure/crs-catalog-aks</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>ibm</id>
+            <modules>
+                <module>provider/crs-catalog-ibm/crs-catalog-ocp</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>gc</id>
+            <modules>
+                <module>provider/crs-catalog-gc/crs-catalog-gke</module>
+            </modules>
         </profile>
     </profiles>
 
@@ -121,21 +146,21 @@
     </dependencyManagement>
 
     <dependencies>
-    <dependency>
+            <dependency>
                 <groupId>org.opengroup.osdu</groupId>
                 <artifactId>os-core-common</artifactId>
                 <version>${os-core-common.version}</version>
             </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>${openapi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.minidev</groupId>
-            <artifactId>json-smart</artifactId>
-            <version>${json-smart.version}</version>
-        </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${openapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.minidev</groupId>
+                <artifactId>json-smart</artifactId>
+                <version>${json-smart.version}</version>
+            </dependency>
     </dependencies>
 
     <build>
