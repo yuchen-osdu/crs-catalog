@@ -68,8 +68,8 @@ phases:
       - if [ "$GIT_SECRETS_SCAN_RESULT" = "FAILED" ]; then echo "Secrets detected!" && exit 1; fi
         
       - echo "Building primary service assemblies..."
-      - mvn -B test install -pl .,crs-catalog-core,provider/crs-catalog-aws -P core, aws -Ddeployment.environment=prod
-      - mvn sonar:sonar -pl .,provider/crs-catalog-aws -P aws -Dsonar.login=${SONAR_USERNAME} -Dsonar.password=${SONAR_PASSWORD} -Dsonar.branch.name=${BRANCH_NAME} -Dsonar.host.url=${SONAR_URL}
+      - mvn -B test install -P core,aws -Ddeployment.environment=prod
+      - mvn sonar:sonar -P aws -Dsonar.login=${SONAR_USERNAME} -Dsonar.password=${SONAR_PASSWORD} -Dsonar.branch.name=${BRANCH_NAME} -Dsonar.host.url=${SONAR_URL}
       - echo "Building integration testing assemblies and gathering artifacts..."
       - ./testing/catalog_test_aws/build-aws/prepare-dist.sh
 
