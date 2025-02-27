@@ -25,6 +25,8 @@ variables:
   SHARE_NAME: crs
   AZURE_SKIP_INTEGRATION_TEST: "true"
 
+  ACCEPTANCE_TEST_DIR: crs-catalog_acceptance_test
+
 include:
   - project: "osdu/platform/ci-cd-pipelines"
     file: "standard-setup.yml"
