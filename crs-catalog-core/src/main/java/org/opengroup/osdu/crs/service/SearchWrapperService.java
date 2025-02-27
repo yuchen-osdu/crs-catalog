@@ -193,9 +193,19 @@ public class SearchWrapperService {
         return cursorqueryResponse;
     }
 
-    private void handleSearchError(String errorMsg, Exception e) {
+    private void handleSearchError(String errorMsg, SearchException e) {
         logger.error(errorMsg, e);
         e.printStackTrace();
-        throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorMsg, e.getMessage());
+
+        int responseCode = HttpStatus.INTERNAL_SERVER_ERROR.value();
+
+        if (e.getResponse() != null) {
+            int originalResponseCode = e.getResponse().getResponseCode();
+            if (originalResponseCode == HttpStatus.TOO_MANY_REQUESTS.value()) {
+                responseCode = originalResponseCode;
+            }
+        }
+
+        throw new AppException(responseCode, errorMsg, e.getMessage());
     }
 }
