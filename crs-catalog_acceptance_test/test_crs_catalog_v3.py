@@ -90,6 +90,7 @@ class TestCrsCatalog(unittest.TestCase):
             for record in records_obj:
                 record_id_set.add(record["id"])
 
+            print('Request URL for upsert records: ' + cls.client.root_url + '/api/storage/v2/records')
             storage_response = cls.client.make_request('PUT', '/api/storage/v2/records', records)
             if storage_response.status_code != 201:
                 raise Exception(

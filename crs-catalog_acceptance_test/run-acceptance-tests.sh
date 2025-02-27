@@ -32,7 +32,7 @@ python3 run_test_v2.py
 TEST_STATUS_V2=$?
 echo ***FINISHED CATALOG API $API_VER TESTS***
 
-echo "TEST STATUS: $TEST_STATUS_V2"
+echo "TEST STATUS V2: $TEST_STATUS_V2"
 
 echo ""
 export API_VER="v3"
@@ -41,13 +41,13 @@ python3 run_test_v3.py
 TEST_STATUS_V3=$?
 echo ***FINISHED CATALOG API $API_VER TESTS***
 
-echo "TEST STATUS: $TEST_STATUS_V3"
+echo "TEST STATUS V3: $TEST_STATUS_V3"
 
 deactivate
 rm -rf env/
 
 
-if [ $TEST_STATUS -ne 0 ] || [ $TEST_STATUS_V3 -ne 0 ]
+if [ $TEST_STATUS_V2 -ne 0 ] || [ $TEST_STATUS_V3 -ne 0 ]
 then
   exit 1
 else
