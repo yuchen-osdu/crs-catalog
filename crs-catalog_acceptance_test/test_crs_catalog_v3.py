@@ -83,7 +83,7 @@ class TestCrsCatalog(unittest.TestCase):
         # Create records
         with open(f'{cls.path}v3/CRSAndCTRecords.json') as records_file:
             records = records_file.read().replace('{{data_partition_id}}', constants.MY_TENANT) \
-                .replace('{{acl_domain}}', constants.ENTITLEMENTS_DOMAIN) \
+                .replace('{{acl_domain}}', constants.MY_TENANT + '.' + constants.ENTITLEMENTS_DOMAIN) \
                 .replace('{{schema-authority}}', constants.SCHEMA_AUTHORITY)
             records_obj = json.loads(records)
             
