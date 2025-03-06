@@ -37,8 +37,14 @@ docker-compose.override.yml
 
 # Python, virtualenv
 /venv
+.venv
+/**/.env
+/**/env
+/**/.hypothesis
 testing/*/venv/
 testing/*/env/
+.pytest_cache/
+__pycache__/
 
 #.pyc files in all directories
 **/*.pyc
