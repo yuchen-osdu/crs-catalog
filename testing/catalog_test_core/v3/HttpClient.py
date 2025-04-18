@@ -46,13 +46,13 @@ class HttpClient(object):
         response = object
 
         if (method == 'GET'):
-            response = requests.get(url=url, headers=headers, verify=False)
+            response = requests.get(url=url, headers=headers)
         elif (method == 'DELETE'):
-            response = requests.delete(url=url, headers=headers, verify=False)
+            response = requests.delete(url=url, headers=headers)
         elif (method == 'POST'):
-            response = requests.post(url=url, data=data, headers=headers, verify=False)
+            response = requests.post(url=url, data=data, headers=headers)
         elif (method == 'PUT'):
-            response = requests.put(url=url, data=data, headers=headers, verify=False)
+            response = requests.put(url=url, data=data, headers=headers)
 
         if (response.status_code == 401 or response.status_code == 403) and self.unauth_retries < 1:
             self.bearer_token = self.jwt_client.get_id_token()
