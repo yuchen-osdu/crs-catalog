@@ -54,7 +54,6 @@ include:
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/azure.yml"
-    ref: zulu-0.0.5-upd
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/aws-python.yml"
