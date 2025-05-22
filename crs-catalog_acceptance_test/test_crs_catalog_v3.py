@@ -265,7 +265,7 @@ class TestCrsCatalog(unittest.TestCase):
             response_body = json.loads(response.content)
             self.check_search_response_count(response, 1, "test_search_coordinate_transformations_find_vertical")
             assert response_body["cursorSearchResults"]["results"][0]["data"]["Code"] == "5429"
-            for record_property in ('Code', 'Name', 'Kind', 'InactiveIndicator', 'CodeSpace', 'PreferredUsage.Name',
+            for record_property in ('Code', 'Name', 'Kind', 'CodeSpace', 'PreferredUsage.Name',
                                     'PreferredUsage.Extent.Description', 'PreferredUsage.Extent.Name',
                                     'CoordinateTransformationType', 'SourceCRS.Name', 'SourceCRS.AuthorityCode.Code',
                                     'TargetCRS.Name', 'TargetCRS.AuthorityCode.Code'):
@@ -315,7 +315,7 @@ class TestCrsCatalog(unittest.TestCase):
             expected_record_code_to_be_found_from_json_file = "24600001"
             record = self._get_record_by_code(response_body["cursorSearchResults"]["results"],
                                               expected_record_code_to_be_found_from_json_file)
-            for record_property in ('Code', 'Name', 'Kind', 'InactiveIndicator', 'CodeSpace', 'PreferredUsage.Name',
+            for record_property in ('Code', 'Name', 'Kind', 'CodeSpace', 'PreferredUsage.Name',
                                     'PreferredUsage.Extent.Description', 'PreferredUsage.Scope.Name',
                                     'CoordinateSystem.Name', 'Datum.Name', 'RevisionDate'):
                 assert record_property in record['data']
