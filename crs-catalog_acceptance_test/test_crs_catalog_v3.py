@@ -86,7 +86,7 @@ class TestCrsCatalog(unittest.TestCase):
                 .replace('{{acl_domain}}', constants.MY_TENANT + '.' + constants.ENTITLEMENTS_DOMAIN) \
                 .replace('{{schema-authority}}', constants.SCHEMA_AUTHORITY)
             records_obj = json.loads(records)
-            
+
             for record in records_obj:
                 record_id_set.add(record["id"])
 
@@ -121,7 +121,7 @@ class TestCrsCatalog(unittest.TestCase):
         response_body = json.loads(response.content)
         assert response.status_code == 200
         response_count = len(response_body["searchResults"]["results"])
-       
+
         for test_response in response_body["searchResults"]["results"]:
             if test_response["id"] not in record_id_set:
                 response_count -= 1
@@ -150,7 +150,7 @@ class TestCrsCatalog(unittest.TestCase):
             test_data = json.loads(test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT))
             response = self.client.make_request('GET', f'{ct_endpoint_path}?dataId={test_data["dataId"]}')
             response_body = json.loads(response.content)
-        
+
             self.check_get_search_response_count(response, 1, "test_get_coordinate_transformation_dataId")
             assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
             assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
@@ -185,7 +185,7 @@ class TestCrsCatalog(unittest.TestCase):
             test_data = json.loads(test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT))
             response = self.client.make_request('GET', f'{crs_endpoint_path}?dataId={test_data["dataId"]}')
             response_body = json.loads(response.content)
-    
+
             self.check_get_search_response_count(response, 1, "test_get_coordinate_reference_system_dataId")
             assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
             assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
@@ -333,7 +333,7 @@ class TestCrsCatalog(unittest.TestCase):
         with open(f'{self.path}v3/SearchCoordinateReferenceSystemsBoundGeographic2D.json') as test_data:
             response = self.client.make_request('POST', crs_endpoint_path, test_data)
             self.check_search_response_count(response, 1, "test_search_coordinate_reference_systems_bound_geographic2d")
-            
+
 
     def test_search_coordinate_reference_systems_find_all(self):
         test_data = "{}"
