@@ -23,7 +23,7 @@ env:
     DOCKER_PASSWORD: /osdu/devops/docker_credentials:password
     SONAR_USERNAME: /osdu/devops/sonar_credentials:username
     SONAR_PASSWORD: /osdu/devops/sonar_credentials:password
-  
+
   parameter-store:
     SONAR_URL: /osdu/devops/sonar_url
 
@@ -66,7 +66,7 @@ phases:
 
       - GIT_SECRETS_SCAN_RESULT=$(git secrets --scan 2> ${OUTPUT_DIR}/git_secrets.out.txt && echo OK || echo FAILED)
       - if [ "$GIT_SECRETS_SCAN_RESULT" = "FAILED" ]; then echo "Secrets detected!" && exit 1; fi
-        
+
       - echo "Building primary service assemblies..."
       - mvn -B test install -P core,aws -Ddeployment.environment=prod
       - mvn sonar:sonar -P aws -Dsonar.login=${SONAR_USERNAME} -Dsonar.password=${SONAR_PASSWORD} -Dsonar.branch.name=${BRANCH_NAME} -Dsonar.host.url=${SONAR_URL}
@@ -87,6 +87,15 @@ phases:
           --commitMessage "\"${COMMIT_MESSAGE}\"" --commitAuthor "\"${COMMIT_AUTHOR}\"" --commitDate "\"${COMMIT_DATE}\"" \
           --buildid ${CODEBUILD_BUILD_ID} --buildnumber ${CODEBUILD_BUILD_NUMBER} --reponame ${REPO_NAME} --outdir ${OUTPUT_DIR} \
           --artifact ${ECR_IMAGE}
+
+  post_build:
+    commands:
+      - mkdir -p ${OUTPUT_DIR}/acceptance-tests
+      - cp -r crs-catalog_acceptance_test/* ${OUTPUT_DIR}/acceptance-tests
+      - cp testing/catalog_test_aws/build-aws/run-acceptance-tests.sh ${OUTPUT_DIR}/acceptance-tests
+      - cp testing/catalog_test_aws/build-aws/run_test_v2.py ${OUTPUT_DIR}/acceptance-tests
+      - cp testing/catalog_test_aws/build-aws/run_test_v3.py ${OUTPUT_DIR}/acceptance-tests
+
 reports:
   SurefireReports: # CodeBuild will create a report group called "SurefireReports".
     files: #Store all of the files
