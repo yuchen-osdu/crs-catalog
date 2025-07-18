@@ -1,27 +1,28 @@
 global:
   domain: ""
-  onPremEnabled: false
   limitsEnabled: true
   logLevel: "ERROR"
   tier: ""
-  autoscaling: true
+  autoscalingMode: "cpu"
 
 data:
   # configmaps
   logLevel: ""
   entitlementsHost: "http://entitlements"
   # deployments
-  requestsCpu: "5m"
+  requestsCpu: "45m"
   requestsMemory: "280Mi"
   limitsCpu: "1"
   limitsMemory: "1G"
-  serviceAccountName: ""
+  serviceAccountName: "crs-catalog"
   image: ""
+  affinityLabelsSpot:
+    cloud.google.com/gke-provisioning:
+      - spot
   imagePullPolicy: "IfNotPresent"
 
 conf:
   appName: "crs-catalog"
-  replicas: 2
 
 istio:
   proxyCPU: "5m"
@@ -30,16 +31,25 @@ istio:
   proxyMemoryLimit: "256Mi"
 
 hpa:
-  minReplicas: 3
-  maxReplicas: 15
-  targetType: "AverageValue"
-  targetValue: 130
-  behaviorScaleUpStabilizationWindowSeconds: 10
-  behaviorScaleUpPoliciesValue: 50
-  behaviorScaleUpPoliciesPeriodSeconds: 15
-  behaviorScaleDownStabilizationWindowSeconds: 60
-  behaviorScaleDownPoliciesValue: 25
-  behaviorScaleDownPoliciesPeriodSeconds: 60
+  minReplicas: 1
+  maxReplicas: 6
+  cpu:
+    utilization: 200
+    scaleUpStabilizationWindowSeconds: 30
+    scaleUpValue: 200
+    scaleUpPeriod: 15
+    scaleDownStabilizationWindowSeconds: 150
+    scaleDownValue: 100
+    scaleDownPeriod: 15
+  requests:
+    targetType: "AverageValue"
+    targetValue: 130
+    scaleUpStabilizationWindowSeconds: 10
+    scaleUpValue: 50
+    scaleUpPeriod: 15
+    scaleDownStabilizationWindowSeconds: 60
+    scaleDownValue: 25
+    scaleDownPeriod: 60
 
 limits:
   maxTokens: 98
