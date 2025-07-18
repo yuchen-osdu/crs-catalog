@@ -12,21 +12,15 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
-
-apiVersion: v1
-kind: Service
+{{- if (ne .Values.global.autoscalingMode "none") }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
 metadata:
-  name: {{ .Values.conf.appName | quote }}
-  annotations:
-    cloud.google.com/neg: '{"ingress": true}'
-  namespace: {{ .Release.Namespace | quote }}
-  labels:
-    app: {{ .Values.conf.appName | quote }}
+  name: {{ printf "%s-pdb-spot" .Values.conf.appName | quote }}
 spec:
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8080
-      name: http
+  minAvailable: {{ sub (include "crsСatalog.minReplicasSpot" . ) 1 }}
   selector:
-    app: {{ .Values.conf.appName | quote }}
+    matchLabels:
+      provision-type: "spot"
+      app: {{ .Values.conf.appName | quote }}
+{{- end }}
