@@ -46,7 +46,7 @@
         <spring-framework.version>6.1.14</spring-framework.version>
         <spring-security.version>6.3.4</spring-security.version>
         <spring-boot-starter-web.version>3.4.1</spring-boot-starter-web.version>
-        <tomcat-embed-core.verion>10.1.39</tomcat-embed-core.verion>
+        <tomcat-embed-core.verion>10.1.42</tomcat-embed-core.verion>
         <netty.version>4.1.119.Final</netty.version>
         <spring-boot.version>3.3.11</spring-boot.version>
     </properties>
@@ -95,11 +95,22 @@
             <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
             <artifactId>crs-catalog-core</artifactId>
             <version>${parent.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-beanutils</groupId>
+                    <artifactId>commons-beanutils</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.opengroup.osdu</groupId>
             <artifactId>os-core-common</artifactId>
             <version>${os-core-common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.11.0</version>
         </dependency>
         <dependency>
             <groupId>net.minidev</groupId>

@@ -24,7 +24,7 @@ The following software have components provided under the terms of this license:
 - Doxia :: XDoc Module (from https://repo1.maven.org/maven2/org/apache/maven/doxia/doxia-module-xdoc)
 - Lucene Queries (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queries)
 - Lucene Sandbox (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-sandbox)
-- Maven Core (from https://maven.apache.org/ref/4.0.0-rc-3/maven-impl-modules/maven-core/, https://repo1.maven.org/maven2/org/apache/maven/maven-core)
+- Maven Core (from https://maven.apache.org/ref/4.0.0-rc-4/maven-impl-modules/maven-core/, https://repo1.maven.org/maven2/org/apache/maven/maven-core)
 - Maven Error Diagnostics (from https://repo1.maven.org/maven2/org/apache/maven/maven-error-diagnostics)
 - Maven Monitor (from https://repo1.maven.org/maven2/org/apache/maven/maven-monitor)
 - Maven Plugin Descriptor Model (from https://repo1.maven.org/maven2/org/apache/maven/maven-plugin-descriptor)
@@ -41,11 +41,12 @@ The following software have components provided under the terms of this license:
 - AMQP 1.0 JMS Spring Boot AutoConfiguration (from https://repo1.maven.org/maven2/org/amqphub/spring/amqp-10-jms-spring-boot-autoconfigure)
 - AMQP 1.0 JMS Spring Boot Starter (from https://repo1.maven.org/maven2/org/amqphub/spring/amqp-10-jms-spring-boot-starter)
 - ASM Commons (from http://asm.ow2.io/, https://repo1.maven.org/maven2/org/ow2/asm/asm-commons)
+- ASM Core (from http://asm.ow2.io/, http://asm.ow2.org/)
 - ASM Tree (from http://asm.ow2.io/)
 - ASM based accessors helper used by json-smart (from https://urielch.github.io/)
 - Adapter: RxJava (from https://github.com/square/retrofit)
 - Apache Ant + JUnit (from http://ant.apache.org/, https://ant.apache.org/)
-- Apache Ant Core
+- Apache Ant Core (from https://ant.apache.org/)
 - Apache Ant Launcher (from https://ant.apache.org/)
 - Apache Commons BeanUtils (from http://commons.apache.org/proper/commons-beanutils/, https://commons.apache.org/proper/commons-beanutils, https://repo1.maven.org/maven2/commons-beanutils/commons-beanutils)
 - Apache Commons Codec (from http://commons.apache.org/proper/commons-codec/, https://commons.apache.org/proper/commons-codec/)
@@ -132,7 +133,7 @@ The following software have components provided under the terms of this license:
 - JBoss Logging 3 (from http://www.jboss.org)
 - JCIP Annotations under Apache License (from http://stephenc.github.com/jcip-annotations)
 - JDO API (from https://repo1.maven.org/maven2/javax/jdo/jdo-api)
-- JDOM
+- JDOM (from http://www.jdom.org)
 - JJWT :: API (from https://repo1.maven.org/maven2/io/jsonwebtoken/jjwt-api)
 - JJWT :: Extensions :: Jackson (from https://repo1.maven.org/maven2/io/jsonwebtoken/jjwt-jackson)
 - JJWT :: Impl (from https://repo1.maven.org/maven2/io/jsonwebtoken/jjwt-impl)
@@ -177,24 +178,24 @@ The following software have components provided under the terms of this license:
 - Kotlin Stdlib Jdk8 (from <https://kotlinlang.org/>, https://kotlinlang.org/)
 - Lettuce (from http://github.com/lettuce-io/lettuce-core, http://github.com/mp911de/lettuce/wiki, https://github.com/lettuce-io/lettuce-core/wiki, https://github.com/redis/lettuce)
 - Lucene Common Analyzers (from <https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common>, https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common)
-- Lucene Core (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
+- Lucene Core (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
 - Lucene Queries (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queries)
 - Lucene QueryParsers (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queryparser)
 - Lucene Sandbox (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-sandbox)
-- Maven Artifact (from https://maven.apache.org/ref/4.0.0-rc-3/maven-compat-modules/maven-artifact/, https://repo1.maven.org/maven2/org/apache/maven/maven-artifact)
+- Maven Artifact (from https://maven.apache.org/ref/4.0.0-rc-4/maven-compat-modules/maven-artifact/, https://repo1.maven.org/maven2/org/apache/maven/maven-artifact)
 - Maven Artifact Manager (from https://repo1.maven.org/maven2/org/apache/maven/maven-artifact-manager)
-- Maven Core (from https://maven.apache.org/ref/4.0.0-rc-3/maven-impl-modules/maven-core/, https://repo1.maven.org/maven2/org/apache/maven/maven-core)
+- Maven Core (from https://maven.apache.org/ref/4.0.0-rc-4/maven-impl-modules/maven-core/, https://repo1.maven.org/maven2/org/apache/maven/maven-core)
 - Maven Error Diagnostics (from https://repo1.maven.org/maven2/org/apache/maven/maven-error-diagnostics)
-- Maven Model (from https://maven.apache.org/ref/4.0.0-rc-3/maven-compat-modules/maven-model/, https://repo1.maven.org/maven2/org/apache/maven/maven-model)
+- Maven Model (from https://maven.apache.org/ref/4.0.0-rc-4/maven-compat-modules/maven-model/, https://repo1.maven.org/maven2/org/apache/maven/maven-model)
 - Maven Monitor (from https://repo1.maven.org/maven2/org/apache/maven/maven-monitor)
-- Maven Plugin API (from https://maven.apache.org/ref/4.0.0-beta-3/maven-plugin-api/, https://maven.apache.org/ref/4.0.0-rc-3/maven-compat-modules/maven-plugin-api/, https://repo1.maven.org/maven2/org/apache/maven/maven-plugin-api)
+- Maven Plugin API (from https://maven.apache.org/ref/4.0.0-beta-3/maven-plugin-api/, https://maven.apache.org/ref/4.0.0-rc-4/maven-compat-modules/maven-plugin-api/, https://repo1.maven.org/maven2/org/apache/maven/maven-plugin-api)
 - Maven Plugin Descriptor Model (from https://repo1.maven.org/maven2/org/apache/maven/maven-plugin-descriptor)
 - Maven Plugin Parameter Documenter API (from https://repo1.maven.org/maven2/org/apache/maven/maven-plugin-parameter-documenter)
 - Maven Plugin Registry Model (from https://repo1.maven.org/maven2/org/apache/maven/maven-plugin-registry)
 - Maven Profile Model (from https://repo1.maven.org/maven2/org/apache/maven/maven-profile)
 - Maven Project (from https://repo1.maven.org/maven2/org/apache/maven/maven-project)
-- Maven Repository Metadata Model (from https://maven.apache.org/ref/4.0.0-rc-3/maven-compat-modules/maven-repository-metadata/, https://repo1.maven.org/maven2/org/apache/maven/maven-repository-metadata)
-- Maven Settings (from https://maven.apache.org/ref/4.0.0-rc-3/maven-compat-modules/maven-settings/, https://repo1.maven.org/maven2/org/apache/maven/maven-settings)
+- Maven Repository Metadata Model (from https://maven.apache.org/ref/4.0.0-rc-4/maven-compat-modules/maven-repository-metadata/, https://repo1.maven.org/maven2/org/apache/maven/maven-repository-metadata)
+- Maven Settings (from https://maven.apache.org/ref/4.0.0-rc-4/maven-compat-modules/maven-settings/, https://repo1.maven.org/maven2/org/apache/maven/maven-settings)
 - Metrics Core (from https://repo1.maven.org/maven2/io/dropwizard/metrics/metrics-core)
 - Microsoft Azure Java Core Library (from https://github.com/Azure/azure-sdk-for-java)
 - Microsoft Azure Netty HTTP Client Library (from https://github.com/Azure/azure-sdk-for-java)
@@ -333,6 +334,7 @@ The following software have components provided under the terms of this license:
 - Jodd Util (from https://util.jodd.org)
 - LatencyUtils (from http://latencyutils.github.io/LatencyUtils/)
 - Lucene Common Analyzers (from <https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common>, https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common)
+- Lucene Core (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
 - Lucene Queries (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queries)
 - Lucene QueryParsers (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queryparser)
 - Lucene Sandbox (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-sandbox)
@@ -369,7 +371,7 @@ The following software have components provided under the terms of this license:
 - Jetty :: Jakarta Servlet API and Schemas for JPMS and OSGi (from https://repo1.maven.org/maven2/org/eclipse/jetty/toolchain/jetty-jakarta-servlet-api)
 - Kryo (from https://repo1.maven.org/maven2/com/esotericsoftware/kryo)
 - Lucene Common Analyzers (from <https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common>, https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common)
-- Lucene Core (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
+- Lucene Core (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
 - Lucene Queries (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queries)
 - Lucene QueryParsers (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queryparser)
 - Lucene Sandbox (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-sandbox)
@@ -444,6 +446,15 @@ CPL-1.0
 The following software have components provided under the terms of this license:
 
 - JUnit (from http://junit.org)
+
+========================================================================
+DOC
+========================================================================
+The following software have components provided under the terms of this license:
+
+- JDOM (from http://www.jdom.org)
+- Lucene Core (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
+- Woodstox (from https://github.com/FasterXML/woodstox)
 
 ========================================================================
 EDL-1.0
@@ -613,6 +624,21 @@ The following software have components provided under the terms of this license:
 - Spring Security - Core (from http://spring.io/spring-security, https://repo1.maven.org/maven2/org/springframework/security/spring-security-core, https://spring.io/projects/spring-security, https://spring.io/spring-security)
 
 ========================================================================
+ImageMagick
+========================================================================
+The following software have components provided under the terms of this license:
+
+- Stax2 API (from http://github.com/FasterXML/stax2-api)
+- Woodstox (from https://github.com/FasterXML/woodstox)
+
+========================================================================
+Info-ZIP
+========================================================================
+The following software have components provided under the terms of this license:
+
+- Apache Ant Core (from https://ant.apache.org/)
+
+========================================================================
 LGPL-2.0-only
 ========================================================================
 The following software have components provided under the terms of this license:
@@ -665,7 +691,7 @@ The following software have components provided under the terms of this license:
 - Java JWT (from http://www.jwt.io, https://github.com/auth0/java-jwt)
 - Jetty :: Utilities (from http://jetty.mortbay.org, http://www.eclipse.org/jetty, https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-util, https://repo1.maven.org/maven2/org/mortbay/jetty/jetty-util)
 - Lucene Common Analyzers (from <https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common>, https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common)
-- Lucene Core (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
+- Lucene Core (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
 - Lucene Queries (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queries)
 - Lucene QueryParsers (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queryparser)
 - Lucene Sandbox (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-sandbox)
@@ -729,23 +755,30 @@ SAX-PD
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Apache Ant Core
+- Apache Ant Core (from https://ant.apache.org/)
 - Old JAXB Core (from <https://eclipse-ee4j.github.io/jaxb-ri/>, https://eclipse-ee4j.github.io/jaxb-ri/, https://repo1.maven.org/maven2/com/sun/xml/bind/jaxb-impl)
 - xml-apis (from https://repo1.maven.org/maven2/xml-apis/xml-apis)
+
+========================================================================
+SPL-1.0
+========================================================================
+The following software have components provided under the terms of this license:
+
+- Checker Qual (from https://checkerframework.org)
 
 ========================================================================
 SunPro
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Lucene Core (from https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
+- Lucene Core (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
 
 ========================================================================
 W3C
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Apache Ant Core
+- Apache Ant Core (from https://ant.apache.org/)
 - xml-apis (from https://repo1.maven.org/maven2/xml-apis/xml-apis)
 
 ========================================================================
@@ -763,6 +796,13 @@ WTFPL
 The following software have components provided under the terms of this license:
 
 - Reflections (from http://code.google.com/p/reflections/, http://github.com/ronmamo/reflections)
+
+========================================================================
+X11
+========================================================================
+The following software have components provided under the terms of this license:
+
+- Lucene Core (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
 
 ========================================================================
 cc-pd
@@ -800,12 +840,14 @@ The following software have components provided under the terms of this license:
 
 - JBoss Logging 3 (from http://www.jboss.org)
 - JSON in Java (from https://github.com/douglascrockford/JSON-java)
+- xml-apis (from https://repo1.maven.org/maven2/xml-apis/xml-apis)
 
 ========================================================================
 unknown
 ========================================================================
 The following software have components provided under the terms of this license:
 
+- JUnit (from http://junit.org)
 - xml-apis (from https://repo1.maven.org/maven2/xml-apis/xml-apis)
 
 ========================================================================
