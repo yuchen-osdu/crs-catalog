@@ -9,14 +9,15 @@
         <docker.image.prefix>org.opengroup.osdu</docker.image.prefix>
         <powermock.version>2.0.6</powermock.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <os-core-common.version>3.0.0</os-core-common.version>
+        <os-core-common.version>3.6.2</os-core-common.version>
         <snakeyaml.version>2.0</snakeyaml.version>
         <nimbus-jose-jwt.version>7.9</nimbus-jose-jwt.version>
         <openapi.version>2.5.0</openapi.version>
         <lucene.version>8.10.0</lucene.version>
-        <logback.version>1.5.8</logback.version>
-        <json-smart.version>2.5.0</json-smart.version>
-        <spring-boot.version>3.3.11</spring-boot.version>
+        <logback.version>1.5.20</logback.version>
+        <json-smart.version>2.5.2</json-smart.version>
+        <spring-boot.version>3.5.7</spring-boot.version>
+        <commons-lang3.version>3.18.0</commons-lang3.version>
     </properties>
 
     <licenses>
@@ -107,10 +108,20 @@
 
     <dependencyManagement>
         <dependencies>
+        <!--
+            commons-lang3 Fix CVE-2025-48924
+            Override Spring Boot 3.5.7's commons-lang3 version to fix uncontrolled recursion vulnerability.
+            This can be removed when Spring Boot updates to commons-lang3 3.18.0 or later.
+        -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
         <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>
-                <version>6.1.13</version>
+                <version>6.2.12</version>
                 <type>pom</type>
             </dependency>
             <dependency>
@@ -123,7 +134,7 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-bom</artifactId>
-                <version>6.3.3</version>
+                <version>6.4.10</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -169,7 +180,7 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${spring-boot.version}</version> 
+                    <version>${spring-boot.version}</version>
                     <executions>
                         <execution>
                             <goals>
