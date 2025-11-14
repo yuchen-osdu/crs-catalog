@@ -2,6 +2,10 @@ import os
 import msal
 import urllib
 import sys
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def get_id_token():
     # Generate valid Token for given tenant.
@@ -12,10 +16,16 @@ def get_id_token():
     authority_host_uri = 'https://login.microsoftonline.com'
     authority_uri = urllib.parse.urljoin(authority_host_uri, tenant_id)
     scopes = [resource_id + '/.default']
+    integration_tester_access_token = os.getenv('INTEGRATION_TESTER_ACCESS_TOKEN')
 
-    app = msal.ConfidentialClientApplication(client_id=client_id, authority=authority_uri, client_credential=client_secret)
-    result = app.acquire_token_for_client(scopes=scopes)
-    return result.get('access_token')
+    if integration_tester_access_token:
+        logger.info("Using bearer token from environment variable: INTEGRATION_TESTER_ACCESS_TOKEN")
+        return integration_tester_access_token
+    else:
+        logger.info("Generating bearer token using SPN client id and secret since environment variable INTEGRATION_TESTER_ACCESS_TOKEN is null/not defined")
+        app = msal.ConfidentialClientApplication(client_id=client_id, authority=authority_uri, client_credential=client_secret)
+        result = app.acquire_token_for_client(scopes=scopes)
+        return result.get('access_token')
 
 def get_invalid_token():
     '''

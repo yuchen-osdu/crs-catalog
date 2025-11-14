@@ -25,8 +25,7 @@
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <core-lib-azure.version>1.0.2</core-lib-azure.version>
-        <netty.version>4.1.109.Final</netty.version>
+        <core-lib-azure.version>2.2.9</core-lib-azure.version>
     </properties>
 
     <prerequisites>
@@ -75,6 +74,12 @@
       <groupId>org.opengroup.osdu</groupId>
       <artifactId>core-lib-azure</artifactId>
       <version>${core-lib-azure.version}</version>
+      <exclusions>
+        <exclusion>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -113,7 +118,17 @@
       <artifactId>jakarta.inject-api</artifactId>
       <version>2.0.1</version>
     </dependency>
-
+      <!-- Spring Boot Actuator for metrics -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <!-- Micrometer Prometheus registry for /actuator/prometheus endpoint -->
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+      <scope>runtime</scope>
+    </dependency>
         <!-- Compile/runtime dependencies -->
         <dependency>
             <groupId>jakarta.persistence</groupId>
@@ -157,6 +172,11 @@
           <groupId>org.slf4j</groupId>
           <artifactId>slf4j-api</artifactId>
           <version>1.7.36</version>
+      </dependency>
+      <dependency>
+        <groupId>io.micrometer</groupId>
+        <artifactId>micrometer-registry-prometheus</artifactId>
+        <scope>runtime</scope>
       </dependency>
     </dependencies>
 
