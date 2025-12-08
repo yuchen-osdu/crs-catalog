@@ -30,7 +30,7 @@
 
     <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
     <artifactId>crs-catalog-service</artifactId>
-    <version>0.29.0-SNAPSHOT</version>
+    <version>0.30.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>crs-catalog-service</name>
     <description>crs-catalog service</description>
