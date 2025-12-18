@@ -38,13 +38,15 @@ This project uses [Lombok](https://projectlombok.org/) for code generation. You 
 ### Installation
 In order to run the service locally or remotely, you will need to have the following environment variables defined.
 
-| name                        | value                                                                  | description                      | sensitive? | source                              |
-|-----------------------------|------------------------------------------------------------------------|----------------------------------|------------|-------------------------------------|
-| `LOG_PREFIX`                | `service`                                                              | Logging prefix                   | no         | -                                   |
-| `SERVER_SERVLET_CONTEXPATH` | `/api/crs/catalog/`                                                    | CRS Catalog service context path | no         | -                                   |
-| `CRS_CATALOG_FILENAME`      | ex `C:\\osdu-delfi\\os-crs-catalog-service\\data\\crs_catalog_v2.json` | Crs Catalog V2 file              | no         | output of infrastructure deployment |
-| `ENTITLEMENTS_API`          | `http://entitlements/api/entitlements/v2/`                             | Entitlements service endpoint    | no         | -                                   |
-| `SEARCH_API`                | `http://search/api/search/v2`                                          | Search service endpoint          | no         | -                                   |
+| name                          | value                                                                  | description                                                   | sensitive? | source                              |
+|-------------------------------|------------------------------------------------------------------------|---------------------------------------------------------------|------------|-------------------------------------|
+| `LOG_PREFIX`                  | `service`                                                              | Logging prefix                                                | no         | -                                   |
+| `SERVER_SERVLET_CONTEXPATH`   | `/api/crs/catalog/`                                                    | CRS Catalog service context path                              | no         | -                                   |
+| `CRS_CATALOG_FILENAME`        | ex `C:\\osdu-delfi\\os-crs-catalog-service\\data\\crs_catalog_v2.json` | Crs Catalog V2 file                                           | no         | output of infrastructure deployment |
+| `ENTITLEMENTS_API`            | `http://entitlements/api/entitlements/v2/`                             | Entitlements service endpoint                                 | no         | -                                   |
+| `SEARCH_API`                  | `http://search/api/search/v2`                                          | Search service endpoint                                       | no         | -                                   |
+| `OTEL_JAVAAGENT_ENABLED`      | ex `true` or `false`                                                   | `true` - OpenTelemetry Java agent enabled, `false` - disabled | no         |                                     |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | ex `http://127.0.0.1:4318`                                             | OpenTelemetry collector endpoint                              | no         |                                     |
 
 Defined in default application property file but possible to override:
 
@@ -206,6 +208,29 @@ python3 run_test.py
 
 ## Deployment
 See Google Documentation: https://cloud.google.com/cloud-build/docs/deploying-builds/deploy-gke
+
+## Monitoring
+### OpenTelemetry Integration
+
+The opentelemetry-javaagent.jar file is the OpenTelemetry Java agent. It is used to
+automatically instrument the Java application at runtime, without requiring manual changes
+to the source code.
+
+This provides critical observability features:
+* Distributed Tracing: To trace the path of requests as they travel across different
+  services.
+* Metrics: To capture performance indicators and application-level metrics.
+* Logs: To correlate logs with traces and other telemetry data.
+
+Enabling this agent makes it significantly easier to monitor, debug, and manage the
+application in development and production environments. The agent is activated by the
+startup.sh script when the OTEL_JAVAAGENT_ENABLED environment variable is set to true.
+
+The agent is available from the official OpenTelemetry GitHub repository. It is
+recommended to use the latest stable version.
+
+Official Download Page:
+https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases
 
 ## Licence
 Copyright © Google LLC
