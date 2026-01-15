@@ -27,6 +27,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.opengroup.osdu.core.common.model.http.AppError;
+import org.opengroup.osdu.crs.constants.CrsCatalogRole;
 import org.opengroup.osdu.crs.logging.AuditLogger;
 import org.opengroup.osdu.crs.model.*;
 import org.opengroup.osdu.crs.model.interfaces.*;
@@ -160,9 +161,13 @@ public class CrsCatalogApi {
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(results)) {
-			this.auditLogger.readAreaSuccess(Collections.singletonList(results.toString()));
+			this.auditLogger.readAreaSuccess(
+				Collections.singletonList(results.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER));
 		} else {
-			this.auditLogger.readAreaSuccess(Collections.singletonList("AreaOfUseResults is null"));
+			this.auditLogger.readAreaSuccess(
+				Collections.singletonList("AreaOfUseResults is null"),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER));
 		}
 		return results;
 	}
@@ -209,9 +214,13 @@ public class CrsCatalogApi {
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(aou)) {
-			this.auditLogger.readAreaByEssenceSuccess(Collections.singletonList(aou.toString()));
+			this.auditLogger.readAreaByEssenceSuccess(
+				Collections.singletonList(aou.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER));
 		} else {
-			this.auditLogger.readAreaByEssenceSuccess(Collections.singletonList("AreaOfUse is null"));
+			this.auditLogger.readAreaByEssenceSuccess(
+				Collections.singletonList("AreaOfUse is null"),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER));
 		}
 		return aou;
 	}
@@ -268,9 +277,13 @@ public class CrsCatalogApi {
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(results)) {
-			this.auditLogger.readCrsSuccess(Collections.singletonList(results.toString()));
+			this.auditLogger.readCrsSuccess(
+				Collections.singletonList(results.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER));
 		} else {
-			this.auditLogger.readCrsSuccess(Collections.singletonList("CRSResults is null"));
+			this.auditLogger.readCrsSuccess(
+				Collections.singletonList("CRSResults is null"),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER));
 		}
 		return results;
 	}
@@ -318,9 +331,13 @@ public class CrsCatalogApi {
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(crs)) {
-			this.auditLogger.readCrsByEssenceSuccess(Collections.singletonList(crs.toString()));
+			this.auditLogger.readCrsByEssenceSuccess(
+				Collections.singletonList(crs.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER));
 		} else {
-			this.auditLogger.readCrsByEssenceSuccess(Collections.singletonList("CRS is null"));
+			this.auditLogger.readCrsByEssenceSuccess(
+				Collections.singletonList("CRS is null"),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER));
 		}
 		return crs;
 	}
@@ -377,9 +394,15 @@ public class CrsCatalogApi {
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(results)) {
-			this.auditLogger.readLateBoundCrsSuccess(Collections.singletonList(results.toString()));
+			this.auditLogger.readLateBoundCrsSuccess(
+				Collections.singletonList(results.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		} else {
-			this.auditLogger.readLateBoundCrsSuccess(Collections.singletonList("LateBoundCRSResults is null"));
+			this.auditLogger.readLateBoundCrsSuccess(
+				Collections.singletonList("LateBoundCRSResults is null"),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		}
 		return results;
 	}
@@ -427,9 +450,15 @@ public class CrsCatalogApi {
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(crs)) {
-			this.auditLogger.readLateBoundCrsByEssenceSuccess(Collections.singletonList(crs.toString()));
+			this.auditLogger.readLateBoundCrsByEssenceSuccess(
+				Collections.singletonList(crs.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		} else {
-			this.auditLogger.readLateBoundCrsByEssenceSuccess(Collections.singletonList("LateBoundCRS is null"));
+			this.auditLogger.readLateBoundCrsByEssenceSuccess(
+				Collections.singletonList("LateBoundCRS is null"),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		}
 		return crs;
 	}
@@ -486,9 +515,15 @@ public class CrsCatalogApi {
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(results)) {
-			this.auditLogger.readEarlyBoundCrsSuccess(Collections.singletonList(results.toString()));
+			this.auditLogger.readEarlyBoundCrsSuccess(
+				Collections.singletonList(results.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		} else {
-			this.auditLogger.readEarlyBoundCrsSuccess(Collections.singletonList("EarlyBoundCRSResults is null"));
+			this.auditLogger.readEarlyBoundCrsSuccess(
+				Collections.singletonList("EarlyBoundCRSResults is null"),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		}
 		return results;
 	}
@@ -535,9 +570,15 @@ public class CrsCatalogApi {
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(crs)) {
-			this.auditLogger.readEarlyBoundCrsByEssenceSuccess(Collections.singletonList(crs.toString()));
+			this.auditLogger.readEarlyBoundCrsByEssenceSuccess(
+				Collections.singletonList(crs.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		} else {
-			this.auditLogger.readEarlyBoundCrsByEssenceSuccess(Collections.singletonList("EarlyBoundCRS is null"));
+			this.auditLogger.readEarlyBoundCrsByEssenceSuccess(
+				Collections.singletonList("EarlyBoundCRS is null"),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		}
 		return crs;
 	}
@@ -594,9 +635,15 @@ public class CrsCatalogApi {
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(results)) {
-			this.auditLogger.readCompoundCrsSuccess(Collections.singletonList(results.toString()));
+			this.auditLogger.readCompoundCrsSuccess(
+				Collections.singletonList(results.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		} else {
-			this.auditLogger.readCompoundCrsSuccess(Collections.singletonList("CompoundCRSResults is null"));
+			this.auditLogger.readCompoundCrsSuccess(
+				Collections.singletonList("CompoundCRSResults is null"),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		}
 		return results;
 	}
@@ -643,9 +690,15 @@ public class CrsCatalogApi {
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(crs)) {
-			this.auditLogger.readCompoundCrsByEssenceSuccess(Collections.singletonList(crs.toString()));
+			this.auditLogger.readCompoundCrsByEssenceSuccess(
+				Collections.singletonList(crs.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		} else {
-			this.auditLogger.readCompoundCrsByEssenceSuccess(Collections.singletonList("CompoundCRS is null"));
+			this.auditLogger.readCompoundCrsByEssenceSuccess(
+				Collections.singletonList("CompoundCRS is null"),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		}
 		return crs;
 	}
@@ -702,9 +755,15 @@ public class CrsCatalogApi {
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(results)) {
-			this.auditLogger.readCtSuccess(Collections.singletonList(results.toString()));
+			this.auditLogger.readCtSuccess(
+				Collections.singletonList(results.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		} else {
-			this.auditLogger.readCtSuccess(Collections.singletonList("CTResults is null"));
+			this.auditLogger.readCtSuccess(
+				Collections.singletonList("CTResults is null"),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		}
 		return results;
 	}
@@ -752,9 +811,15 @@ public class CrsCatalogApi {
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(ct)) {
-			this.auditLogger.readCtByEssenceSuccess(Collections.singletonList(ct.toString()));
+			this.auditLogger.readCtByEssenceSuccess(
+				Collections.singletonList(ct.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		} else {
-			this.auditLogger.readCtByEssenceSuccess(Collections.singletonList("CTResults is null"));
+			this.auditLogger.readCtByEssenceSuccess(
+				Collections.singletonList("CTResults is null"),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		}
 		return ct;
 	}
@@ -811,9 +876,15 @@ public class CrsCatalogApi {
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(results)) {
-			this.auditLogger.readSingleCtSuccess(Collections.singletonList(results.toString()));
+			this.auditLogger.readSingleCtSuccess(
+				Collections.singletonList(results.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		} else {
-			this.auditLogger.readSingleCtSuccess(Collections.singletonList("SingleCTResults is null"));
+			this.auditLogger.readSingleCtSuccess(
+				Collections.singletonList("SingleCTResults is null"),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		}
 		return results;
 	}
@@ -860,9 +931,15 @@ public class CrsCatalogApi {
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(ct)) {
-			this.auditLogger.readSingleCtByEssenceSuccess(Collections.singletonList(ct.toString()));
+			this.auditLogger.readSingleCtByEssenceSuccess(
+				Collections.singletonList(ct.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		} else {
-			this.auditLogger.readSingleCtByEssenceSuccess(Collections.singletonList("SingleCT is null"));
+			this.auditLogger.readSingleCtByEssenceSuccess(
+				Collections.singletonList("SingleCT is null"),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		}
 		return ct;
 	}
@@ -919,9 +996,15 @@ public class CrsCatalogApi {
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(results)) {
-			this.auditLogger.readCompoundCtSuccess(Collections.singletonList(results.toString()));
+			this.auditLogger.readCompoundCtSuccess(
+				Collections.singletonList(results.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		} else {
-			this.auditLogger.readCompoundCtSuccess(Collections.singletonList("CompoundCTResults is null"));
+			this.auditLogger.readCompoundCtSuccess(
+				Collections.singletonList("CompoundCTResults is null"),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		}
 		return results;
 	}
@@ -967,9 +1050,15 @@ public class CrsCatalogApi {
             throw AppException.createBadRequest(ex.getMessage());
 		}
 		if (Objects.nonNull(ct)) {
-			this.auditLogger.readCompoundCtByEssenceSuccess(Collections.singletonList(ct.toString()));
+			this.auditLogger.readCompoundCtByEssenceSuccess(
+				Collections.singletonList(ct.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		} else {
-			this.auditLogger.readCompoundCtByEssenceSuccess(Collections.singletonList("CompoundCT is null"));
+			this.auditLogger.readCompoundCtByEssenceSuccess(
+				Collections.singletonList("CompoundCT is null"),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 		}
 		return ct;
 	}
@@ -1019,7 +1108,10 @@ public class CrsCatalogApi {
 			RepresentationMode mode = RepresentationMode.getRepresentationMode(reprMode);
 			SphericalBoundingBox boundingBox = new SphericalBoundingBoxImpl(longitudeLeft, latitudeLower, longitudeRight, latitudeUpper);
 			AreaOfUseResults results = catalog.searchAreasOfUse(request, boundingBox, offset, limit, mode);
-			this.auditLogger.searchAreaSuccess(Collections.singletonList(results.toString()));
+			this.auditLogger.searchAreaSuccess(
+				Collections.singletonList(results.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 			return results;
     	}
         catch(Exception ex) {
@@ -1068,7 +1160,10 @@ public class CrsCatalogApi {
 			RepresentationMode mode = RepresentationMode.getRepresentationMode(reprMode);
 			SphericalBoundingBox boundingBox = new SphericalBoundingBoxImpl(longitudeLeft, latitudeLower, longitudeRight, latitudeUpper);
 			CRSResults results = catalog.searchCRSes(request, boundingBox, offset, limit, mode);
-			this.auditLogger.searchCrsSuccess(Collections.singletonList(results.toString()));
+			this.auditLogger.searchCrsSuccess(
+				Collections.singletonList(results.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 			return results;
 		}
         catch(Exception ex) {
@@ -1117,7 +1212,10 @@ public class CrsCatalogApi {
 			RepresentationMode mode = RepresentationMode.getRepresentationMode(reprMode);
 			SphericalBoundingBox boundingBox = new SphericalBoundingBoxImpl(longitudeLeft, latitudeLower, longitudeRight, latitudeUpper);
 			CTResults results = catalog.searchCTs(request, boundingBox, offset, limit, mode);
-			this.auditLogger.searchCtSuccess(Collections.singletonList(results.toString()));
+			this.auditLogger.searchCtSuccess(
+				Collections.singletonList(results.toString()),
+				Collections.singletonList(CrsCatalogRole.CRS_CATALOG_AUTHENTICATED_USER)
+			);
 			return results;
     	}
         catch(Exception ex) {
