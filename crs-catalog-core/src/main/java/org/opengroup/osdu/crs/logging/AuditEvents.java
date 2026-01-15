@@ -84,16 +84,18 @@ public class AuditEvents {
 
 
   private final String user;
+  private final String userIpAddress;
+  private final String userAgent;
+  private final String userAuthorizedGroupName;
 
-
-  public AuditEvents(String user) {
-    if (Strings.isNullOrEmpty(user)) {
-      throw new IllegalArgumentException("User not provided for audit events.");
-    }
-    this.user = user;
+  public AuditEvents(String user, String userIpAddress, String userAgent, String userAuthorizedGroupName) {
+    this.user = requireNonEmpty(user, "User not provided for audit events.");
+    this.userIpAddress = requireNonEmpty(userIpAddress, "User's IP address is not provided for audit events.");
+    this.userAgent = requireNonEmpty(userAgent, "User's agent is not provided for audit events.");
+    this.userAuthorizedGroupName = requireNonEmpty(userAuthorizedGroupName, "User's authorized group name is not provided for audit events.");
   }
 
-  public AuditPayload getReadCrsEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getReadCrsEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -101,10 +103,14 @@ public class AuditEvents {
         .actionId(READ_CRS_ACTION_ID)
         .message(getStatusMessage(status, READ_CRS_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getReadCrsByEssenceEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getReadCrsByEssenceEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -112,10 +118,14 @@ public class AuditEvents {
         .actionId(READ_CRS_BY_ESSENCE_ACTION_ID)
         .message(getStatusMessage(status, READ_CRS_BY_ESSENCE_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getReadLateBoundCrsEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getReadLateBoundCrsEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -123,11 +133,14 @@ public class AuditEvents {
         .actionId(READ_LATE_BOUND_CRS_ACTION_ID)
         .message(getStatusMessage(status, READ_LATE_BOUND_CRS_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getReadLateBoundCrsByEssenceEvent(AuditStatus status,
-      List<String> resources) {
+  public AuditPayload getReadLateBoundCrsByEssenceEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -135,10 +148,14 @@ public class AuditEvents {
         .actionId(READ_LATE_BOUND_CRS_BY_ESSENCE_ACTION_ID)
         .message(getStatusMessage(status, READ_LATE_BOUND_CRS_BY_ESSENCE_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getReadEarlyBoundCrsEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getReadEarlyBoundCrsEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -146,11 +163,14 @@ public class AuditEvents {
         .actionId(READ_EARLY_BOUND_CRS_ACTION_ID)
         .message(getStatusMessage(status, READ_EARLY_BOUND_CRS_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getReadEarlyBoundCrsByEssenceEvent(AuditStatus status,
-      List<String> resources) {
+  public AuditPayload getReadEarlyBoundCrsByEssenceEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -158,10 +178,14 @@ public class AuditEvents {
         .actionId(READ_EARLY_BOUND_CRS_BY_ESSENCE_ACTION_ID)
         .message(getStatusMessage(status, READ_EARLY_BOUND_CRS_BY_ESSENCE_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getReadCompoundCrsEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getReadCompoundCrsEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -169,10 +193,14 @@ public class AuditEvents {
         .actionId(READ_COMPOUND_CRS_ACTION_ID)
         .message(getStatusMessage(status, READ_COMPOUND_CRS_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getReadCompoundCrsByEssenceEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getReadCompoundCrsByEssenceEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -180,10 +208,14 @@ public class AuditEvents {
         .actionId(READ_COMPOUND_CRS_BY_ESSENCE_ACTION_ID)
         .message(getStatusMessage(status, READ_COMPOUND_CRS_BY_ESSENCE_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getSearchCrsEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getSearchCrsEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -191,10 +223,14 @@ public class AuditEvents {
         .actionId(SEARCH_CRS_ACTION_ID)
         .message(getStatusMessage(status, SEARCH_CRS_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getReadCtEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getReadCtEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -202,10 +238,14 @@ public class AuditEvents {
         .actionId(READ_CT_ACTION_ID)
         .message(getStatusMessage(status, READ_CT_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getReadCtByEssenceEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getReadCtByEssenceEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -213,10 +253,14 @@ public class AuditEvents {
         .actionId(READ_CT_BY_ESSENCE_ACTION_ID)
         .message(getStatusMessage(status, READ_CT_BY_ESSENCE_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getReadSingleCtEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getReadSingleCtEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -224,10 +268,14 @@ public class AuditEvents {
         .actionId(READ_SINGLE_CT_ACTION_ID)
         .message(getStatusMessage(status, READ_SINGLE_CT_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getReadSingleCtByEssenceEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getReadSingleCtByEssenceEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -235,10 +283,14 @@ public class AuditEvents {
         .actionId(READ_SINGLE_CT_BY_ESSENCE_ACTION_ID)
         .message(getStatusMessage(status, READ_SINGLE_CT_BY_ESSENCE_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getReadCompoundCtEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getReadCompoundCtEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -246,10 +298,14 @@ public class AuditEvents {
         .actionId(READ_COMPOUND_CT_ACTION_ID)
         .message(getStatusMessage(status, READ_COMPOUND_CT_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getReadCompoundCtByEssenceEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getReadCompoundCtByEssenceEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -257,10 +313,14 @@ public class AuditEvents {
         .actionId(READ_COMPOUND_CT_BY_ESSENCE_ACTION_ID)
         .message(getStatusMessage(status, READ_COMPOUND_CT_BY_ESSENCE_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getSearchCtEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getSearchCtEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -268,10 +328,14 @@ public class AuditEvents {
         .actionId(SEARCH_CT_ACTION_ID)
         .message(getStatusMessage(status, SEARCH_CT_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getReadAreaEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getReadAreaEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -279,10 +343,14 @@ public class AuditEvents {
         .actionId(READ_AREA_ACTION_ID)
         .message(getStatusMessage(status, READ_AREA_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getReadAreaByEssenceEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getReadAreaByEssenceEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -290,10 +358,14 @@ public class AuditEvents {
         .actionId(READ_AREA_BY_ESSENCE_ACTION_ID)
         .message(getStatusMessage(status, READ_AREA_BY_ESSENCE_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
-  public AuditPayload getSearchAreaEvent(AuditStatus status, List<String> resources) {
+  public AuditPayload getSearchAreaEvent(AuditStatus status, List<String> resources, List<String> requiredGroupsForAction) {
     return AuditPayload.builder()
         .action(AuditAction.READ)
         .status(status)
@@ -301,10 +373,21 @@ public class AuditEvents {
         .actionId(SEARCH_AREA_ACTION_ID)
         .message(getStatusMessage(status, SEARCH_AREA_MESSAGE))
         .resources(resources)
+        .requiredGroupsForAction(requiredGroupsForAction)
+        .userIpAddress(this.userIpAddress)
+        .userAgent(this.userAgent)
+        .userAuthorizedGroupName(this.userAuthorizedGroupName)
         .build();
   }
 
   private String getStatusMessage(AuditStatus status, String message) {
     return "%s - %s".formatted(message, status.name().toLowerCase());
+  }
+
+  private static String requireNonEmpty(String value, String message) {
+    if (Strings.isNullOrEmpty(value)) {
+        throw new IllegalArgumentException(message);
+    }
+    return value;
   }
 }
