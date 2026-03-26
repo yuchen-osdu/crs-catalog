@@ -23,14 +23,48 @@ Or tokens can be used directly from env variables:
 |-------------------------|------------|-----------------------|------------|--------|
 | `PRIVILEGED_USER_TOKEN` | `********` | PRIVILEGED_USER Token | yes        | -      |
 
+#### Setup and Run Tests
 
-Execute following command to build code and run all the integration tests:
+```bash
+cd crs-catalog_acceptance_test
 
- ```bash
- # Note: this assumes that the environment variables for integration tests as outlined
- #       above are already exported in your environment.
- # run acceptance tests
- $ chmod +x ./run-acceptance-tests.sh
- $ ./run-acceptance-tests.sh
- ```
+# 1. Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# 2. Install dependencies
+pip install -r requirements.txt
+pip install -r v2/requirements.txt
+
+# 3. Set environment variables (or use .env file)
+export VIRTUAL_SERVICE_HOST_NAME="your-host.com"
+export MY_TENANT="your-tenant"
+export PRIVILEGED_USER_TOKEN="your-token"
+
+# Or load from .env file
+set -a; source .env; set +a
+
+# 4. Run tests with Allure reporting
+pytest test_api_v2.py test_api_v3.py test_crs_catalog_v2.py test_crs_catalog_v3.py \
+    --alluredir=allure-results \
+    --clean-alluredir \
+    -v
+
+# 5. Generate HTML report (using script or podman)
+./run-acceptance-tests.sh
+
+# Or with podman (no Allure CLI needed)
+mkdir -p allure-report
+podman run --rm \
+  -v $(pwd)/allure-results:/allure-results:Z \
+  -v $(pwd)/allure-report:/allure-report:Z \
+  frankescobar/allure-docker-service \
+  allure generate /allure-results -o /allure-report --clean
+```
+
+**Alternative: Simple HTML report (no Allure)**
+```bash
+pytest test_api_v2.py test_api_v3.py test_crs_catalog_v2.py test_crs_catalog_v3.py \
+    --html=report.html --self-contained-html -v
+```
 

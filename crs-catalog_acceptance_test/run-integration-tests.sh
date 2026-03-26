@@ -18,27 +18,31 @@
 
 #!/usr/bin/env bash
 
-python3 -m pip install --upgrade pip
+# Setup Python virtual environment
+python3 -m venv venv
+source venv/bin/activate
 
-python3 -m venv env
-source env/bin/activate
-
-python3 -m pip install -r v3/requirements.txt
+# Install Python dependencies
+pip install -q --upgrade pip
+pip install -q -r requirements.txt
+pip install -q -r v2/requirements.txt
 
 echo ""
-export API_VER="v3"
-echo ***RUNNING CATALOG API $API_VER TESTS***
-python3 run_test_v3.py
-TEST_STATUS=$?
-echo ***FINISHED CATALOG API $API_VER TESTS***
+echo "***RUNNING CRS CATALOG TESTS WITH REPORTING***"
+echo ""
 
-echo "TEST STATUS: $TEST_STATUS"
+# Run all tests with pytest (handles both v2 and v3, pytest and unittest tests)
+pytest test_api_v2.py test_api_v3.py test_crs_catalog_v2.py test_crs_catalog_v3.py \
+    --alluredir=allure-results \
+    --clean-alluredir \
+    -v
+
+TEST_STATUS=$?
+
+echo ""
+echo "***FINISHED CRS CATALOG TESTS***"
+echo ""
 
 deactivate
-rm -rf env/
 
-
-if [ $TEST_STATUS -ne 0 ]
-then
-    exit 1
-fi
+exit $TEST_STATUS

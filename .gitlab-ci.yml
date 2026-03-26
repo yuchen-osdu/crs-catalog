@@ -25,7 +25,8 @@ variables:
   SHARE_NAME: crs
   AZURE_SKIP_INTEGRATION_TEST: "true"
 
-  ACCEPTANCE_TEST_DIR: crs-catalog_acceptance_test
+  ACCEPTANCE_TEST_DIR: $CI_PROJECT_DIR/crs-catalog_acceptance_test
+  CIMPL_BAREMETAL_PYTHON_INT_TEST_SUBDIR: $CI_PROJECT_DIR/crs-catalog_acceptance_test
 
 include:
   - project: "osdu/platform/ci-cd-pipelines"
@@ -72,6 +73,9 @@ include:
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/ibm-one-pipeline.yml"
+
+  - project: "osdu/platform/ci-cd-pipelines"
+    file: "reporting/reporting.yml"
 
   - local: "devops/gc/pipeline/override-stages.yml"
 

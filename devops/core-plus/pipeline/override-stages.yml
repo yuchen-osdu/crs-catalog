@@ -1,7 +1,6 @@
 variables:
   CIMPL_SERVICE: crs-catalog
   CIMPL_INT_TEST_TYPE: python
-  CIMPL_BAREMETAL_PYTHON_INT_TEST_SUBDIR: testing/catalog_test_baremetal
 
 
 cimpl-containerize-gitlab:

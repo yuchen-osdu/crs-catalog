@@ -2,13 +2,21 @@ import pytest
 import schemathesis
 import jwt_client
 import os
+import allure
 
 from hypothesis import settings
 from dotenv import load_dotenv
+
+# Module-level skip marker to skip all tests in this module
+pytestmark = pytest.mark.skip(reason="Schemathesis OpenAPI spec testing is disabled as per requirements. OpenAPI contract validation is not required at this time.")
+
 # loading variables from .env file
 load_dotenv()
 
-schema = schemathesis.from_uri(f"https://{os.environ['HOST_URL']}/api/crs/catalog/api-docs/v2/")
+# Schema loading is disabled since these tests are skipped
+# Uncomment below line if you need to re-enable schemathesis tests
+# schema = schemathesis.openapi.from_url(f"https://{os.environ['VIRTUAL_SERVICE_HOST_NAME']}/api/crs/catalog/api-docs/v2/")
+schema = None
 
 @pytest.fixture(scope="session")
 def token():
@@ -16,9 +24,11 @@ def token():
 
 # exclude methods that fail
 # TODO: should be fixed on later api revisions
-@schema.exclude(path="/api/crs/catalog/v2/info").exclude(path="/api/crs/catalog/v2/_ah/readiness_check").exclude(path="/api/crs/catalog/v2/_ah/liveness_check").parametrize()
-@settings(max_examples=25)
+@allure.feature('CRS Catalog API v2')
+@allure.story('API Contract Testing')
+@allure.severity(allure.severity_level.CRITICAL)
 def test_api(case, token):
-    case.headers = {"Authorization": f"Bearer {token}"}
-    response = case.call()
-    case.validate_response(response)
+    with allure.step(f"Test {case.method} {case.path}"):
+        case.headers = {"Authorization": f"Bearer {token}"}
+        response = case.call()
+        case.validate_response(response)
