@@ -30,6 +30,7 @@ if __name__ == '__main__':
 # coding: utf-8
 """Integration unit tests for crs-catalog service V3"""
 import unittest
+import allure
 import jwt_client
 import constants as constants
 from v3.HttpClient import HttpClient
@@ -43,6 +44,8 @@ info_endpoint_path = f'{v3_path}/info'
 record_id_set = set()
 
 
+@allure.feature('CRS Catalog v3')
+@allure.epic('CRS Catalog v3 Integration Tests')
 class TestCrsCatalog(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

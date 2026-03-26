@@ -29,6 +29,7 @@ if __name__ == '__main__':
 # coding: utf-8
 """Integration unit tests for crs-catalog service V2"""
 import unittest
+import allure
 
 from v2.swagger_client.configuration import Configuration
 from v2.swagger_client import ApiClient
@@ -86,6 +87,8 @@ class TestEnvironment(object):
         return client
 
 
+@allure.feature('CRS Catalog Area Of Use')
+@allure.epic('CRS Catalog v2 Integration Tests')
 class TestAreaOfUse(unittest.TestCase):
     """Post deployment tests for the GET/POST AreaOfUse methods"""
 
