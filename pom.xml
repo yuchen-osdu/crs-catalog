@@ -9,7 +9,7 @@
         <docker.image.prefix>org.opengroup.osdu</docker.image.prefix>
         <powermock.version>2.0.6</powermock.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <os-core-common.version>5.0.1</os-core-common.version>
+        <os-core-common.version>5.4.1</os-core-common.version>
         <snakeyaml.version>2.0</snakeyaml.version>
         <nimbus-jose-jwt.version>7.9</nimbus-jose-jwt.version>
         <openapi.version>2.5.0</openapi.version>
@@ -18,6 +18,7 @@
         <json-smart.version>2.5.2</json-smart.version>
         <spring-boot.version>3.5.7</spring-boot.version>
         <commons-lang3.version>3.18.0</commons-lang3.version>
+        <jackson.version>2.21.1</jackson.version>
     </properties>
 
     <licenses>
@@ -108,6 +109,15 @@
 
     <dependencyManagement>
         <dependencies>
+        <!-- Jackson override: Spring Boot 3.5.7 and other artifacts provides 2.19.4, we need 2.21.1 for GHSA-72hv-8253-57qq -->
+        <!-- Maybe remove this override when Spring Boot BOM updates to Jackson >= 2.21.1 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson</groupId>
+            <artifactId>jackson-bom</artifactId>
+            <version>${jackson.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
         <!--
             commons-lang3 Fix CVE-2025-48924
             Override Spring Boot 3.5.7's commons-lang3 version to fix uncontrolled recursion vulnerability.
