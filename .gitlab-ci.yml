@@ -27,6 +27,7 @@ variables:
 
   ACCEPTANCE_TEST_DIR: $CI_PROJECT_DIR/crs-catalog_acceptance_test
   CIMPL_BAREMETAL_PYTHON_INT_TEST_SUBDIR: $CI_PROJECT_DIR/crs-catalog_acceptance_test
+  CIMPL_OPENAPI_CONFIG_ROUTE: /api/crs/catalog/api-docs/swagger-config
 
 include:
   - project: "osdu/platform/ci-cd-pipelines"
