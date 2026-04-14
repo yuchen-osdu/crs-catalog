@@ -69,9 +69,9 @@ The following software have components provided under the terms of this license:
 - Apache Maven Wagon :: Providers :: File Provider (from https://maven.apache.org/wagon, https://repo1.maven.org/maven2/org/apache/maven/wagon/wagon-file)
 - Apache Maven Wagon :: Providers :: HTTP Shared Library (from https://maven.apache.org/wagon, https://repo1.maven.org/maven2/org/apache/maven/wagon/wagon-http-shared)
 - Apache Maven Wagon :: Providers :: Lightweight HTTP Provider (from https://maven.apache.org/wagon, https://repo1.maven.org/maven2/org/apache/maven/wagon/wagon-http-lightweight)
-- Apache Maven Wagon :: Providers :: SSH Common Library (from https://repo1.maven.org/maven2/org/apache/maven/wagon/wagon-ssh-common)
-- Apache Maven Wagon :: Providers :: SSH External Provider (from https://repo1.maven.org/maven2/org/apache/maven/wagon/wagon-ssh-external)
-- Apache Maven Wagon :: Providers :: SSH Provider (from https://repo1.maven.org/maven2/org/apache/maven/wagon/wagon-ssh)
+- Apache Maven Wagon :: Providers :: SSH Common Library (from https://maven.apache.org/wagon, https://repo1.maven.org/maven2/org/apache/maven/wagon/wagon-ssh-common)
+- Apache Maven Wagon :: Providers :: SSH External Provider (from https://maven.apache.org/wagon, https://repo1.maven.org/maven2/org/apache/maven/wagon/wagon-ssh-external)
+- Apache Maven Wagon :: Providers :: SSH Provider (from https://maven.apache.org/wagon, https://repo1.maven.org/maven2/org/apache/maven/wagon/wagon-ssh)
 - Apache Velocity (from http://velocity.apache.org/engine/devel/, http://velocity.apache.org/engine/releases/velocity-1.6.1/, http://velocity.apache.org/engine/releases/velocity-1.6.2/)
 - AssertJ Core (from https://assertj.github.io/doc/#assertj-core)
 - Asynchronous Http Client (from https://github.com/AsyncHttpClient/async-http-client, https://repo1.maven.org/maven2/org/asynchttpclient/async-http-client)
@@ -133,7 +133,7 @@ The following software have components provided under the terms of this license:
 - JBoss Logging 3 (from http://www.jboss.org, https://www.jboss.org/)
 - JCIP Annotations under Apache License (from http://stephenc.github.com/jcip-annotations)
 - JDO API (from https://repo1.maven.org/maven2/javax/jdo/jdo-api)
-- JDOM (from http://www.jdom.org)
+- JDOM (from http://www.jdom.org/)
 - JJWT :: API (from https://github.com/jwtk/jjwt)
 - JJWT :: Extensions :: Jackson (from https://github.com/jwtk/jjwt)
 - JJWT :: Impl (from https://github.com/jwtk/jjwt)
@@ -234,7 +234,7 @@ The following software have components provided under the terms of this license:
 - Plexus Common Utilities (from http://plexus.codehaus.org/plexus-utils, https://codehaus-plexus.github.io/plexus-utils/, https://repo1.maven.org/maven2/org/codehaus/plexus/plexus-utils)
 - Plexus I18N Component (from https://repo1.maven.org/maven2/org/codehaus/plexus/plexus-i18n)
 - Plexus Velocity Component (from https://codehaus-plexus.github.io/plexus-velocity/, https://repo1.maven.org/maven2/org/codehaus/plexus/plexus-velocity)
-- PowerMock (from http://www.powermock.org, https://repo1.maven.org/maven2/org/powermock/powermock-api-mockito)
+- PowerMock (from http://www.powermock.org, http://www.powermock.org/, https://repo1.maven.org/maven2/org/powermock/powermock-api-mockito)
 - Prometheus Metrics Config (from http://github.com/prometheus/client_java)
 - Prometheus Metrics Core (from http://github.com/prometheus/client_java)
 - Prometheus Metrics Exposition Formats (from http://github.com/prometheus/client_java)
@@ -442,7 +442,7 @@ DOC
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- JDOM (from http://www.jdom.org)
+- JDOM (from http://www.jdom.org/)
 - Lucene Core (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-core)
 
 ========================================================================

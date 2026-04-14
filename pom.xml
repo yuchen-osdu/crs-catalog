@@ -16,9 +16,8 @@
         <lucene.version>8.10.0</lucene.version>
         <logback.version>1.5.20</logback.version>
         <json-smart.version>2.5.2</json-smart.version>
-        <spring-boot.version>3.5.7</spring-boot.version>
+        <spring-boot.version>3.5.13</spring-boot.version>
         <commons-lang3.version>3.18.0</commons-lang3.version>
-        <jackson.version>2.21.1</jackson.version>
     </properties>
 
     <licenses>
@@ -109,15 +108,6 @@
 
     <dependencyManagement>
         <dependencies>
-        <!-- Jackson override: Spring Boot 3.5.7 and other artifacts provides 2.19.4, we need 2.21.1 for GHSA-72hv-8253-57qq -->
-        <!-- Maybe remove this override when Spring Boot BOM updates to Jackson >= 2.21.1 -->
-        <dependency>
-            <groupId>com.fasterxml.jackson</groupId>
-            <artifactId>jackson-bom</artifactId>
-            <version>${jackson.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
         <!--
             commons-lang3 Fix CVE-2025-48924
             Override Spring Boot 3.5.7's commons-lang3 version to fix uncontrolled recursion vulnerability.
@@ -144,7 +134,7 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-bom</artifactId>
-                <version>6.4.10</version>
+                <version>6.5.9</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

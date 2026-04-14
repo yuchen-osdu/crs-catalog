@@ -25,8 +25,7 @@
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <core-lib-azure.version>2.5.0</core-lib-azure.version>
-        <jackson.version>2.21.1</jackson.version>
+        <core-lib-azure.version>2.5.10</core-lib-azure.version>
         <org-eclipse-jetty.version>12.0.32</org-eclipse-jetty.version>
     </properties>
 
@@ -36,6 +35,14 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- CVE-2021-0341 | HIGH | com.squareup.okhttp3:okhttp-->
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp-bom</artifactId>
+                <version>4.9.2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-bom</artifactId>
@@ -47,15 +54,6 @@
                 <groupId>org.eclipse.jetty.ee10</groupId>
                 <artifactId>jetty-ee10-bom</artifactId>
                 <version>${org-eclipse-jetty.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <!-- Jackson override: Spring Boot 3.5.7 and other artifacts provides 2.19.4, we need 2.21.1 for GHSA-72hv-8253-57qq -->
-            <!-- Maybe remove this override when Spring Boot BOM updates to Jackson >= 2.21.1 -->
-            <dependency>
-                <groupId>com.fasterxml.jackson</groupId>
-                <artifactId>jackson-bom</artifactId>
-                <version>${jackson.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
