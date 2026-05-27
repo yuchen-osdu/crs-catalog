@@ -10,12 +10,6 @@ variables:
   AWS_DEPLOY_TARGET: TF
   AWS_EKS_DEPLOYMENT_NAME: os-crs-catalog
 
-  IBM_BUILD_SUBDIR: provider/crs-catalog-ibm/crs-catalog-ocp
-  IBM_INT_TEST_PY_SUBDIR: testing/catalog_test_ibm
-  IBM_INT_TEST_PY_FILE: run_test.py
-  IBM_HELM_CONFIG_PATH: devops/ibm/ibm-crs-catalog-config
-  IBM_HELM_DEPLOY_PATH: devops/ibm/ibm-crs-catalog-deploy
-
   #azure
   AZURE_SERVICE: crs_catalog
   AZURE_BUILD_SUBDIR: provider/crs-catalog-azure/crs-catalog-aks
@@ -52,9 +46,6 @@ include:
     file: "cloud-providers/aws-maven.yml"
 
   - project: "osdu/platform/ci-cd-pipelines"
-    file: "cloud-providers/ibm-python-test.yml"
-
-  - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/azure.yml"
 
   - project: "osdu/platform/ci-cd-pipelines"
@@ -71,9 +62,6 @@ include:
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/gc-one-pipeline.yml"
-
-  - project: "osdu/platform/ci-cd-pipelines"
-    file: "cloud-providers/ibm-one-pipeline.yml"
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "reporting/reporting.yml"
