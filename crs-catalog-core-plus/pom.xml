@@ -10,22 +10,15 @@
     </parent>
 
     <artifactId>crs-catalog-core-plus</artifactId>
-    <version>0.30.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>crs-catalog-core-plus</name>
     <description>CRS Catalog service for Hybrid Cloud</description>
 
   <properties>
     <app.version>1</app.version>
-    <java.version>17</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <objectify.version>5.1.22</objectify.version>
-        <slf4j.version>1.7.25</slf4j.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <org-eclipse-jetty.version>12.0.32</org-eclipse-jetty.version>
+    <objectify.version>5.1.22</objectify.version>
+    <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
+    <org-eclipse-jetty.version>12.0.32</org-eclipse-jetty.version>
   </properties>
 
   <dependencyManagement>
@@ -51,7 +44,6 @@
         <dependency>
             <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
             <artifactId>crs-catalog-core</artifactId>
-            <version>${parent.version}</version>
             <exclusions>
 				<exclusion>
 					<groupId>ch.qos.logback</groupId>
@@ -63,20 +55,16 @@
         <dependency>
             <groupId>javax.jdo</groupId>
             <artifactId>jdo-api</artifactId>
-            <version>3.1</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.9.1</version>
         </dependency>
 
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.32</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -88,7 +76,6 @@
     <dependency>
       <groupId>org.powermock</groupId>
       <artifactId>powermock-module-junit4</artifactId>
-      <version>${powermock.version}</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -100,13 +87,11 @@
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-api-mockito2</artifactId>
-            <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>4.11.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -148,7 +133,6 @@
 		<dependency>
 		    <groupId>org.slf4j</groupId>
 		    <artifactId>slf4j-simple</artifactId>
-		    <version>1.7.36</version>
 		</dependency>
     </dependencies>
 
@@ -189,15 +173,10 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <version>3.7.0</version>
                 <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <release>${java.version}</release>
-                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.1.2</version>
                 <configuration>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                 </configuration>
@@ -205,7 +184,6 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.12</version>
                 <executions>
                   <execution>
                     <goals>

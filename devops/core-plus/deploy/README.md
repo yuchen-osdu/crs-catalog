@@ -67,6 +67,7 @@ Before installing deploy Helm chart you need to set variables in **values.yaml**
 **istio.proxyCPULimit** | CPU limit for Envoy sidecars | string | 200m | yes
 **istio.proxyMemory** | memory request for Envoy sidecars | string | 100Mi | yes
 **istio.proxyMemoryLimit** | memory limit for Envoy sidecars | string | 256Mi | yes
+**istio.auth.disable** | Paths excluded from JWT AuthorizationPolicy enforcement, including Swagger UI and grouped API docs | list | see `values.yaml` | yes
 
 ### Install the helm chart
 

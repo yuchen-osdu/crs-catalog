@@ -52,6 +52,7 @@ public class CoordinateTransformationsQuery implements ISearchQuery {
     private Integer limit = 10000;
     @Schema(description = "Whether to return all fields in the record. Default is false and only a subset is returned", type = "boolean")
     private Boolean returnAllFields = false;
+    @Schema(description = "List of specific fields to return. Overridden when returnAllFields is true.")
     List<String> returnedFields = Arrays.asList(
             "id", "data.Name", "data.Code", "data.InactiveIndicator", "data.Kind", "data.Accuracy",
             "data.Method", "data.CodeSpace", "data.CoordinateTransformationType", "data.SourceCRS",

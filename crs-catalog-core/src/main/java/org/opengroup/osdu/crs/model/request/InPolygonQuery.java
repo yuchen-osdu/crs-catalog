@@ -36,6 +36,7 @@ public class InPolygonQuery implements ISearchQuery {
 	private Integer offset;
 	@Schema(description = "Corresponds to limit on search service. Default is to return all found entities.", type = "integer")
 	private Integer limit;
+	@Schema(description = "List of specific fields to return.")
 	private List<String> returnedFields = new ArrayList<>();
 	@Override
 	public String constructQuery() {

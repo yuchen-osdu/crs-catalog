@@ -23,8 +23,6 @@
         <objectify.version>5.1.22</objectify.version>
         <slf4j.version>2.0.0-alpha1</slf4j.version>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
         <core-lib-azure.version>2.5.10</core-lib-azure.version>
         <org-eclipse-jetty.version>12.0.32</org-eclipse-jetty.version>
     </properties>
@@ -58,30 +56,11 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-dependencies</artifactId>
-            <version>${spring-boot.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.opengroup.osdu</groupId>
                 <artifactId>core-lib-azure</artifactId>
                 <version>${core-lib-azure.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-config</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-core</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-crypto</artifactId>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -91,7 +70,6 @@
     <dependency>
       <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
       <artifactId>crs-catalog-core</artifactId>
-      <version>${parent.version}</version>
     </dependency>
     <dependency>
       <groupId>org.opengroup.osdu</groupId>
@@ -103,6 +81,16 @@
             <artifactId>log4j-slf4j2-impl</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <!--
+        os-core-common 7.0.0 declares lettuce-core as provided (not propagated).
+        core-lib-azure's IRedisClientFactory uses lettuce types; Mockito mocking
+        and runtime instantiation require lettuce-core on the classpath.
+    -->
+    <dependency>
+      <groupId>io.lettuce</groupId>
+      <artifactId>lettuce-core</artifactId>
+      <version>${lettuce.version}</version>
     </dependency>
 
     <dependency>
@@ -162,7 +150,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.32</version>
             <scope>provided</scope>
         </dependency>
 
@@ -170,7 +157,6 @@
     <dependency>
       <groupId>org.powermock</groupId>
       <artifactId>powermock-module-junit4</artifactId>
-      <version>${powermock.version}</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -182,24 +168,16 @@
         <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-api-mockito2</artifactId>
-            <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>4.11.0</version>
             <scope>test</scope>
         </dependency>
       <dependency>
           <groupId>org.slf4j</groupId>
           <artifactId>slf4j-api</artifactId>
-          <version>1.7.36</version>
-      </dependency>
-      <dependency>
-        <groupId>io.micrometer</groupId>
-        <artifactId>micrometer-registry-prometheus</artifactId>
-        <scope>runtime</scope>
       </dependency>
     </dependencies>
 
@@ -240,15 +218,10 @@
             </plugin>
             <plugin>
                <groupId>org.apache.maven.plugins</groupId>
-                <version>3.7.0</version>
                 <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <release>${java.version}</release>
-                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.1.2</version>
                 <configuration>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                 </configuration>

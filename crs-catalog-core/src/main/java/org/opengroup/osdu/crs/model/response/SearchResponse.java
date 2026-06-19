@@ -25,6 +25,7 @@ import org.opengroup.osdu.core.common.model.search.QueryResponse;
 public class SearchResponse {
     @Schema(description = "Results from Search service")
     private QueryResponse searchResults;
+    @Schema(description = "Cursor-based results from Search service")
     private CursorQueryResponse cursorSearchResults;
     @Schema(description = "Query string used against Search service")
     private String query;
