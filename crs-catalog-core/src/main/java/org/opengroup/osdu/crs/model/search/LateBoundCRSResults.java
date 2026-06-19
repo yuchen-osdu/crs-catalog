@@ -30,6 +30,7 @@ import org.opengroup.osdu.crs.model.interfaces.LateBoundCRS;
 @Schema(description = "A response containing a list of late-bound CRSes.")
 public class LateBoundCRSResults extends SearchResults {
 
+	@Schema(description = "An array of LateBoundCRS")
 	private List<LateBoundCRS>	items;
 
     /**

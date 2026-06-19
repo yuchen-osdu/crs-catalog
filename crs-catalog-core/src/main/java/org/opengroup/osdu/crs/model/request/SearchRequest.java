@@ -26,7 +26,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 /**
  * Class representing a search query
  */
-@Schema(description = "Request to containing a Lucene style query string.")
+@Schema(description = "Request containing a Lucene style query string.")
 public class SearchRequest {
     @Expose
     @SerializedName("query")

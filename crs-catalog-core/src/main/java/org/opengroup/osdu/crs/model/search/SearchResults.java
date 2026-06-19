@@ -32,7 +32,7 @@ public abstract class SearchResults {
     @Schema(description = "The maximum number of the AreaOfUse returned. It is optional and is 100 by default.")
     private int count;
 
-    @Schema(description = "The mode of return: 'persistable_reference' (default) string or 'essence' structure or both 'persistable_reference_essence'.")
+    @Schema(description = "The total number of items matching the query.")
     private int totalCount;
 
     /**

@@ -18,11 +18,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
+@Schema(description = "Datum associated with a CRS.")
 public class Datum {
-	@Schema(description = "Code of datum", type = "string")
-	String name;
 	@Schema(description = "Name of datum", type = "string")
-	String codeSpace;
+	String name;
 	@Schema(description = "Codespace of datum", type = "string")
+	String codeSpace;
+	@Schema(description = "Code of datum", type = "string")
 	String code;
 }

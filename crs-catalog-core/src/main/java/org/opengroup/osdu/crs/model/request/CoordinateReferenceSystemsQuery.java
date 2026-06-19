@@ -48,10 +48,11 @@ public class CoordinateReferenceSystemsQuery implements ISearchQuery {
     private Datum datum;
     @Schema(description ="Description of extent. Corresponds to PreferredUsage.Extent.Description in the record. All entities with PreferredUsage.Extent.Description containing the search string will be returned. Wildcard is not supported.", type = "string")
     private Extent extent;
+    @Schema(description = "Corresponds to PersistableReference field on CRS records. All entities with PersistableReference containing the search string will be returned.", type = "string")
     private String persistableReferenceSearch;
-    @Schema(description ="Corresponds to CoordinateSystem.HorizontalAxisUnitID field on CRS records, e.g., \"osdu:reference-data--UnitOfMeasure:dega:\".", type = "string")
+    @Schema(description = "Corresponds to CoordinateSystem.HorizontalAxisUnitID field on CRS records, e.g., \"osdu:reference-data--UnitOfMeasure:dega:\".", type = "string")
     private String horizontalAxisUnitId;
-    @Schema(description ="CorrespondsCorresponds to CoordinateSystem.VerticalAxisUnitID field on CRS records", type = "string")
+    @Schema(description = "Corresponds to CoordinateSystem.VerticalAxisUnitID field on CRS records", type = "string")
     private String verticalAxisUnitId;
     @Schema(description ="Latitude point for searching on CRS bounding box", type = "number")
     private Double latitude;

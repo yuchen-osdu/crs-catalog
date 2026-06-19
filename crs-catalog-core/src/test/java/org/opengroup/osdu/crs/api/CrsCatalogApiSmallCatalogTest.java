@@ -27,10 +27,13 @@ import org.opengroup.osdu.crs.model.search.CRSResults;
 import org.opengroup.osdu.crs.model.search.CTResults;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.opengroup.osdu.crs.logging.AuditLogger;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.IOException;
 
-public class CrsCatalogApiTestSmallCatalog {
+public class CrsCatalogApiSmallCatalogTest {
     private static CatalogImpl catalogImpl = null;
     private static CrsCatalogApi crsCatalogApi;
 
@@ -42,6 +45,7 @@ public class CrsCatalogApiTestSmallCatalog {
                 throw new IOException("Failed to load catalog");
             }
             crsCatalogApi = new CrsCatalogApi(catalogImpl);
+            ReflectionTestUtils.setField(crsCatalogApi, "auditLogger", Mockito.mock(AuditLogger.class));
         }
         catch(Exception ex) {
             ex.printStackTrace();
