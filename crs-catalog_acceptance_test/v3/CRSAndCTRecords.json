@@ -610,7 +610,7 @@
           "Authority": "EPSG",
           "Code": 4167
         },
-        "BaseCRSID": "{{{{data_partition_id}}}}:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4167:",
+        "BaseCRSID": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:Geographic2D:EPSG::4167:",
         "Name": "NZGD2000"
       },
       "Code": "3851",
@@ -623,7 +623,7 @@
           "Code": 4500
         },
         "Name": "Cartesian 2D CS. Axes: northing, easting (N,E). Orientations: north, east. UoM: m.",
-        "HorizontalAxisUnitID": "{{{{data_partition_id}}}}:reference-data--UnitOfMeasure:m:"
+        "HorizontalAxisUnitID": "{{data_partition_id}}:reference-data--UnitOfMeasure:m:"
       },
       "Datum": {},
       "Description": "See WGS 84 / NIWA Albers (CRS code 9191) for oceanic data statistical analysis.",
