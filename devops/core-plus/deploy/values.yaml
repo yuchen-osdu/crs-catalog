@@ -25,18 +25,18 @@ istio:
   proxyMemory: "50Mi"
   proxyMemoryLimit: "256Mi"
   auth:
+    basePath: /api/crs/catalog
+    versions:
+      - v2
+      - v3
     disable:
-      - "/"
-      - "*/index.html"
-      - "*/api-docs"
-      - "*/api-docs/**"
-      - "*/api-docs.yaml"
-      - "*/swagger"
-      - "*/swagger-ui.html"
-      - "*/swagger-ui/**"
-      - "*/swagger-resources"
-      - "*/swagger-config"
-      - "*/actuator/health"
-      - "*/health/liveness"
-      - "*/health/readiness"
-      - "*/_ah/**"
+      - "api-docs"
+      - "api-docs/*"
+      - "api-docs.yaml"
+      - "swagger" #TODO need to check if needs
+      - "swagger-ui.html" #TODO need to check if needs
+      - "swagger-ui/*" #TODO need to check if needs
+      - "swagger-resources" #TODO need to check if needs
+      - "swagger-config" #TODO need to check if needs
+      - "health/liveness"
+      - "health/readiness"
