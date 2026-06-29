@@ -1,5 +1,6 @@
 {
   "recordId": "{{data_partition_id}}:reference-data--CoordinateReferenceSystem:Projected:EPSG::3851",
+  "returnedFields": ["id", "data.Wgs84Coordinates"],
   "points": [
     {
       "latitude": -40,

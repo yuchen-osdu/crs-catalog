@@ -21,6 +21,9 @@ import org.opengroup.osdu.crs.model.request.Extent;
 import org.opengroup.osdu.crs.model.response.SearchResponse;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @ExtendWith(MockitoExtension.class)
 public class SearchWrapperServiceTest {
@@ -91,6 +94,40 @@ public class SearchWrapperServiceTest {
 				actualQueryRequest.getSpatialFilter().getByWithinPolygon().getPoints().get(0).getLongitude(), 0d);
 		Assertions.assertEquals(expectedQueryRequest.getSpatialFilter().getByWithinPolygon().getPoints().get(0).getLongitude(),
 				actualQueryRequest.getSpatialFilter().getByWithinPolygon().getPoints().get(0).getLongitude(), 0d);
+	}
+
+	@Test
+	public void testSearchWithCursorPaginatesAllResults() throws SearchException {
+		CoordinateReferenceSystemsQuery coordinateReferenceSystemsQuery = new CoordinateReferenceSystemsQuery();
+		coordinateReferenceSystemsQuery.setIncludeDeprecated(true);
+		coordinateReferenceSystemsQuery.setLimit(5000);
+
+		Mockito.when(searchFactory.create(dpsHeaders)).thenReturn(searchService);
+		searchWrapperService.postInit();
+
+		Map<String, Object> record1 = new HashMap<>();
+		record1.put("id", "record-1");
+		Map<String, Object> record2 = new HashMap<>();
+		record2.put("id", "record-2");
+
+		CursorQueryResponse firstPage = new CursorQueryResponse();
+		firstPage.setResults(Collections.singletonList(record1));
+		firstPage.setTotalCount(2);
+		firstPage.setCursor("cursor-page-2");
+
+		CursorQueryResponse secondPage = new CursorQueryResponse();
+		secondPage.setResults(Collections.singletonList(record2));
+		secondPage.setTotalCount(2);
+		secondPage.setCursor("");
+
+		Mockito.when(searchService.searchCursor(Mockito.any()))
+				.thenReturn(firstPage, secondPage);
+
+		SearchResponse searchResponse = searchWrapperService.searchWithCursor(
+				coordinateReferenceSystemsQuery, SearchWrapperService.getCoordinateReferenceSystemKind());
+
+		Assertions.assertEquals(2, searchResponse.getCursorSearchResults().getResults().size());
+		Mockito.verify(searchService, Mockito.times(2)).searchCursor(Mockito.any());
 	}
 
 }

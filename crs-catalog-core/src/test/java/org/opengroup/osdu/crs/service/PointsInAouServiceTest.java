@@ -174,10 +174,12 @@ public class PointsInAouServiceTest {
 		List<Double> coor9 = Arrays.asList(80.00, 70.00);
 		List<Double> coor10 = Arrays.asList(80.00, 60.00);
 		List<List<Double>> coordinates2 = Arrays.asList(coor6, coor7, coor8, coor9, coor10);
-		List<List<List<List<Double>>>> nestedCoordinates = Arrays.asList(Arrays.asList(coordinates1, coordinates2));
+		List<List<List<List<Double>>>> nestedCoordinates = Arrays.asList(
+				Arrays.asList(coordinates1),
+				Arrays.asList(coordinates2));
 		Map<String, Object> geometry = new HashMap<>();
 		geometry.put("coordinates", nestedCoordinates);
-		geometry.put("type", "multipolygon");
+		geometry.put("type", "MultiPolygon");
 		List<Object> geometries = Arrays.asList(geometry);
 		Map<String, Object> wgs84Coordinates = new HashMap<>();
 		wgs84Coordinates.put("geometries", geometries);
@@ -200,5 +202,68 @@ public class PointsInAouServiceTest {
 		Assertions.assertEquals(2, result.getBboxFailedPoints().get(0).getIndex().intValue());
 		Assertions.assertEquals(1459, result.getBboxFailedPoints().get(0).getApproximateKmDistanceOutside().intValue());
 		Assertions.assertEquals(1459, result.getMaxDistKmOutsideBBox(), 0d);
+	}
+
+	@Test
+	public void testAntimeridianMultiPolygonDistanceCalculation() {
+		Point insideEast = new Point();
+		insideEast.setLatitude(-40.0);
+		insideEast.setLongitude(175.0);
+
+		Point insideWest = new Point();
+		insideWest.setLatitude(-40.0);
+		insideWest.setLongitude(-175.0);
+
+		Point outsideSouth = new Point();
+		outsideSouth.setLatitude(-55.0);
+		outsideSouth.setLongitude(159.6);
+
+		Point outsideEast = new Point();
+		outsideEast.setLatitude(-40.0);
+		outsideEast.setLongitude(-170.2);
+
+		InPolygonQuery inPolygonQuery = new InPolygonQuery();
+		inPolygonQuery.setPoints(Arrays.asList(insideEast, insideWest, outsideSouth, outsideEast));
+		inPolygonQuery.setRecordId("test-record-id");
+
+		List<List<Double>> eastRing = Arrays.asList(
+				Arrays.asList(160.6, -55.95),
+				Arrays.asList(180.0, -55.95),
+				Arrays.asList(180.0, -25.88),
+				Arrays.asList(160.6, -25.88),
+				Arrays.asList(160.6, -55.95));
+		List<List<Double>> westRing = Arrays.asList(
+				Arrays.asList(-180.0, -55.95),
+				Arrays.asList(-171.2, -55.95),
+				Arrays.asList(-171.2, -25.88),
+				Arrays.asList(-180.0, -25.88),
+				Arrays.asList(-180.0, -55.95));
+		List<List<List<List<Double>>>> nestedCoordinates = Arrays.asList(
+				Arrays.asList(eastRing),
+				Arrays.asList(westRing));
+		Map<String, Object> geometry = new HashMap<>();
+		geometry.put("coordinates", nestedCoordinates);
+		geometry.put("type", "MultiPolygon");
+		List<Object> geometries = Arrays.asList(geometry);
+		Map<String, Object> wgs84Coordinates = new HashMap<>();
+		wgs84Coordinates.put("geometries", geometries);
+		Map<String, Object> data = new HashMap<>();
+		data.put("Wgs84Coordinates", wgs84Coordinates);
+		Map<String, Object> d = new HashMap<>();
+		d.put("data", data);
+		QueryResponse queryResponse = new QueryResponse();
+		queryResponse.setResults(Arrays.asList(d));
+		SearchResponse searchResponse = new SearchResponse(queryResponse, "");
+		Mockito.when(searchWrapperService.search(Mockito.any(), Mockito.any()))
+				.thenReturn(searchResponse);
+
+		PointsInAouSearchResult result = pointsInAouService.searchPointsInAou(inPolygonQuery);
+
+		Assertions.assertEquals(2, result.getBboxFailedPoints().size());
+		Assertions.assertEquals(2, result.getBboxFailedPoints().get(0).getIndex().intValue());
+		Assertions.assertEquals(63, result.getBboxFailedPoints().get(0).getApproximateKmDistanceOutside().intValue());
+		Assertions.assertEquals(3, result.getBboxFailedPoints().get(1).getIndex().intValue());
+		Assertions.assertEquals(84, result.getBboxFailedPoints().get(1).getApproximateKmDistanceOutside().intValue());
+		Assertions.assertEquals(84, result.getMaxDistKmOutsideBBox().intValue());
 	}
 }
