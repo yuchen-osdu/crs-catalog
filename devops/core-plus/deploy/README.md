@@ -67,7 +67,9 @@ Before installing deploy Helm chart you need to set variables in **values.yaml**
 **istio.proxyCPULimit** | CPU limit for Envoy sidecars | string | 200m | yes
 **istio.proxyMemory** | memory request for Envoy sidecars | string | 100Mi | yes
 **istio.proxyMemoryLimit** | memory limit for Envoy sidecars | string | 256Mi | yes
-**istio.auth.disable** | Paths excluded from JWT AuthorizationPolicy enforcement, including Swagger UI and grouped API docs | list | see `values.yaml` | yes
+**istio.auth.basePath** | Base context path used to expand versioned public paths in the `ALLOW` AuthorizationPolicy | string | `/api/crs/catalog` | yes
+**istio.auth.versions** | API versions appended after `basePath` when expanding relative (non leading-`/`) entries in `disable` | list | `[v1]` | yes
+**istio.auth.disable** | Public paths allowed without a JWT (Swagger UI, api-docs, health). Entries with a leading `/` are emitted verbatim; entries without are expanded to `{basePath}/{version}/{path}` for each version. Rendered as `to.operation.paths` in the `action: ALLOW` policy | list | see `values.yaml` | yes
 
 ### Install the helm chart
 
