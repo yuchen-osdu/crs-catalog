@@ -14,6 +14,7 @@ import org.opengroup.osdu.core.common.model.search.QueryResponse;
 import org.opengroup.osdu.crs.model.response.PointsInAouSearchResult;
 import org.opengroup.osdu.crs.model.request.InPolygonQuery;
 import org.opengroup.osdu.crs.model.response.SearchResponse;
+import org.opengroup.osdu.crs.util.AppException;
 
 import java.util.*;
 
@@ -265,5 +266,41 @@ public class PointsInAouServiceTest {
 		Assertions.assertEquals(3, result.getBboxFailedPoints().get(1).getIndex().intValue());
 		Assertions.assertEquals(84, result.getBboxFailedPoints().get(1).getApproximateKmDistanceOutside().intValue());
 		Assertions.assertEquals(84, result.getMaxDistKmOutsideBBox().intValue());
+	}
+
+	@Test
+	void testUnsupportedGeometryTypeThrowsBadRequest() {
+		Point test = new Point();
+		test.setLatitude(7.40);
+		test.setLongitude(10.23);
+
+		InPolygonQuery inPolygonQuery = new InPolygonQuery();
+		inPolygonQuery.setPoints(Arrays.asList(test));
+		inPolygonQuery.setRecordId("test-record-id");
+
+		List<Double> coor1 = Arrays.asList(1.00, 2.78);
+		List<Double> coor2 = Arrays.asList(9.11, 2.78);
+		List<Double> coor3 = Arrays.asList(9.11, 6.01);
+		List<Double> coor4 = Arrays.asList(1.00, 6.01);
+		List<Double> coor5 = Arrays.asList(1.00, 2.78);
+		List<List<Double>> coordinates = Arrays.asList(coor1, coor2, coor3, coor4, coor5);
+		Map<String, Object> geometry = new HashMap<>();
+		geometry.put("coordinates", coordinates);
+		geometry.put("type", "LineString");
+		List<Object> geometries = Arrays.asList(geometry);
+		Map<String, Object> wgs84Coordinates = new HashMap<>();
+		wgs84Coordinates.put("geometries", geometries);
+		Map<String, Object> data = new HashMap<>();
+		data.put("Wgs84Coordinates", wgs84Coordinates);
+		Map<String, Object> d = new HashMap<>();
+		d.put("data", data);
+		QueryResponse queryResponse = new QueryResponse();
+		queryResponse.setResults(Arrays.asList(d));
+		SearchResponse searchResponse = new SearchResponse(queryResponse, "test-query");
+		Mockito.when(searchWrapperService.search(Mockito.any(), Mockito.any()))
+				.thenReturn(searchResponse);
+
+		Assertions.assertThrows(AppException.class,
+				() -> pointsInAouService.searchPointsInAou(inPolygonQuery));
 	}
 }

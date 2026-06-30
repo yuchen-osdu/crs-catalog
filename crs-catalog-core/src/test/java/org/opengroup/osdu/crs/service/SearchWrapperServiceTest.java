@@ -130,4 +130,98 @@ public class SearchWrapperServiceTest {
 		Mockito.verify(searchService, Mockito.times(2)).searchCursor(Mockito.any());
 	}
 
+	@Test
+	void testSearchPaginatesAllResults() throws SearchException {
+		CoordinateReferenceSystemsQuery coordinateReferenceSystemsQuery = new CoordinateReferenceSystemsQuery();
+		coordinateReferenceSystemsQuery.setIncludeDeprecated(true);
+		coordinateReferenceSystemsQuery.setLimit(5000);
+
+		Mockito.when(searchFactory.create(dpsHeaders)).thenReturn(searchService);
+		searchWrapperService.postInit();
+
+		Map<String, Object> record1 = new HashMap<>();
+		record1.put("id", "record-1");
+		Map<String, Object> record2 = new HashMap<>();
+		record2.put("id", "record-2");
+
+		QueryResponse firstPage = new QueryResponse();
+		firstPage.setResults(Collections.singletonList(record1));
+		firstPage.setTotalCount(2);
+
+		QueryResponse secondPage = new QueryResponse();
+		secondPage.setResults(Collections.singletonList(record2));
+		secondPage.setTotalCount(2);
+
+		Mockito.when(searchService.search(Mockito.any()))
+				.thenReturn(firstPage, secondPage);
+
+		SearchResponse searchResponse = searchWrapperService.search(
+				coordinateReferenceSystemsQuery, SearchWrapperService.getCoordinateReferenceSystemKind());
+
+		Assertions.assertEquals(2, searchResponse.getSearchResults().getResults().size());
+		Mockito.verify(searchService, Mockito.times(2)).search(Mockito.any());
+	}
+
+	@Test
+	void testSearchStopsOnEmptyPage() throws SearchException {
+		CoordinateReferenceSystemsQuery coordinateReferenceSystemsQuery = new CoordinateReferenceSystemsQuery();
+		coordinateReferenceSystemsQuery.setIncludeDeprecated(true);
+		coordinateReferenceSystemsQuery.setLimit(5000);
+
+		Mockito.when(searchFactory.create(dpsHeaders)).thenReturn(searchService);
+		searchWrapperService.postInit();
+
+		Map<String, Object> record1 = new HashMap<>();
+		record1.put("id", "record-1");
+
+		QueryResponse firstPage = new QueryResponse();
+		firstPage.setResults(Collections.singletonList(record1));
+		firstPage.setTotalCount(5);
+
+		QueryResponse emptyPage = new QueryResponse();
+		emptyPage.setResults(Collections.emptyList());
+		emptyPage.setTotalCount(5);
+
+		Mockito.when(searchService.search(Mockito.any()))
+				.thenReturn(firstPage, emptyPage);
+
+		SearchResponse searchResponse = searchWrapperService.search(
+				coordinateReferenceSystemsQuery, SearchWrapperService.getCoordinateReferenceSystemKind());
+
+		Assertions.assertEquals(1, searchResponse.getSearchResults().getResults().size());
+		Mockito.verify(searchService, Mockito.times(2)).search(Mockito.any());
+	}
+
+	@Test
+	void testSearchWithCursorStopsOnEmptyPage() throws SearchException {
+		CoordinateReferenceSystemsQuery coordinateReferenceSystemsQuery = new CoordinateReferenceSystemsQuery();
+		coordinateReferenceSystemsQuery.setIncludeDeprecated(true);
+		coordinateReferenceSystemsQuery.setLimit(5000);
+
+		Mockito.when(searchFactory.create(dpsHeaders)).thenReturn(searchService);
+		searchWrapperService.postInit();
+
+		Map<String, Object> record1 = new HashMap<>();
+		record1.put("id", "record-1");
+
+		CursorQueryResponse firstPage = new CursorQueryResponse();
+		firstPage.setResults(Collections.singletonList(record1));
+		firstPage.setTotalCount(3);
+		firstPage.setCursor("cursor-page-2");
+
+		CursorQueryResponse emptyPage = new CursorQueryResponse();
+		emptyPage.setResults(Collections.emptyList());
+		emptyPage.setTotalCount(3);
+		emptyPage.setCursor("");
+
+		Mockito.when(searchService.searchCursor(Mockito.any()))
+				.thenReturn(firstPage, emptyPage);
+
+		SearchResponse searchResponse = searchWrapperService.searchWithCursor(
+				coordinateReferenceSystemsQuery, SearchWrapperService.getCoordinateReferenceSystemKind());
+
+		Assertions.assertEquals(1, searchResponse.getCursorSearchResults().getResults().size());
+		Mockito.verify(searchService, Mockito.times(2)).searchCursor(Mockito.any());
+	}
+
 }
