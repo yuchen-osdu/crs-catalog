@@ -205,7 +205,7 @@ public class PointsInAouServiceTest {
 	}
 
 	@Test
-	public void testAntimeridianMultiPolygonDistanceCalculation() {
+	void testAntimeridianMultiPolygonDistanceCalculation() {
 		Point insideEast = new Point();
 		insideEast.setLatitude(-40.0);
 		insideEast.setLongitude(175.0);

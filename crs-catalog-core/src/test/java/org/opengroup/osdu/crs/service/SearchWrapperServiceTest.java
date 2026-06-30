@@ -97,7 +97,7 @@ public class SearchWrapperServiceTest {
 	}
 
 	@Test
-	public void testSearchWithCursorPaginatesAllResults() throws SearchException {
+	void testSearchWithCursorPaginatesAllResults() throws SearchException {
 		CoordinateReferenceSystemsQuery coordinateReferenceSystemsQuery = new CoordinateReferenceSystemsQuery();
 		coordinateReferenceSystemsQuery.setIncludeDeprecated(true);
 		coordinateReferenceSystemsQuery.setLimit(5000);

@@ -120,11 +120,11 @@ public class PointsInAouService {
 
         if ("polygon".equalsIgnoreCase(geometryType)) {
             List<List<List<Double>>> coordinates = (List) geometry.get("coordinates");
-            logger.debug("Successfully retrieved polygon".formatted());
+            logger.debug("Successfully retrieved polygon");
             polygons.add(buildPolygonFromRing(coordinates.get(0), query));
         } else if ("multipolygon".equalsIgnoreCase(geometryType)) {
             List<List<List<List<Double>>>> multiCoordinatesList = (List) geometry.get("coordinates");
-            logger.debug("Successfully retrieved multipolygon".formatted());
+            logger.debug("Successfully retrieved multipolygon");
             for (List<List<List<Double>>> polygonCoordinates : multiCoordinatesList) {
                 polygons.add(buildPolygonFromRing(polygonCoordinates.get(0), query));
             }

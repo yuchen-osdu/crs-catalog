@@ -48,8 +48,6 @@ public class SearchWrapperService {
 
     private static String schemaAuthority;
 
-    private int DEFAULT_QUERY_LIMIT=1000;
-
     public static String getCoordinateReferenceSystemKind() {
         return "%s:wks:reference-data--CoordinateReferenceSystem:1.1.0".formatted(schemaAuthority);
     }
