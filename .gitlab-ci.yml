@@ -24,7 +24,7 @@ variables:
   CIMPL_OPENAPI_CONFIG_ROUTE: /api/crs/catalog/api-docs/swagger-config
   # Java service with Python acceptance tests — override the Python->JSON auto-detection
   # so the openapi-spec check fetches the YAML spec served by springdoc
-  CIMPL_OPENAPI_YAML_ROUTE: /api/crs/catalog/api-docs.yaml
+  CIMPL_OPENAPI_YAML_ROUTE: /api/crs/catalog/api-docs/v3
 
 include:
   - project: "osdu/platform/ci-cd-pipelines"
@@ -69,6 +69,9 @@ include:
   - project: "osdu/platform/ci-cd-pipelines"
     file: "reporting/reporting.yml"
 
+  - project: "osdu/platform/ci-cd-pipelines"
+    file: "reporting/schemathesis.yml"
+
   - local: "devops/gc/pipeline/override-stages.yml"
 
   - local: "devops/aws/pipeline/override-stages.yml"
@@ -94,3 +97,6 @@ fossa-check-notice:
 azure_code_coverage:
   variables:
     AZURE_SKIP_COVERAGE: "true"
+
+schemathesis-tests:
+  extends: .schemathesis-tests-template

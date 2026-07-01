@@ -32,7 +32,7 @@ echo "***RUNNING CRS CATALOG TESTS WITH REPORTING***"
 echo ""
 
 # Run all tests with pytest (handles both v2 and v3, pytest and unittest tests)
-pytest test_api_v2.py test_api_v3.py test_crs_catalog_v2.py test_crs_catalog_v3.py \
+pytest test_crs_catalog_v2.py test_crs_catalog_v3.py \
     --alluredir=cimpl/allure-results \
     --clean-alluredir \
     -v
