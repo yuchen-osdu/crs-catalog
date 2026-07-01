@@ -48,8 +48,6 @@ public class SearchWrapperService {
 
     private static String schemaAuthority;
 
-    private int DEFAULT_QUERY_LIMIT=1000;
-
     public static String getCoordinateReferenceSystemKind() {
         return "%s:wks:reference-data--CoordinateReferenceSystem:1.1.0".formatted(schemaAuthority);
     }
@@ -147,17 +145,23 @@ public class SearchWrapperService {
         try {
             logger.debug("Sending query to search service: %s".formatted(queryRequest.toString()));
             queryResponse = searchService.search(queryRequest);
-            List<Map<String, Object>> searchResultList = new ArrayList<Map<String, Object>>();
-            searchResultList = queryResponse.getResults();
+            List<Map<String, Object>> results = queryResponse.getResults();
+            List<Map<String, Object>> searchResultList = results != null ? new ArrayList<>(results) : new ArrayList<>();
             if (queryRequest.getFrom() <= 0) {
                 int default_Count = searchResultList.size();
                 long totalCount = queryResponse.getTotalCount();
-                while (default_Count < totalCount && queryRequest.getLimit() > DEFAULT_QUERY_LIMIT) {
+                int resultLimit = queryRequest.getLimit() > 0
+                        ? queryRequest.getLimit()
+                        : Integer.MAX_VALUE;
+                while (default_Count < totalCount && default_Count < resultLimit) {
                     queryRequest.setFrom(default_Count);
                     queryResponse = searchService.search(queryRequest);
-                    searchResultList.addAll(queryResponse.getResults());
-                    default_Count += default_Count;
-
+                    List<Map<String, Object>> pageResults = queryResponse.getResults();
+                    if (pageResults.isEmpty()) {
+                        break;
+                    }
+                    searchResultList.addAll(pageResults);
+                    default_Count += pageResults.size();
                 }
             }
             queryResponse.setResults(searchResultList);
@@ -173,17 +177,24 @@ public class SearchWrapperService {
             logger.debug("Sending query to search service: %s".formatted(queryRequest.toString()));
            
             cursorqueryResponse = searchService.searchCursor(queryRequest);
-            List<Map<String, Object>> searchResultList = new ArrayList<Map<String, Object>>();
-            searchResultList = cursorqueryResponse.getResults();
+            List<Map<String, Object>> results = cursorqueryResponse.getResults();
+            List<Map<String, Object>> searchResultList = results != null ? new ArrayList<>(results) : new ArrayList<>();
             String cursor_value = cursorqueryResponse.getCursor();
             int default_Count = searchResultList.size();
             long totalCount = cursorqueryResponse.getTotalCount();
-            while (default_Count < totalCount && queryRequest.getLimit() > DEFAULT_QUERY_LIMIT) {
+            int resultLimit = queryRequest.getLimit() > 0
+                    ? queryRequest.getLimit()
+                    : Integer.MAX_VALUE;
+            while (default_Count < totalCount && default_Count < resultLimit) {
                 queryRequest.setCursor(cursor_value);
                 cursorqueryResponse = searchService.searchCursor(queryRequest);
-                searchResultList.addAll(cursorqueryResponse.getResults());
-                default_Count += default_Count;
-
+                List<Map<String, Object>> pageResults = cursorqueryResponse.getResults();
+                if (pageResults.isEmpty()) {
+                    break;
+                }
+                searchResultList.addAll(pageResults);
+                default_Count += pageResults.size();
+                cursor_value = cursorqueryResponse.getCursor();
             }
             cursorqueryResponse.setResults(searchResultList);
             logger.debug("Received response from search service: %s".formatted(cursorqueryResponse.toString()));

@@ -27,8 +27,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import jakarta.inject.Inject;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class PointsInAouService {
@@ -114,49 +115,37 @@ public class PointsInAouService {
             throw new AppException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to deserialize search result, see logs", e.getMessage());
         }
 
-        // manifests store coordinates in nested lists, for our purpose there is no reason for it
         List<Polygon> polygons = new ArrayList<>();
+        String query = searchResponse.getQuery();
 
-        if (geometryType.equals("polygon")) {
+        if ("polygon".equalsIgnoreCase(geometryType)) {
             List<List<List<Double>>> coordinates = (List) geometry.get("coordinates");
-            List<List<Double>> coordinatesList = coordinates.stream()
-                                                            .flatMap(List::stream).collect(Collectors.toList());
-
-            logger.debug("Successfully retrieved polygon".formatted());
-
-            List<Point> points = new ArrayList<>();
-            for (List<Double> coordinate : coordinatesList) {
-                if (coordinate.size() != 2) {
-                    throw AppException.createBadRequest(String.format(
-                            "Record has coordinate value with invalid amount of points. Query: %s"
-                            , searchResponse.getQuery()));
-                }
-                logger.debug("Polygon coordinate: %s, %s".formatted(coordinate.get(1), coordinate.get(0)));
-
-                points.add(new Point(coordinate.get(1), coordinate.get(0)));
-            }
-            polygons.add(new Polygon(points));
-        } else {
+            logger.debug("Successfully retrieved polygon");
+            polygons.add(buildPolygonFromRing(coordinates.get(0), query));
+        } else if ("multipolygon".equalsIgnoreCase(geometryType)) {
             List<List<List<List<Double>>>> multiCoordinatesList = (List) geometry.get("coordinates");
-
-            logger.debug("Successfully retrieved polygon".formatted());
-
-            for (List<List<Double>> coordinatesList : multiCoordinatesList.get(0)) {
-                List<Point> points = new ArrayList<>();
-                for (List<Double> coordinate : coordinatesList) {
-                    if (coordinate.size() != 2) {
-                        throw AppException.createBadRequest(String.format(
-                                "Record has coordinate value with invalid amount of points. Query: %s"
-                                , searchResponse.getQuery()));
-                    }
-                    logger.debug("Polygon coordinate: %s, %s".formatted(coordinate.get(1), coordinate.get(0)));
-
-                    points.add(new Point(coordinate.get(1), coordinate.get(0)));
-                }
-                polygons.add(new Polygon(points));
+            logger.debug("Successfully retrieved multipolygon");
+            for (List<List<List<Double>>> polygonCoordinates : multiCoordinatesList) {
+                polygons.add(buildPolygonFromRing(polygonCoordinates.get(0), query));
             }
+        } else {
+            throw AppException.createBadRequest(String.format(
+                    "Unsupported geometry type '%s'. Query: %s", geometryType, query));
         }
         return polygons;
+    }
+
+    private Polygon buildPolygonFromRing(List<List<Double>> ring, String query) {
+        List<Point> points = new ArrayList<>();
+        for (List<Double> coordinate : ring) {
+            if (coordinate.size() != 2) {
+                throw AppException.createBadRequest(String.format(
+                        "Record has coordinate value with invalid amount of points. Query: %s", query));
+            }
+            logger.debug("Polygon coordinate: %s, %s".formatted(coordinate.get(1), coordinate.get(0)));
+            points.add(new Point(coordinate.get(1), coordinate.get(0)));
+        }
+        return new Polygon(points);
     }
 
 }

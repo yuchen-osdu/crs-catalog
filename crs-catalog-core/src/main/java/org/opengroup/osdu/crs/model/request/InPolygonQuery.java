@@ -21,6 +21,7 @@ import org.opengroup.osdu.core.common.model.search.SpatialFilter;
 import org.opengroup.osdu.crs.model.request.ISearchQuery;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -37,7 +38,7 @@ public class InPolygonQuery implements ISearchQuery {
 	@Schema(description = "Corresponds to limit on search service. Default is to return all found entities.", type = "integer")
 	private Integer limit;
 	@Schema(description = "List of specific fields to return.")
-	private List<String> returnedFields = new ArrayList<>();
+	private List<String> returnedFields = new ArrayList<>(Arrays.asList("id", "data.Wgs84Coordinates"));
 	@Override
 	public String constructQuery() {
 		String query = "";

@@ -37,7 +37,7 @@ public class SearchResponse {
 
     }
 
-    public SearchResponse(CursorQueryResponse cursorSearchResults, String qurey) {
+    public SearchResponse(CursorQueryResponse cursorSearchResults, String query) {
         this.cursorSearchResults = cursorSearchResults;
         this.query = query;
     }

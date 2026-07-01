@@ -339,9 +339,19 @@ class TestCrsCatalog(unittest.TestCase):
 
 
     def test_search_coordinate_reference_systems_find_all(self):
-        test_data = "{}"
-        response = self.client.make_request('POST', crs_endpoint_path, test_data)
-        self.check_search_response_count(response, 5, "test_search_coordinate_reference_systems_find_all")
+        with open(f'{self.path}v3/SearchCoordinateReferenceSystemsFindAll.json') as test_data_file:
+            search_requests = json.loads(test_data_file.read())
+        found_ids = set()
+        for request_body in search_requests:
+            response = self.client.make_request('POST', crs_endpoint_path, json.dumps(request_body))
+            response_body = json.loads(response.content)
+            assert response.status_code == 200
+            for result in response_body["cursorSearchResults"]["results"]:
+                if result["id"] in record_id_set:
+                    found_ids.add(result["id"])
+        if len(found_ids) != 5:
+            print(f'Error: Test test_search_coordinate_reference_systems_find_all Expects 5 records. Got {len(found_ids)} records.')
+        assert len(found_ids) == 5
 
     def test_check_points_in_aou(self):
         with open(f'{self.path}v3/CheckPointsInAou.json') as test_data_file:
@@ -401,7 +411,7 @@ class TestCrsCatalog(unittest.TestCase):
                 '{{schema-authority}}', constants.SCHEMA_AUTHORITY))
             for record in records:
                 storage_delete_response = cls.client.make_request('DELETE', f'/api/storage/v2/records/{record["id"]}')
-                if storage_delete_response.status_code != 204:
+                if storage_delete_response.status_code not in (204, 404):
                     raise Exception(
                         f"Could not delete record on teardown. Received {storage_delete_response.status_code} from storage service")
             record_id_set.clear()
