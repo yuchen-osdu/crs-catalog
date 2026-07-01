@@ -45,7 +45,7 @@ export PRIVILEGED_USER_TOKEN="your-token"
 set -a; source .env; set +a
 
 # 4. Run tests with Allure reporting
-pytest test_api_v2.py test_api_v3.py test_crs_catalog_v2.py test_crs_catalog_v3.py \
+pytest test_crs_catalog_v2.py test_crs_catalog_v3.py \
     --alluredir=allure-results \
     --clean-alluredir \
     -v
@@ -64,7 +64,7 @@ podman run --rm \
 
 **Alternative: Simple HTML report (no Allure)**
 ```bash
-pytest test_api_v2.py test_api_v3.py test_crs_catalog_v2.py test_crs_catalog_v3.py \
+pytest test_crs_catalog_v2.py test_crs_catalog_v3.py \
     --html=report.html --self-contained-html -v
 ```
 
