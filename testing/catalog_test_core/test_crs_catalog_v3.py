@@ -73,47 +73,52 @@ class TestCrsCatalog(unittest.TestCase):
                 raise Exception(
                     f"Could not create CT schema. Received {schema_response.status_code} from schema service")
 
-        # Make sure legal tag is made
-        with open(f'{cls.path}v3/LegalTag.json') as legal_tag_file:
-            legal_tag = legal_tag_file.read().replace('{{legal_tag_name}}', legal_tag_name)
-            legal_response = cls.client.make_request('POST', '/api/legal/v1/legaltags', legal_tag)
-            if legal_response.status_code not in [201, 409]:
-                raise Exception(f"Could not create legal tag. Received {legal_response.status_code} from legal service")
-
-        # Create records
+        # Use pre-loaded reference data when present; upload only missing records (issue #141).
         with open(f'{cls.path}v3/CRSAndCTRecords.json') as records_file:
             records = records_file.read().replace('{{data_partition_id}}', constants.MY_TENANT) \
                 .replace('{{acl_domain}}', constants.ACL_DOMAIN) \
                 .replace('{{schema-authority}}', constants.SCHEMA_AUTHORITY)
             records_obj = json.loads(records)
-            
+
             for record in records_obj:
                 record_id_set.add(record["id"])
 
-            storage_response = cls.client.make_request('PUT', '/api/storage/v2/records', records)
-            if storage_response.status_code != 201:
-                raise Exception(
-                    f"Could not create records. Received {storage_response.status_code} from storage service")
+            missing_records = []
+            for record in records_obj:
+                storage_get_response = cls.client.make_request(
+                    'GET', f'/api/storage/v2/records/{record["id"]}')
+                if storage_get_response.status_code == 404:
+                    missing_records.append(record)
 
-            # check that records show up in search before continuing
-            found = False
+            if missing_records:
+                with open(f'{cls.path}v3/LegalTag.json') as legal_tag_file:
+                    legal_tag = legal_tag_file.read().replace('{{legal_tag_name}}', legal_tag_name)
+                    legal_response = cls.client.make_request('POST', '/api/legal/v1/legaltags', legal_tag)
+                    if legal_response.status_code not in [201, 409]:
+                        raise Exception(
+                            f"Could not create legal tag. Received {legal_response.status_code} from legal service")
+
+                print(f'Uploading {len(missing_records)} missing reference records to storage')
+                storage_response = cls.client.make_request(
+                    'PUT', '/api/storage/v2/records', json.dumps(missing_records))
+                if storage_response.status_code != 201:
+                    raise Exception(
+                        f"Could not create records. Received {storage_response.status_code} from storage service")
+
             max_checks = 20
-            checks = 0
-            while not found:
-                if checks >= max_checks:
-                    raise Exception(f"Could not find records indexed against search after {max_checks} checks")
-
-                search_response_id_set = cls.client.get_all_ids_of_kind(f"{constants.SCHEMA_AUTHORITY}:wks:reference-data--Coordinate*:1.1.0")
-
+            search_response_id_set = set()
+            for checks in range(max_checks):
+                search_response_id_set = cls.client.get_all_ids_of_kind(
+                    f"{constants.SCHEMA_AUTHORITY}:wks:reference-data--Coordinate*:1.1.0")
                 if record_id_set.issubset(search_response_id_set):
-                    found = True
-                else:
-                    checks += 1
-                    print(f"Didn't find all records after {checks} checks. Waiting a bit to let records index")
-                    time.sleep(5)
-
-            # Some timing issues still persist without waiting a bit longer
-            time.sleep(10)
+                    break
+                print(f"Didn't find all reference records after {checks + 1} checks. Waiting for indexing...")
+                time.sleep(5)
+            else:
+                missing = record_id_set - search_response_id_set
+                raise Exception(
+                    f"Reference records not indexed after {max_checks} checks for partition "
+                    f"{constants.MY_TENANT}. Missing IDs: {sorted(missing)}.")
 
     @staticmethod
     def check_get_search_response_count(response, expected_count, test_name):
@@ -392,25 +397,6 @@ class TestCrsCatalog(unittest.TestCase):
         response_body = json.loads(response.content)
         assert response.status_code == 200
         assert "connectedOuterServices" in response_body
-
-    @classmethod
-    def tearDownClass(cls):
-        # Delete legal tag
-        legal_tag_delete_response = cls.client.make_request('DELETE', f'/api/legal/v1/legaltags/{legal_tag_name}')
-        if legal_tag_delete_response.status_code != 204:
-            raise Exception(
-                f"Could not delete legal tag on teardown. Received {legal_tag_delete_response.status_code} from legal service")
-
-        # Delete records
-        with open(f'{cls.path}v3/CRSAndCTRecords.json') as records_file:
-            records = json.loads(records_file.read().replace('{{data_partition_id}}', constants.MY_TENANT).replace(
-                '{{schema-authority}}', constants.SCHEMA_AUTHORITY))
-            for record in records:
-                storage_delete_response = cls.client.make_request('DELETE', f'/api/storage/v2/records/{record["id"]}')
-                if storage_delete_response.status_code not in (204, 404):
-                    raise Exception(
-                        f"Could not delete record on teardown. Received {storage_delete_response.status_code} from storage service")
-            record_id_set.clear()
 
     @staticmethod
     def _get_record_by_code(records_list, code):
