@@ -23,7 +23,7 @@
         <objectify.version>5.1.22</objectify.version>
         <slf4j.version>2.0.0-alpha1</slf4j.version>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
-        <core-lib-azure.version>2.5.10</core-lib-azure.version>
+        <core-lib-azure.version>3.0.1</core-lib-azure.version>
         <org-eclipse-jetty.version>12.0.32</org-eclipse-jetty.version>
     </properties>
 
