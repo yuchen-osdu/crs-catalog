@@ -1,0 +1,8 @@
+variables:
+  GC_SERVICE: crs-catalog
+  GC_VENDOR: gc
+  GC_INT_TEST_TYPE: python
+  GC_PYTHON_INT_TEST_SUBDIR: testing/catalog_test_gc
+  # Tests variables
+  VIRTUAL_SERVICE_HOST_NAME: $GC_CRS_CATALOG_HOSTNAME
+  MY_TENANT: $GC_TENANT

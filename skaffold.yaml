@@ -1,0 +1,13 @@
+apiVersion: skaffold/v1beta17
+kind: Config
+metadata:
+  name: os-crs-catalog-service
+deploy:
+  kubectl:
+    manifests:
+    - provider\crs-catalog-azure\crs-catalog-aks\istio\destination-rule.yaml
+    - provider\crs-catalog-azure\crs-catalog-aks\istio\gateway.yaml
+    - provider\crs-catalog-azure\crs-catalog-aks\istio\virtualservice-v2.yaml
+    - provider\crs-catalog-gcp\crs-catalog-gke\istio\destination-rule.yaml
+    - provider\crs-catalog-gcp\crs-catalog-gke\istio\gateway.yaml
+    - provider\crs-catalog-gcp\crs-catalog-gke\istio\virtualservice-v2.yaml
