@@ -236,7 +236,7 @@ The following software have components provided under the terms of this license:
 - Plexus Common Utilities (from http://plexus.codehaus.org/plexus-utils, https://codehaus-plexus.github.io/plexus-utils/, https://repo1.maven.org/maven2/org/codehaus/plexus/plexus-utils)
 - Plexus I18N Component (from https://repo1.maven.org/maven2/org/codehaus/plexus/plexus-i18n)
 - Plexus Velocity Component (from https://codehaus-plexus.github.io/plexus-velocity/, https://repo1.maven.org/maven2/org/codehaus/plexus/plexus-velocity)
-- PowerMock (from http://www.powermock.org, http://www.powermock.org/, https://repo1.maven.org/maven2/org/powermock/powermock-api-mockito)
+- PowerMock (from http://www.powermock.org, https://repo1.maven.org/maven2/org/powermock/powermock-api-mockito)
 - Prometheus Metrics Config (from http://github.com/prometheus/client_java)
 - Prometheus Metrics Core (from http://github.com/prometheus/client_java)
 - Prometheus Metrics Exposition Formats (from http://github.com/prometheus/client_java)
@@ -308,6 +308,7 @@ The following software have components provided under the terms of this license:
 - org.apiguardian:apiguardian-api (from https://github.com/apiguardian-team/apiguardian)
 - org.opentest4j:opentest4j (from https://github.com/ota4j-team/opentest4j)
 - org.xmlunit:xmlunit-core (from http://www.xmlunit.org/, https://www.xmlunit.org/)
+- powermock-module-junit4 (from http://www.powermock.org/)
 - resilience4j (from https://github.com/resilience4j/resilience4j, https://resilience4j.readme.io/, ttps://resilience4j.readme.io)
 - spring-security-test (from http://spring.io/spring-security, https://spring.io/projects/spring-security, https://spring.io/spring-security)
 - springdoc-openapi-starter-common (from https://springdoc.org/)
@@ -334,6 +335,7 @@ The following software have components provided under the terms of this license:
 - Apache Log4j Core (from https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core)
 - HdrHistogram (from http://hdrhistogram.github.io/HdrHistogram/)
 - JSch (from http://www.jcraft.com/jsch/)
+- Jackson-core (from http://wiki.fasterxml.com/JacksonHome, https://github.com/FasterXML/jackson-core)
 - Jodd Util (from https://util.jodd.org/)
 - LatencyUtils (from http://latencyutils.github.io/LatencyUtils/)
 - Lucene Common Analyzers (from <https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common>, https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-analyzers-common)
@@ -384,6 +386,13 @@ The following software have components provided under the terms of this license:
 - ReflectASM (from https://github.com/EsotericSoftware/reflectasm)
 - Spring Core (from http://www.springframework.org, https://github.com/spring-projects/spring-framework, https://repo1.maven.org/maven2/org/springframework/spring-core)
 - jaxen (from http://jaxen.codehaus.org/, https://jaxen-xpath.github.io/jaxen/, https://repo1.maven.org/maven2/jaxen/jaxen)
+
+========================================================================
+BSL-1.0
+========================================================================
+The following software have components provided under the terms of this license:
+
+- Jackson-core (from http://wiki.fasterxml.com/JacksonHome, https://github.com/FasterXML/jackson-core)
 
 ========================================================================
 CC-BY-2.5
@@ -482,8 +491,6 @@ The following software have components provided under the terms of this license:
 
 - Angus Activation Registries (from https://repo1.maven.org/maven2/org/eclipse/angus/angus-activation)
 - AspectJ Weaver (from http://www.aspectj.org, https://www.eclipse.org/aspectj/)
-- CDI APIs (from http://cdi-spec.org/)
-- CDI Language Model (from https://projects.eclipse.org/projects/ee4j)
 - Core :: ALPN :: Client (from https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-alpn-client)
 - Core :: EE Common (from https://jetty.org/)
 - Core :: Sessions (from https://jetty.org/)
