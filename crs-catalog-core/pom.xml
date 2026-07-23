@@ -19,7 +19,7 @@
         <app.version>1</app.version>
         <app.id>crs-catalog-core</app.id>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <objectify.version>5.1.22</objectify.version>
+        <objectify.version>5.1.25</objectify.version>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
         <commons-beanutils.version>1.11.0</commons-beanutils.version>
         <org-eclipse-jetty.version>12.0.32</org-eclipse-jetty.version>
