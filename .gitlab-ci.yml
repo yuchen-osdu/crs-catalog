@@ -25,6 +25,7 @@ variables:
   # Java service with Python acceptance tests — override the Python->JSON auto-detection
   # so the openapi-spec check fetches the YAML spec served by springdoc
   CIMPL_OPENAPI_YAML_ROUTE: /api/crs/catalog/api-docs/v3
+  CIMPL_OPENAPI_SPEC_PATH: docs/api/community/v3/openapi.yaml
 
 include:
   - project: "osdu/platform/ci-cd-pipelines"
