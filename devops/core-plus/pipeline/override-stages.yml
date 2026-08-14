@@ -6,3 +6,22 @@ variables:
 cimpl-containerize-gitlab:
   needs:
     - "compile-and-unit-test"
+
+# Search health check inlined into python test jobs (replaces separate
+# cimpl-ensure-search-service). Runs on release/DEV2 as well, unlike the
+# old job which had when: never for release branches.
+cimpl-acceptance-test-python:
+  before_script:
+    - pushd $ACCEPTANCE_TEST_DIR
+    - pwd
+    - chmod +x ./run-ensure-search-service.sh
+    - ./run-ensure-search-service.sh
+    - popd
+
+cimpl-dev2-test-python:
+  before_script:
+    - pushd $ACCEPTANCE_TEST_DIR
+    - pwd
+    - chmod +x ./run-ensure-search-service.sh
+    - ./run-ensure-search-service.sh
+    - popd
