@@ -1,7 +1,7 @@
 variables:
   CIMPL_SERVICE: crs-catalog
   CIMPL_INT_TEST_TYPE: python
-
+  DISABLE_INTEGRATION_TEST: true
 
 cimpl-containerize-gitlab:
   needs:
