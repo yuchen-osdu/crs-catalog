@@ -18,6 +18,14 @@ cimpl-acceptance-test-python:
     - ./run-ensure-search-service.sh
     - popd
 
+cimpl-prod-acceptance-test-python:
+  before_script:
+    - pushd $ACCEPTANCE_TEST_DIR
+    - pwd
+    - chmod +x ./run-ensure-search-service.sh
+    - ./run-ensure-search-service.sh
+    - popd
+
 cimpl-dev2-test-python:
   before_script:
     - pushd $ACCEPTANCE_TEST_DIR
