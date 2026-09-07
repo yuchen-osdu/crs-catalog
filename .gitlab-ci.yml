@@ -1,14 +1,5 @@
 variables:
   CORE_BUILD_SUBDIR: crs-catalog-core
-  AWS_BUILD_SUBDIR: provider/crs-catalog-aws/build-aws
-  AWS_TEST_SUBDIR: testing/catalog_test_aws
-  AWS_CHART_SUBDIR: devops/aws/chart
-  AWS_SERVICE: crs-catalog
-  AWS_SERVICE_GATEWAY: osdu-gateway
-  AWS_ENVIRONMENT: dev
-  AWS_INT_TEST_TYPE: python
-  AWS_DEPLOY_TARGET: TF
-  AWS_EKS_DEPLOYMENT_NAME: os-crs-catalog
 
   #azure
   AZURE_SERVICE: crs_catalog
@@ -25,6 +16,7 @@ variables:
   # Java service with Python acceptance tests — override the Python->JSON auto-detection
   # so the openapi-spec check fetches the YAML spec served by springdoc
   CIMPL_OPENAPI_YAML_ROUTE: /api/crs/catalog/api-docs/v3
+  CIMPL_OPENAPI_SPEC_PATH: docs/api/community/v3/openapi.yaml
 
 include:
   - project: "osdu/platform/ci-cd-pipelines"
@@ -43,22 +35,10 @@ include:
     file: "cloud-providers/gc-global.yml"
 
   - project: "osdu/platform/ci-cd-pipelines"
-    file: "cloud-providers/aws-global.yml"
-
-  - project: "osdu/platform/ci-cd-pipelines"
-    file: "cloud-providers/aws-maven.yml"
-
-  - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/azure.yml"
 
   - project: "osdu/platform/ci-cd-pipelines"
-    file: "cloud-providers/aws-python.yml"
-
-  - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/cimpl-global.yml"
-
-  - project: "osdu/platform/ci-cd-pipelines"
-    file: "cloud-providers/aws-one-pipeline.yml"
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "cloud-providers/azure-one-pipeline.yml"
@@ -73,8 +53,6 @@ include:
     file: "reporting/schemathesis.yml"
 
   - local: "devops/gc/pipeline/override-stages.yml"
-
-  - local: "devops/aws/pipeline/override-stages.yml"
 
   - local: "devops/core-plus/pipeline/override-stages.yml"
 
