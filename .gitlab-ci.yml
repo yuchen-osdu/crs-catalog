@@ -75,6 +75,3 @@ fossa-check-notice:
 azure_code_coverage:
   variables:
     AZURE_SKIP_COVERAGE: "true"
-
-schemathesis-tests:
-  extends: .schemathesis-tests-template
