@@ -28,6 +28,10 @@
         <lucene.version>8.10.0</lucene.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <lombok.version>1.18.42</lombok.version>
+        <!-- CVE-2026-59889, GHSA-mhm7-754m-9p8w, CVE-2026-54515: jackson-databind < 2.21.5 has @JsonView bypasses -->
+        <jackson.version>2.21.5</jackson.version>
+        <!-- CVE-2026-49844: log4j-api < 2.25.5 mishandles non-finite floats in MapMessage JSON serialization -->
+        <log4j-api.version>2.25.5</log4j-api.version>
 
         <!-- Plugin Versions -->
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
@@ -186,6 +190,31 @@
                 <groupId>org.opengroup.osdu</groupId>
                 <artifactId>os-core-common</artifactId>
                 <version>${os-core-common.version}</version>
+            </dependency>
+            <!--
+                jackson-databind/jackson-core Fix CVE-2026-59889, GHSA-mhm7-754m-9p8w, CVE-2026-54515
+                Override Spring Boot 3.5.x's Jackson version; property redefinition alone is inert under
+                the imported spring-boot-dependencies BOM.
+            -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <!--
+                log4j-api Fix CVE-2026-49844
+                Override Spring Boot 3.5.x's log4j-api version; property redefinition alone is inert under
+                the imported spring-boot-dependencies BOM.
+            -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j-api.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.minidev</groupId>
