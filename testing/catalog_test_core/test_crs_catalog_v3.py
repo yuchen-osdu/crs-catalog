@@ -15,7 +15,7 @@
 import sys
 import urllib3
 import json
-import time
+import os
 
 urllib3.disable_warnings()
 
@@ -33,24 +33,34 @@ import unittest
 import jwt_client
 import catalog_test_core.constants as constants
 from catalog_test_core.v3.HttpClient import HttpClient
+from catalog_test_core.v3.temp_fixtures import (
+    cleanup_temporary_fixtures,
+    default_manifest_path,
+    prepare_active_fixtures,
+    result_by_id,
+    substitute_fixture_ids,
+)
 
-legal_tag_name = "crs-catalog-int-test-legaltag"
 v3_path = '/api/crs/catalog/v3'
 ct_endpoint_path = f'{v3_path}/coordinate-transformation'
 crs_endpoint_path = f'{v3_path}/coordinate-reference-system'
 point_in_aou_endpoint_path = f'{v3_path}/points-in-aou'
 info_endpoint_path = f'{v3_path}/info'
 record_id_set = set()
+active_id_map = {}
+_manifest_path = None
 
 
 class TestCrsCatalog(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        global record_id_set, active_id_map, _manifest_path
         cls.path = '../catalog_test_core/'
         if constants.LOCAL_MODE == "true":
             cls.path = './catalog_test_core/'
 
         cls.client = HttpClient(constants.ROOT_URL, constants.MY_TENANT, jwt_client)
+        _manifest_path = default_manifest_path(os.path.abspath(cls.path))
 
         # Make sure schemas are made
         with open(f'{cls.path}v3/CoordinateReferenceSystemSchema.json') as crs_schema_file:
@@ -73,52 +83,38 @@ class TestCrsCatalog(unittest.TestCase):
                 raise Exception(
                     f"Could not create CT schema. Received {schema_response.status_code} from schema service")
 
-        # Use pre-loaded reference data when present; upload only missing records (issue #141).
+        # Reuse indexed shared fixtures; clone missing ones as job-scoped temps (issue #141).
         with open(f'{cls.path}v3/CRSAndCTRecords.json') as records_file:
             records = records_file.read().replace('{{data_partition_id}}', constants.MY_TENANT) \
                 .replace('{{acl_domain}}', constants.ACL_DOMAIN) \
                 .replace('{{schema-authority}}', constants.SCHEMA_AUTHORITY)
             records_obj = json.loads(records)
 
-            for record in records_obj:
-                record_id_set.add(record["id"])
+        active_id_map, record_id_set, _temporary_ids, _legal_tag = prepare_active_fixtures(
+            cls.client,
+            records_obj,
+            constants.MY_TENANT,
+            f'{cls.path}v3/LegalTag.json',
+            _manifest_path,
+        )
 
-            missing_records = []
-            for record in records_obj:
-                storage_get_response = cls.client.make_request(
-                    'GET', f'/api/storage/v2/records/{record["id"]}')
-                if storage_get_response.status_code == 404:
-                    missing_records.append(record)
+    @classmethod
+    def tearDownClass(cls):
+        global _manifest_path
+        if _manifest_path is None:
+            _manifest_path = default_manifest_path(os.path.abspath(getattr(cls, "path", "../catalog_test_core/")))
+        client = getattr(cls, "client", None)
+        if client is None:
+            client = HttpClient(constants.ROOT_URL, constants.MY_TENANT, jwt_client)
+        cleanup_temporary_fixtures(client, _manifest_path)
 
-            if missing_records:
-                with open(f'{cls.path}v3/LegalTag.json') as legal_tag_file:
-                    legal_tag = legal_tag_file.read().replace('{{legal_tag_name}}', legal_tag_name)
-                    legal_response = cls.client.make_request('POST', '/api/legal/v1/legaltags', legal_tag)
-                    if legal_response.status_code not in [201, 409]:
-                        raise Exception(
-                            f"Could not create legal tag. Received {legal_response.status_code} from legal service")
+    def _load_substituted_text(self, relative_path):
+        with open(f'{self.path}{relative_path}') as test_data_file:
+            text = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
+        return substitute_fixture_ids(text, active_id_map)
 
-                print(f'Uploading {len(missing_records)} missing reference records to storage')
-                storage_response = cls.client.make_request(
-                    'PUT', '/api/storage/v2/records', json.dumps(missing_records))
-                if storage_response.status_code != 201:
-                    raise Exception(
-                        f"Could not create records. Received {storage_response.status_code} from storage service")
-
-            max_checks = 20
-            search_response_id_set = set()
-            for checks in range(max_checks):
-                search_response_id_set = cls.client.get_all_ids_of_kind(
-                    f"{constants.SCHEMA_AUTHORITY}:wks:reference-data--Coordinate*:1.1.0")
-                if record_id_set.issubset(search_response_id_set):
-                    break
-                print(f"Didn't find all reference records after {checks + 1} checks. Waiting for indexing...")
-                time.sleep(5)
-            else:
-                missing = record_id_set - search_response_id_set
-                raise Exception(
-                    f"Reference records not indexed after {max_checks} checks for partition "
-                    f"{constants.MY_TENANT}. Missing IDs: {sorted(missing)}.")
+    def _load_substituted_json(self, relative_path):
+        return json.loads(self._load_substituted_text(relative_path))
 
     @staticmethod
     def check_get_search_response_count(response, expected_count, test_name):
@@ -150,80 +146,79 @@ class TestCrsCatalog(unittest.TestCase):
         assert response_count == expected_count
 
     def test_get_coordinate_transformation_dataId(self):
-        with open(f'{self.path}v3/GetCoordinateTransformationTestData.json') as test_data_file:
-            test_data = json.loads(test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT))
-            response = self.client.make_request('GET', f'{ct_endpoint_path}?dataId={test_data["dataId"]}')
-            response_body = json.loads(response.content)
-        
-            self.check_get_search_response_count(response, 1, "test_get_coordinate_transformation_dataId")
-            assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
-            assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
-            for record_property in ('kind', 'version', 'acl', 'legal', 'namespace'):
-                assert record_property in response_body["searchResults"]["results"][0]
-            for record_property in ('Code', 'Kind', 'PreferredUsage.Name', 'PreferredUsage.Extent.Description',
-                                    'PreferredUsage.Extent.Name', 'PersistableReference',
-                                    'CoordinateTransformationType'):
-                assert record_property in response_body["searchResults"]["results"][0]['data']
+        test_data = self._load_substituted_json('v3/GetCoordinateTransformationTestData.json')
+        response = self.client.make_request('GET', f'{ct_endpoint_path}?dataId={test_data["dataId"]}')
+        response_body = json.loads(response.content)
+
+        self.check_get_search_response_count(response, 1, "test_get_coordinate_transformation_dataId")
+        matched = result_by_id(response_body["searchResults"]["results"], test_data["recordId"])
+        assert matched["id"] == test_data["recordId"]
+        assert matched["data"]["ID"] == test_data["dataId"]
+        for record_property in ('kind', 'version', 'acl', 'legal', 'namespace'):
+            assert record_property in matched
+        for record_property in ('Code', 'Kind', 'PreferredUsage.Name', 'PreferredUsage.Extent.Description',
+                                'PreferredUsage.Extent.Name', 'PersistableReference',
+                                'CoordinateTransformationType'):
+            assert record_property in matched['data']
 
     def test_get_coordinate_transformation_recordId(self):
-        with open(f'{self.path}v3/GetCoordinateTransformationTestData.json') as test_data_file:
-            test_data = json.loads(test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT))
-            response = self.client.make_request('GET', f'{ct_endpoint_path}?recordId={test_data["recordId"]}')
-            response_body = json.loads(response.content)
-            self.check_get_search_response_count(response, 1, "test_get_coordinate_transformation_recordId")
-            assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
-            assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
+        test_data = self._load_substituted_json('v3/GetCoordinateTransformationTestData.json')
+        response = self.client.make_request('GET', f'{ct_endpoint_path}?recordId={test_data["recordId"]}')
+        response_body = json.loads(response.content)
+        self.check_get_search_response_count(response, 1, "test_get_coordinate_transformation_recordId")
+        matched = result_by_id(response_body["searchResults"]["results"], test_data["recordId"])
+        assert matched["id"] == test_data["recordId"]
+        assert matched["data"]["ID"] == test_data["dataId"]
 
     def test_get_coordinate_transformation_dataId_recordId(self):
-        with open(f'{self.path}v3/GetCoordinateTransformationTestData.json') as test_data_file:
-            test_data = json.loads(test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT))
-            response = self.client.make_request('GET',
-                                                f'{ct_endpoint_path}?dataId={test_data["dataId"]}&recordId={test_data["recordId"]}')
-            response_body = json.loads(response.content)
-            self.check_get_search_response_count(response, 1, "test_get_coordinate_transformation_dataId_recordId")
-            assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
-            assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
+        test_data = self._load_substituted_json('v3/GetCoordinateTransformationTestData.json')
+        response = self.client.make_request('GET',
+                                            f'{ct_endpoint_path}?dataId={test_data["dataId"]}&recordId={test_data["recordId"]}')
+        response_body = json.loads(response.content)
+        self.check_get_search_response_count(response, 1, "test_get_coordinate_transformation_dataId_recordId")
+        matched = result_by_id(response_body["searchResults"]["results"], test_data["recordId"])
+        assert matched["id"] == test_data["recordId"]
+        assert matched["data"]["ID"] == test_data["dataId"]
 
     def test_get_coordinate_reference_system_dataId(self):
-        with open(f'{self.path}v3/GetCoordinateReferenceSystemTestData.json') as test_data_file:
-            test_data = json.loads(test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT))
-            response = self.client.make_request('GET', f'{crs_endpoint_path}?dataId={test_data["dataId"]}')
-            response_body = json.loads(response.content)
-    
-            self.check_get_search_response_count(response, 1, "test_get_coordinate_reference_system_dataId")
-            assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
-            assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
-            for record_property in ('kind', 'version', 'acl', 'legal', 'namespace'):
-                assert record_property in response_body["searchResults"]["results"][0]
-            for record_property in (
-                    'Code', 'Kind', 'VerticalCRS.Name', 'PreferredUsage.Name', 'PreferredUsage.Extent.Description',
-                    'PreferredUsage.Extent.Name', 'PersistableReference', 'CoordinateReferenceSystemType'):
-                assert record_property in response_body["searchResults"]["results"][0]['data']
+        test_data = self._load_substituted_json('v3/GetCoordinateReferenceSystemTestData.json')
+        response = self.client.make_request('GET', f'{crs_endpoint_path}?dataId={test_data["dataId"]}')
+        response_body = json.loads(response.content)
+
+        self.check_get_search_response_count(response, 1, "test_get_coordinate_reference_system_dataId")
+        matched = result_by_id(response_body["searchResults"]["results"], test_data["recordId"])
+        assert matched["id"] == test_data["recordId"]
+        assert matched["data"]["ID"] == test_data["dataId"]
+        for record_property in ('kind', 'version', 'acl', 'legal', 'namespace'):
+            assert record_property in matched
+        for record_property in (
+                'Code', 'Kind', 'VerticalCRS.Name', 'PreferredUsage.Name', 'PreferredUsage.Extent.Description',
+                'PreferredUsage.Extent.Name', 'PersistableReference', 'CoordinateReferenceSystemType'):
+            assert record_property in matched['data']
 
     def test_get_coordinate_reference_system_recordId(self):
-        with open(f'{self.path}v3/GetCoordinateReferenceSystemTestData.json') as test_data_file:
-            test_data = json.loads(test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT))
-            response = self.client.make_request('GET', f'{crs_endpoint_path}?recordId={test_data["recordId"]}')
-            response_body = json.loads(response.content)
-            self.check_get_search_response_count(response, 1, "test_get_coordinate_reference_system_recordId")
-            assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
-            assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
+        test_data = self._load_substituted_json('v3/GetCoordinateReferenceSystemTestData.json')
+        response = self.client.make_request('GET', f'{crs_endpoint_path}?recordId={test_data["recordId"]}')
+        response_body = json.loads(response.content)
+        self.check_get_search_response_count(response, 1, "test_get_coordinate_reference_system_recordId")
+        matched = result_by_id(response_body["searchResults"]["results"], test_data["recordId"])
+        assert matched["id"] == test_data["recordId"]
+        assert matched["data"]["ID"] == test_data["dataId"]
 
     def test_get_coordinate_reference_system_dataId_recordId(self):
-        with open(f'{self.path}v3/GetCoordinateReferenceSystemTestData.json') as test_data_file:
-            test_data = json.loads(test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT))
-            response = self.client.make_request('GET',
-                                                f'{crs_endpoint_path}?dataId={test_data["dataId"]}&recordId={test_data["recordId"]}')
-            response_body = json.loads(response.content)
-            self.check_get_search_response_count(response, 1, "test_get_coordinate_reference_system_dataId_recordId")
-            assert response_body["searchResults"]["results"][0]["id"] == test_data["recordId"]
-            assert response_body["searchResults"]["results"][0]["data"]["ID"] == test_data["dataId"]
+        test_data = self._load_substituted_json('v3/GetCoordinateReferenceSystemTestData.json')
+        response = self.client.make_request('GET',
+                                            f'{crs_endpoint_path}?dataId={test_data["dataId"]}&recordId={test_data["recordId"]}')
+        response_body = json.loads(response.content)
+        self.check_get_search_response_count(response, 1, "test_get_coordinate_reference_system_dataId_recordId")
+        matched = result_by_id(response_body["searchResults"]["results"], test_data["recordId"])
+        assert matched["id"] == test_data["recordId"]
+        assert matched["data"]["ID"] == test_data["dataId"]
 
     def test_search_coordinate_transformations(self):
-        with open(f'{self.path}v3/SearchCoordinateTransformations.json') as test_data_file:
-            test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
-            response = self.client.make_request('POST', ct_endpoint_path, test_data)
-            self.check_search_response_count(response, 1, "test_search_coordinate_transformations")
+        test_data = self._load_substituted_text('v3/SearchCoordinateTransformations.json')
+        response = self.client.make_request('POST', ct_endpoint_path, test_data)
+        self.check_search_response_count(response, 1, "test_search_coordinate_transformations")
 
     def test_search_coordinate_transformations_with_name(self):
         with open(f'{self.path}v3/SearchCoordinateTransformationsWithName.json') as test_data:
@@ -247,11 +242,10 @@ class TestCrsCatalog(unittest.TestCase):
             self.check_search_response_count(response, 0, "test_search_coordinate_transformations_with_wrong_name")
 
     def test_search_coordinate_transformations_with_reversed_source_and_target_crs(self):
-        with open(f'{self.path}v3/SearchCoordinateTransformationsReverseSourceAndTarget.json') as test_data_file:
-            test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
-            response = self.client.make_request('POST', ct_endpoint_path, test_data)
-            self.check_search_response_count(response, 1,
-                                             "test_search_coordinate_transformations_with_reversed_source_and_target_crs")
+        test_data = self._load_substituted_text('v3/SearchCoordinateTransformationsReverseSourceAndTarget.json')
+        response = self.client.make_request('POST', ct_endpoint_path, test_data)
+        self.check_search_response_count(response, 1,
+                                         "test_search_coordinate_transformations_with_reversed_source_and_target_crs")
 
     def test_search_coordinate_transformations_find_horizontal(self):
         test_data = "{}"
@@ -286,10 +280,9 @@ class TestCrsCatalog(unittest.TestCase):
             assert "InformationSource" in response_body["cursorSearchResults"]["results"][0]['data']
 
     def test_search_coordinate_transformations_find_all(self):
-        with open(f'{self.path}v3/SearchCoordinateTransformationsAllKinds.json') as test_data_file:
-            test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
-            response = self.client.make_request('POST', ct_endpoint_path, test_data)
-            self.check_search_response_count(response, 2, "test_search_coordinate_transformations_find_all")
+        test_data = self._load_substituted_text('v3/SearchCoordinateTransformationsAllKinds.json')
+        response = self.client.make_request('POST', ct_endpoint_path, test_data)
+        self.check_search_response_count(response, 2, "test_search_coordinate_transformations_find_all")
 
     def test_search_coordinate_transformations_find_all_include_deprecated(self):
         with open(f'{self.path}v3/SearchCoordinateTransformationsIncludeDeprecated.json') as test_data_file:
@@ -299,16 +292,14 @@ class TestCrsCatalog(unittest.TestCase):
                                              "test_search_coordinate_transformations_find_all_include_deprecated")
 
     def test_search_coordinate_reference_systems(self):
-        with open(f'{self.path}v3/SearchCoordinateReferenceSystems.json') as test_data_file:
-            test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
-            response = self.client.make_request('POST', crs_endpoint_path, test_data)
-            self.check_search_response_count(response, 1, "test_search_coordinate_reference_systems")
+        test_data = self._load_substituted_text('v3/SearchCoordinateReferenceSystems.json')
+        response = self.client.make_request('POST', crs_endpoint_path, test_data)
+        self.check_search_response_count(response, 1, "test_search_coordinate_reference_systems")
 
     def test_search_coordinate_reference_systems_partial(self):
-        with open(f'{self.path}v3/SearchCoordinateReferenceSystemsPartial.json') as test_data_file:
-            test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
-            response = self.client.make_request('POST', crs_endpoint_path, test_data)
-            self.check_search_response_count(response, 1, "test_search_coordinate_reference_systems_partial")
+        test_data = self._load_substituted_text('v3/SearchCoordinateReferenceSystemsPartial.json')
+        response = self.client.make_request('POST', crs_endpoint_path, test_data)
+        self.check_search_response_count(response, 1, "test_search_coordinate_reference_systems_partial")
 
     def test_search_coordinate_reference_systems_bound_projected(self):
         with open(f'{self.path}v3/SearchCoordinateReferenceSystemsBoundProjected.json') as test_data:
@@ -340,6 +331,7 @@ class TestCrsCatalog(unittest.TestCase):
             
 
     def test_search_coordinate_reference_systems_find_all(self):
+        # Targeted code queries avoid the shared-catalog 10k search cap.
         with open(f'{self.path}v3/SearchCoordinateReferenceSystemsFindAll.json') as test_data_file:
             search_requests = json.loads(test_data_file.read())
         found_ids = set()
@@ -350,47 +342,63 @@ class TestCrsCatalog(unittest.TestCase):
             for result in response_body["cursorSearchResults"]["results"]:
                 if result["id"] in record_id_set:
                     found_ids.add(result["id"])
+        # Force-temp CRS fixtures share Code with shared catalog records, so code
+        # search may return only the shared id. Confirm temps via exact-id Search.
+        for original_id, active_id in active_id_map.items():
+            if active_id == original_id:
+                continue
+            if ":reference-data--CoordinateReferenceSystem:" not in original_id:
+                continue
+            if active_id in found_ids:
+                continue
+            assert self.client.is_record_indexed(active_id), (
+                f"Expected temporary CRS fixture not indexed: {active_id}"
+            )
+            found_ids.add(active_id)
         if len(found_ids) != 5:
-            print(f'Error: Test test_search_coordinate_reference_systems_find_all Expects 5 records. Got {len(found_ids)} records.')
+            print(
+                f'Error: Test test_search_coordinate_reference_systems_find_all '
+                f'Expects 5 records. Got {len(found_ids)} records.'
+            )
         assert len(found_ids) == 5
 
     def test_check_points_in_aou(self):
-        with open(f'{self.path}v3/CheckPointsInAou.json') as test_data_file:
-            test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
-            response = self.client.make_request('POST', point_in_aou_endpoint_path, test_data)
-            response_body = json.loads(response.content)
-            assert response.status_code == 200
-            assert "bboxFailedPoints" in response_body
-            failed_points = response_body["bboxFailedPoints"]
-            assert len(failed_points) == 3
-            assert failed_points[0]["point"]["latitude"] == 16.0
-            assert failed_points[0]["point"]["longitude"] == 34.0
-            assert failed_points[0]["index"] == 0
-            assert failed_points[0]["approximateKmDistanceOutside"] == 68
-            assert failed_points[1]["point"]["latitude"] == 16.5
-            assert failed_points[1]["point"]["longitude"] == 34.1
-            assert failed_points[1]["index"] == 1
-            assert failed_points[1]["approximateKmDistanceOutside"] == 43
-            assert failed_points[2]["point"]["latitude"] == 80.1
-            assert failed_points[2]["point"]["longitude"] == 90.0
-            assert failed_points[2]["index"] == 3
-            assert failed_points[2]["approximateKmDistanceOutside"] == 5313
-            assert response_body["maxDistKmOutsideBBox"] == 5313
+        test_data = self._load_substituted_text('v3/CheckPointsInAou.json')
+        response = self.client.make_request('POST', point_in_aou_endpoint_path, test_data)
+        response_body = json.loads(response.content)
+        assert response.status_code == 200
+        assert "bboxFailedPoints" in response_body
+        failed_points = response_body["bboxFailedPoints"]
+        assert len(failed_points) == 3
+        assert failed_points[0]["point"]["latitude"] == 16.0
+        assert failed_points[0]["point"]["longitude"] == 34.0
+        assert failed_points[0]["index"] == 0
+        assert failed_points[0]["approximateKmDistanceOutside"] == 68
+        assert failed_points[1]["point"]["latitude"] == 16.5
+        assert failed_points[1]["point"]["longitude"] == 34.1
+        assert failed_points[1]["index"] == 1
+        assert failed_points[1]["approximateKmDistanceOutside"] == 43
+        assert failed_points[2]["point"]["latitude"] == 80.1
+        assert failed_points[2]["point"]["longitude"] == 90.0
+        assert failed_points[2]["index"] == 3
+        assert failed_points[2]["approximateKmDistanceOutside"] == 5313
+        assert response_body["maxDistKmOutsideBBox"] == 5313
 
     def test_check_points_in_aou_acrss_antimeridian(self):  # There will be multiple polygons
-        with open(f'{self.path}v3/CheckPointsInAouAntimeridian.json') as test_data_file:
-            test_data = test_data_file.read().replace('{{data_partition_id}}', constants.MY_TENANT)
-            response = self.client.make_request('POST', point_in_aou_endpoint_path, test_data)
-            response_body = json.loads(response.content)
-            assert response.status_code == 200
-            assert "bboxFailedPoints" in response_body
-            failed_points = response_body["bboxFailedPoints"]
-            assert len(failed_points) == 2
-            assert failed_points[0]["index"] == 2
-            assert failed_points[0]["approximateKmDistanceOutside"] == 63
-            assert failed_points[1]["index"] == 3
-            assert failed_points[1]["approximateKmDistanceOutside"] == 84
-            assert response_body["maxDistKmOutsideBBox"] == 84
+        test_data = self._load_substituted_text('v3/CheckPointsInAouAntimeridian.json')
+        response = self.client.make_request('POST', point_in_aou_endpoint_path, test_data)
+        response_body = json.loads(response.content)
+        assert response.status_code == 200, (
+            f"points-in-aou antimeridian HTTP {response.status_code}: {response.content}"
+        )
+        assert "bboxFailedPoints" in response_body
+        failed_points = response_body["bboxFailedPoints"]
+        assert len(failed_points) == 2
+        assert failed_points[0]["index"] == 2
+        assert failed_points[0]["approximateKmDistanceOutside"] == 63
+        assert failed_points[1]["index"] == 3
+        assert failed_points[1]["approximateKmDistanceOutside"] == 84
+        assert response_body["maxDistKmOutsideBBox"] == 84
 
     def test_info(self):  # There will be multiple polygons
         response = self.client.make_request('GET', info_endpoint_path)

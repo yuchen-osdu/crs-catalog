@@ -13,6 +13,7 @@
 # limitations under the License.
 import json
 import math
+import time
 from typing import Set
 
 import requests
@@ -92,3 +93,39 @@ class HttpClient(object):
                 search_response_id_set.add(search_response_result["id"])
 
         return search_response_id_set
+
+    def is_record_indexed(self, record_id: str) -> bool:
+        """Return True when Search can find the exact record id."""
+        search_params = {
+            "kind": "*:*:*:*",
+            "query": f'id:("{record_id}")',
+            "limit": 1,
+            "returnedFields": ["id"],
+        }
+        search_response = self.make_request(
+            "POST", "/api/search/v2/query", json.dumps(search_params)
+        )
+        if search_response.status_code != 200:
+            raise Exception(
+                f"Could not search for record {record_id}. "
+                f"received {search_response.status_code} from search service"
+            )
+        search_response_body = json.loads(search_response.content)
+        for result in search_response_body.get("results", []):
+            if result.get("id") == record_id:
+                return True
+        return False
+
+    def wait_for_record_indexed(self, record_id: str, max_checks: int = 20, sleep_seconds: int = 5):
+        """Poll Search until the exact record id is indexed or raise."""
+        for checks in range(max_checks):
+            if self.is_record_indexed(record_id):
+                return
+            print(
+                f"Didn't find record {record_id} after {checks + 1} checks. "
+                "Waiting for indexing..."
+            )
+            time.sleep(sleep_seconds)
+        raise Exception(
+            f"Record not indexed after {max_checks} checks: {record_id}"
+        )
