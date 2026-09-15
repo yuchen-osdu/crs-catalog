@@ -49,15 +49,15 @@ public class SearchWrapperService {
     private static String schemaAuthority;
 
     public static String getCoordinateReferenceSystemKind() {
-        return "%s:wks:reference-data--CoordinateReferenceSystem:1.1.0".formatted(schemaAuthority);
+        return "%s:wks:reference-data--CoordinateReferenceSystem:1.*.*".formatted(schemaAuthority);
     }
 
     public static String getCoordinateTransformationKind() {
-        return "%s:wks:reference-data--CoordinateTransformation:1.1.0".formatted(schemaAuthority);
+        return "%s:wks:reference-data--CoordinateTransformation:1.*.*".formatted(schemaAuthority);
     }
 
     public static String getCtAndCrsKind() {
-        return "%s:wks:reference-data--*:1.1.0".formatted(schemaAuthority);
+        return "%s:wks:reference-data--*:1.*.*".formatted(schemaAuthority);
     }
 
     @PostConstruct
