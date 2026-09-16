@@ -34,7 +34,7 @@ def main() -> int:
         print("ERROR: VIRTUAL_SERVICE_HOST_NAME is not set", file=sys.stderr)
         return 1
 
-    kind = f"{constants.SCHEMA_AUTHORITY}:wks:reference-data--Coordinate*:1.1.0"
+    kind = f"{constants.SCHEMA_AUTHORITY}:wks:reference-data--Coordinate*:1.*.*"
     payload = json.dumps({
         "kind": kind,
         "limit": 1,
