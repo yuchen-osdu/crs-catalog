@@ -40,3 +40,7 @@ istio:
       - "swagger-config" #TODO need to check if needs
       - "health/liveness"
       - "health/readiness"
+      - "/api/crs/catalog/api-docs"
+      - "/api/crs/catalog/api-docs/*"
+      - "/api/crs/catalog/api-docs.yaml"
+      - "/api/crs/catalog/api-docs.yaml/*"
