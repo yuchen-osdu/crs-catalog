@@ -224,4 +224,56 @@ public class SearchWrapperServiceTest {
 		Mockito.verify(searchService, Mockito.times(2)).searchCursor(Mockito.any());
 	}
 
+	@Test
+	void testSearchDedupesSameRecordIdPreferringNewerKind() throws SearchException {
+		CoordinateReferenceSystemsQuery coordinateReferenceSystemsQuery = new CoordinateReferenceSystemsQuery();
+		coordinateReferenceSystemsQuery.setIncludeDeprecated(true);
+		coordinateReferenceSystemsQuery.setLimit(5000);
+
+		Mockito.when(searchFactory.create(dpsHeaders)).thenReturn(searchService);
+		searchWrapperService.postInit();
+
+		Map<String, Object> older = new HashMap<>();
+		older.put("id", "osdu:reference-data--CoordinateTransformation:EPSG::1111");
+		older.put("kind", "osdu:wks:reference-data--CoordinateTransformation:1.1.0");
+		Map<String, Object> newer = new HashMap<>();
+		newer.put("id", "osdu:reference-data--CoordinateTransformation:EPSG::1111");
+		newer.put("kind", "osdu:wks:reference-data--CoordinateTransformation:1.2.0");
+
+		QueryResponse page = new QueryResponse();
+		page.setResults(Arrays.asList(older, newer));
+		page.setTotalCount(2);
+
+		Mockito.when(searchService.search(Mockito.any())).thenReturn(page);
+
+		SearchResponse searchResponse = searchWrapperService.search(
+				coordinateReferenceSystemsQuery, SearchWrapperService.getCoordinateTransformationKind());
+
+		Assertions.assertEquals(1, searchResponse.getSearchResults().getResults().size());
+		Assertions.assertEquals(
+				"osdu:wks:reference-data--CoordinateTransformation:1.2.0",
+				searchResponse.getSearchResults().getResults().get(0).get("kind"));
+	}
+
+	@Test
+	void testCompareKindVersions() {
+		Assertions.assertTrue(SearchWrapperService.compareKindVersions(
+				"osdu:wks:reference-data--CoordinateTransformation:1.2.0",
+				"osdu:wks:reference-data--CoordinateTransformation:1.1.0") > 0);
+		Assertions.assertEquals(0, SearchWrapperService.compareKindVersions(
+				"osdu:wks:reference-data--CoordinateReferenceSystem:1.1.0",
+				"osdu:wks:reference-data--CoordinateReferenceSystem:1.1.0"));
+	}
+
+	@Test
+	void testDedupeByRecordIdKeepsDistinctIds() {
+		Map<String, Object> a = new HashMap<>();
+		a.put("id", "record-a");
+		a.put("kind", "osdu:wks:x:1.0.0");
+		Map<String, Object> b = new HashMap<>();
+		b.put("id", "record-b");
+		b.put("kind", "osdu:wks:x:1.0.0");
+		Assertions.assertEquals(2, SearchWrapperService.dedupeByRecordId(Arrays.asList(a, b)).size());
+	}
+
 }
