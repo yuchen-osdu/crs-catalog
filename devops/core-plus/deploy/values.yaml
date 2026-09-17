@@ -30,13 +30,10 @@ istio:
       - v2
       - v3
     disable:
-      - "api-docs"
-      - "api-docs/*"
-      - "api-docs.yaml"
-      - "swagger" #TODO need to check if needs
-      - "swagger-ui.html" #TODO need to check if needs
-      - "swagger-ui/*" #TODO need to check if needs
-      - "swagger-resources" #TODO need to check if needs
-      - "swagger-config" #TODO need to check if needs
-      - "health/liveness"
-      - "health/readiness"
+      # context-root paths (leading / emitted as-is)
+      - "/api/crs/catalog/api-docs"
+      - "/api/crs/catalog/api-docs/*"
+      - "/api/crs/catalog/api-docs.yaml"
+      - "/api/crs/catalog/api-docs.yaml/*"
+      - "/api/crs/catalog/swagger"
+      - "/api/crs/catalog/api-docs/swagger-config"
