@@ -16,6 +16,7 @@ import math
 import time
 from typing import Set
 
+import constants
 import requests
 
 
@@ -97,7 +98,7 @@ class HttpClient(object):
     def is_record_indexed(self, record_id: str) -> bool:
         """Return True when Search can find the exact record id."""
         search_params = {
-            "kind": "*:*:*:*",
+            "kind": f"{constants.SCHEMA_AUTHORITY}:wks:reference-data--Coordinate*:1.*.*",
             "query": f'id:("{record_id}")',
             "limit": 1,
             "returnedFields": ["id"],
@@ -108,7 +109,8 @@ class HttpClient(object):
         if search_response.status_code != 200:
             raise Exception(
                 f"Could not search for record {record_id}. "
-                f"received {search_response.status_code} from search service"
+                f"received {search_response.status_code} from search service: "
+                f"{search_response.text}"
             )
         search_response_body = json.loads(search_response.content)
         for result in search_response_body.get("results", []):
