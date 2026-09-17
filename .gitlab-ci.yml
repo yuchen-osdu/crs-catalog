@@ -15,8 +15,6 @@ variables:
   CIMPL_OPENAPI_CONFIG_ROUTE: /api/crs/catalog/api-docs/swagger-config
   # Java service with Python acceptance tests — override the Python->JSON auto-detection
   # so the openapi-spec check fetches the YAML spec served by springdoc
-  CIMPL_OPENAPI_YAML_ROUTE: /api/crs/catalog/api-docs/v3
-  CIMPL_OPENAPI_SPEC_PATH: docs/api/community/v3/openapi.yaml
 
 include:
   - project: "osdu/platform/ci-cd-pipelines"
@@ -75,3 +73,28 @@ fossa-check-notice:
 azure_code_coverage:
   variables:
     AZURE_SKIP_COVERAGE: "true"
+
+.schemathesis-crs-catalog-matrix:
+  parallel:
+    matrix:
+      - SCHEMATHESIS_OPENAPI_YAML_ROUTE:
+          - "/api/crs/catalog/api-docs/v2"
+          - "/api/crs/catalog/api-docs/v3"
+
+schemathesis-dev-tests:
+  extends:
+    - .cimpl-dev-variables
+    - .schemathesis-osdu-main-tests-template
+    - .schemathesis-crs-catalog-matrix
+
+schemathesis-dev-backup-tests:
+  extends:
+    - .cimpl-dev-backup-variables
+    - .schemathesis-osdu-main-tests-template
+    - .schemathesis-crs-catalog-matrix
+
+schemathesis-prod-tests:
+  extends:
+    - .cimpl-prod-variables
+    - .schemathesis-osdu-main-tests-template
+    - .schemathesis-crs-catalog-matrix
