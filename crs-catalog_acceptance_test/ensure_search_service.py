@@ -18,8 +18,10 @@
 """CIMPL Search health gate used before cimpl-acceptance-test-python."""
 
 import json
+import os
 import sys
 import time
+import uuid
 
 import constants
 import jwt_client
@@ -27,11 +29,35 @@ from v3.HttpClient import HttpClient
 
 MAX_ATTEMPTS = 3
 SLEEP_SECONDS = 10
+ALLURE_DIR = "cimpl/allure-results"
+
+
+def write_allure_result(status: str, message: str, start_ms: int) -> None:
+    os.makedirs(ALLURE_DIR, exist_ok=True)
+    stop_ms = int(time.time() * 1000)
+    result = {
+        "uuid": str(uuid.uuid4()),
+        "historyId": "ensure-search-service-gate",
+        "name": "Ensure Search Service Health Gate",
+        "fullName": "ensure_search_service.Ensure Search Service Health Gate",
+        "status": status,
+        "statusDetails": {"message": message},
+        "stage": "finished",
+        "start": start_ms,
+        "stop": stop_ms,
+    }
+    filepath = os.path.join(ALLURE_DIR, f"{result['uuid']}-result.json")
+    with open(filepath, "w", encoding="utf-8") as f:
+        json.dump(result, f, indent=2)
 
 
 def main() -> int:
+    start_ms = int(time.time() * 1000)
+
     if not constants.ROOT_URL:
-        print("ERROR: VIRTUAL_SERVICE_HOST_NAME is not set", file=sys.stderr)
+        msg = "ERROR: VIRTUAL_SERVICE_HOST_NAME is not set"
+        print(msg, file=sys.stderr)
+        write_allure_result("failed", msg, start_ms)
         return 1
 
     kind = f"{constants.SCHEMA_AUTHORITY}:wks:reference-data--Coordinate*:1.*.*"
@@ -60,13 +86,15 @@ def main() -> int:
         if attempt < MAX_ATTEMPTS:
             time.sleep(SLEEP_SECONDS)
 
-    print(
-        f"ERROR: Search unhealthy after {MAX_ATTEMPTS} attempts "
-        f"(last HTTP {last_status}): {last_body}",
-        file=sys.stderr,
+    err_msg = (
+        f"Search unhealthy after {MAX_ATTEMPTS} attempts "
+        f"(last HTTP {last_status}): {last_body}"
     )
+    print(f"ERROR: {err_msg}", file=sys.stderr)
+    write_allure_result("failed", err_msg, start_ms)
     return 1
 
 
 if __name__ == "__main__":
     sys.exit(main())
+
