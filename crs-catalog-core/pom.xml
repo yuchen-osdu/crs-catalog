@@ -6,11 +6,12 @@
     <parent>
         <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
         <artifactId>crs-catalog-service</artifactId>
-        <version>0.30.0-SNAPSHOT</version>
+        <version>0.31.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>crs-catalog-core</artifactId>
+    <version>0.31.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>crs-catalog-core</name>
     <description>CRS catalog service core</description>
@@ -22,7 +23,8 @@
         <objectify.version>5.1.22</objectify.version>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
         <commons-beanutils.version>1.11.0</commons-beanutils.version>
-        <org-eclipse-jetty.version>12.0.32</org-eclipse-jetty.version>
+        <!-- CVE-2026-10050, CVE-2026-2332, CVE-2026-8384, CVE-2026-10051, CVE-2026-6790: jetty < 12.0.36 -->
+        <org-eclipse-jetty.version>12.0.36</org-eclipse-jetty.version>
     </properties>
 
     <prerequisites>
