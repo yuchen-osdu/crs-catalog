@@ -23,7 +23,8 @@
         <objectify.version>5.1.22</objectify.version>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
         <commons-beanutils.version>1.11.0</commons-beanutils.version>
-        <org-eclipse-jetty.version>12.0.32</org-eclipse-jetty.version>
+        <!-- CVE-2026-10050, CVE-2026-2332, CVE-2026-8384, CVE-2026-10051, CVE-2026-6790: jetty < 12.0.36 -->
+        <org-eclipse-jetty.version>12.0.36</org-eclipse-jetty.version>
     </properties>
 
     <prerequisites>
