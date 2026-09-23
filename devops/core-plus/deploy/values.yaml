@@ -30,7 +30,6 @@ istio:
       - v2
       - v3
     disable:
-      # context-root paths (leading / emitted as-is)
       - "/api/crs/catalog/api-docs"
       - "/api/crs/catalog/api-docs/*"
       - "/api/crs/catalog/api-docs.yaml"
