@@ -515,6 +515,7 @@ The following software have components provided under the terms of this license:
 - Jakarta Messaging API (from https://projects.eclipse.org/projects/ee4j.jms)
 - Jakarta Persistence API (from https://github.com/jakartaee/persistence)
 - Jakarta Servlet (from https://projects.eclipse.org/projects/ee4j.servlet)
+- Jakarta Validation API (from https://beanvalidation.org, https://beanvalidation.org/)
 - Jakarta WebSocket - Client API (from https://projects.eclipse.org/projects/ee4j.websocket)
 - Jakarta WebSocket - Server API (from https://projects.eclipse.org/projects/ee4j.websocket, https://repo1.maven.org/maven2/org/jboss/spec/javax/websocket/jboss-websocket-api_1.1_spec)
 - Jakarta XML Binding API (from https://repo1.maven.org/maven2/jakarta/xml/bind/jakarta.xml.bind-api, https://repo1.maven.org/maven2/org/jboss/spec/javax/xml/bind/jboss-jaxb-api_2.3_spec)

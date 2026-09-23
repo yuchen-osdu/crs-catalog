@@ -96,16 +96,6 @@
             <artifactId>mockito-core</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--
-            CVE-2025-67030 et al: org.codehaus.plexus:plexus-utils fixed at 3.6.1+.
-            Direct pin; artifact is otherwise unused in code but kept on the test classpath.
-        -->
-        <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
-            <version>3.6.1</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>ch.qos.logback.contrib</groupId>
             <artifactId>logback-jackson</artifactId>
