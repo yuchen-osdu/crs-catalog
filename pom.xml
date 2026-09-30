@@ -120,12 +120,6 @@
                 <module>provider/crs-catalog-ibm/crs-catalog-ocp</module>
             </modules>
         </profile>
-        <profile>
-            <id>gc</id>
-            <modules>
-                <module>provider/crs-catalog-gc/crs-catalog-gke</module>
-            </modules>
-        </profile>
     </profiles>
 
     <dependencyManagement>
