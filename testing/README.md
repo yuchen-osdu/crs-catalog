@@ -58,12 +58,6 @@ The following parameters are expected as environment variables: Soon to change a
 | AZURE_DEPLOY_CLIENT_ID | e.g.  |
 | AZURE_DEPLOY_CLIENT_SECRET | e.g.  |
 
-## Google Cloud auth provider (catalog_test_gc/jwt_client.py)
-
-| Variable | Contents |
-|----------|----------|
-| INTEGRATION_TESTER | go to the google IAM & admin console, navigate to Service accounts to create a key and download the account info file. |
-
 ## Baremetal auth provider (catalog_test_baremetal/jwt_client.py)
 
 | Variable | Contents |
