@@ -35,4 +35,7 @@ istio:
       - "/api/crs/catalog/api-docs.yaml"
       - "/api/crs/catalog/api-docs.yaml/*"
       - "/api/crs/catalog/swagger"
+      - "/api/crs/catalog/swagger-ui"
+      - "/api/crs/catalog/swagger-ui/*"
+      - "/api/crs/catalog/swagger-ui.html"
       - "/api/crs/catalog/api-docs/swagger-config"
