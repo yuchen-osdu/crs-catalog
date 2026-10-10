@@ -103,7 +103,7 @@ mvn clean install -DskipTests
 After configuring your environment as specified above, you can follow these steps to build and run the application. These steps should be invoked from the *repository root.*
 
 ```bash
-cd provider/crs-catalog-gc/crs-catalog-gke/ && mvn spring-boot:run
+cd provider/crs-catalog-ibm/crs-catalog-ocp/ && mvn spring-boot:run
 ```
 
 ## Testing

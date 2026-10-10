@@ -761,7 +761,7 @@
   },
   {
     "id": "{{data_partition_id}}:reference-data--CoordinateTransformation:EPSG::1111",
-    "kind": "{{schema-authority}}:wks:reference-data--CoordinateTransformation:1.1.0",
+    "kind": "{{schema-authority}}:wks:reference-data--CoordinateTransformation:1.2.0",
     "acl": {
       "viewers": [
         "data.default.viewers@{{acl_domain}}"
@@ -904,13 +904,13 @@
           }
         ]
       },
-      "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateTransformation.1.1.0.json; commit SHA 5443886a.",
+      "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateTransformation.1.2.0.json; commit SHA 5443886a.",
       "CommitDate": "2022-04-13T18:16:39+02:00"
     }
   },
   {
     "id": "{{data_partition_id}}:reference-data--CoordinateTransformation:EPSG::5429",
-    "kind": "{{schema-authority}}:wks:reference-data--CoordinateTransformation:1.1.0",
+    "kind": "{{schema-authority}}:wks:reference-data--CoordinateTransformation:1.2.0",
     "acl": {
       "viewers": [
         "data.default.viewers@{{acl_domain}}"
@@ -1052,13 +1052,13 @@
           }
         ]
       },
-      "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateTransformation.1.1.0.json; commit SHA 5443886a.",
+      "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateTransformation.1.2.0.json; commit SHA 5443886a.",
       "CommitDate": "2022-04-13T18:16:39+02:00"
     }
   },
   {
     "id": "{{data_partition_id}}:reference-data--CoordinateTransformation:EPSG::147000000",
-    "kind": "{{schema-authority}}:wks:reference-data--CoordinateTransformation:1.1.0",
+    "kind": "{{schema-authority}}:wks:reference-data--CoordinateTransformation:1.2.0",
     "acl": {
       "viewers": [
         "data.default.viewers@{{acl_domain}}"
@@ -1202,7 +1202,7 @@
           }
         ]
       },
-      "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateTransformation.1.1.0.json; commit SHA 5443886a.",
+      "Source": "Workbook Resources/IOGP/Manifests/reference-data/CoordinateTransformation.1.2.0.json; commit SHA 5443886a.",
       "CommitDate": "2022-04-13T18:16:39+02:00"
     }
   }
