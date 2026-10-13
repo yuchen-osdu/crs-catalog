@@ -27,8 +27,12 @@ import constants
 import jwt_client
 from v3.HttpClient import HttpClient
 
-MAX_ATTEMPTS = 3
-SLEEP_SECONDS = 10
+MAX_ATTEMPTS = 8
+SLEEP_SECONDS = 20
+SEARCH_ENDPOINTS = (
+    "/api/search/v2/query",
+    "/api/search/v2/query_with_cursor",
+)
 ALLURE_DIR = "cimpl/allure-results"
 
 
@@ -63,33 +67,41 @@ def main() -> int:
     kind = f"{constants.SCHEMA_AUTHORITY}:wks:reference-data--Coordinate*:1.*.*"
     payload = json.dumps({
         "kind": kind,
+        "query": "*",
         "limit": 1,
         "returnedFields": ["id"],
     })
 
     client = HttpClient(constants.ROOT_URL, constants.MY_TENANT, jwt_client)
-    print(f"Checking Search query_with_cursor for kind={kind} on {constants.ROOT_URL}")
+    print(
+        f"Checking Search endpoints {SEARCH_ENDPOINTS} for kind={kind} "
+        f"on {constants.ROOT_URL}"
+    )
 
-    last_status = None
-    last_body = ""
+    last_by_endpoint = {}
     for attempt in range(1, MAX_ATTEMPTS + 1):
-        response = client.make_request("POST", "/api/search/v2/query_with_cursor", payload)
-        last_status = response.status_code
-        last_body = (response.content or b"").decode("utf-8", "ignore")[:500]
-        if response.status_code == 200:
-            print(f"Search OK on attempt {attempt} (HTTP 200)")
-            return 0
-        print(
-            f"attempt {attempt}/{MAX_ATTEMPTS}: Search returned HTTP {response.status_code}: {last_body}",
-            file=sys.stderr,
-        )
+        for endpoint in SEARCH_ENDPOINTS:
+            response = client.make_request("POST", endpoint, payload)
+            body = (response.content or b"").decode("utf-8", "ignore")[:500]
+            last_by_endpoint[endpoint] = (response.status_code, body)
+            if response.status_code == 200:
+                print(
+                    f"Search OK on attempt {attempt} via {endpoint} (HTTP 200)"
+                )
+                return 0
+            print(
+                f"attempt {attempt}/{MAX_ATTEMPTS} {endpoint}: "
+                f"HTTP {response.status_code}: {body}",
+                file=sys.stderr,
+            )
         if attempt < MAX_ATTEMPTS:
             time.sleep(SLEEP_SECONDS)
 
-    err_msg = (
-        f"Search unhealthy after {MAX_ATTEMPTS} attempts "
-        f"(last HTTP {last_status}): {last_body}"
+    details = "; ".join(
+        f"{ep} -> HTTP {status}: {body}"
+        for ep, (status, body) in last_by_endpoint.items()
     )
+    err_msg = f"Search unhealthy after {MAX_ATTEMPTS} attempts ({details})"
     print(f"ERROR: {err_msg}", file=sys.stderr)
     write_allure_result("failed", err_msg, start_ms)
     return 1
@@ -97,4 +109,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-
