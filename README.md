@@ -126,4 +126,4 @@ requires the following environment variables:
 
 ## Google Cloud
 
-Instructions for running the Google Cloud Platform implementation locally can be found [here](./provider/crs-catalog-gc/crs-catalog-gke/README.md).
+The Google Cloud provider has been removed from this repository.

@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Inject;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,15 +50,15 @@ public class SearchWrapperService {
     private static String schemaAuthority;
 
     public static String getCoordinateReferenceSystemKind() {
-        return "%s:wks:reference-data--CoordinateReferenceSystem:1.1.0".formatted(schemaAuthority);
+        return "%s:wks:reference-data--CoordinateReferenceSystem:1.*.*".formatted(schemaAuthority);
     }
 
     public static String getCoordinateTransformationKind() {
-        return "%s:wks:reference-data--CoordinateTransformation:1.1.0".formatted(schemaAuthority);
+        return "%s:wks:reference-data--CoordinateTransformation:1.*.*".formatted(schemaAuthority);
     }
 
     public static String getCtAndCrsKind() {
-        return "%s:wks:reference-data--*:1.1.0".formatted(schemaAuthority);
+        return "%s:wks:reference-data--*:1.*.*".formatted(schemaAuthority);
     }
 
     @PostConstruct
@@ -164,7 +165,7 @@ public class SearchWrapperService {
                     default_Count += pageResults.size();
                 }
             }
-            queryResponse.setResults(searchResultList);
+            queryResponse.setResults(dedupeByRecordId(searchResultList));
             logger.debug("Received response from search service: %s".formatted(queryResponse.toString()));
         } catch (SearchException e) {
             handleSearchError("Failed to call search service", e);
@@ -196,12 +197,78 @@ public class SearchWrapperService {
                 default_Count += pageResults.size();
                 cursor_value = cursorqueryResponse.getCursor();
             }
-            cursorqueryResponse.setResults(searchResultList);
+            cursorqueryResponse.setResults(dedupeByRecordId(searchResultList));
             logger.debug("Received response from search service: %s".formatted(cursorqueryResponse.toString()));
         } catch (SearchException e) {
             handleSearchError("Failed to call search service", e);
         }
         return cursorqueryResponse;
+    }
+
+    /**
+     * Kind wildcards (1.*.*) can return the same record id under multiple schema
+     * versions. Keep one row per id, preferring the higher kind version.
+     */
+    static List<Map<String, Object>> dedupeByRecordId(List<Map<String, Object>> results) {
+        Map<String, Map<String, Object>> byId = new LinkedHashMap<>();
+        for (Map<String, Object> row : results) {
+            if (row == null) {
+                continue;
+            }
+            Object idObj = row.get("id");
+            if (!(idObj instanceof String id) || id.isEmpty()) {
+                byId.put("__anon_" + byId.size(), row);
+                continue;
+            }
+            Map<String, Object> existing = byId.get(id);
+            if (existing == null || preferIncomingKind(row, existing)) {
+                byId.put(id, row);
+            }
+        }
+        return new ArrayList<>(byId.values());
+    }
+
+    private static boolean preferIncomingKind(Map<String, Object> incoming, Map<String, Object> existing) {
+        return compareKindVersions(asString(incoming.get("kind")), asString(existing.get("kind"))) > 0;
+    }
+
+    private static String asString(Object value) {
+        return value instanceof String s ? s : "";
+    }
+
+    /**
+     * Compare trailing major.minor.patch of OSDU kinds. Returns positive when
+     * {@code left} is newer than {@code right}.
+     */
+    static int compareKindVersions(String leftKind, String rightKind) {
+        int[] left = parseKindVersion(leftKind);
+        int[] right = parseKindVersion(rightKind);
+        for (int i = 0; i < 3; i++) {
+            if (left[i] != right[i]) {
+                return Integer.compare(left[i], right[i]);
+            }
+        }
+        return 0;
+    }
+
+    private static int[] parseKindVersion(String kind) {
+        int[] version = {0, 0, 0};
+        if (kind == null || kind.isEmpty()) {
+            return version;
+        }
+        int lastColon = kind.lastIndexOf(':');
+        if (lastColon < 0 || lastColon == kind.length() - 1) {
+            return version;
+        }
+        String[] parts = kind.substring(lastColon + 1).split("\\.");
+        for (int i = 0; i < Math.min(3, parts.length); i++) {
+            try {
+                version[i] = Integer.parseInt(parts[i]);
+            } catch (NumberFormatException ignored) {
+                version[i] = 0;
+            }
+        }
+        return version;
     }
 
     private void handleSearchError(String errorMsg, SearchException e) {
