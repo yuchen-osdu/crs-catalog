@@ -39,3 +39,5 @@ istio:
       - "/api/crs/catalog/swagger-ui/*"
       - "/api/crs/catalog/swagger-ui.html"
       - "/api/crs/catalog/api-docs/swagger-config"
+      # Public version info (expanded to /api/crs/catalog/<version>/info)
+      - "info"

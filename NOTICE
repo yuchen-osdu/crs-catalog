@@ -15,7 +15,7 @@ The following software have components provided under the terms of this license:
 - Apache Maven Wagon :: API (from https://maven.apache.org/wagon, https://repo1.maven.org/maven2/org/apache/maven/wagon/wagon-provider-api)
 - Apache Maven Wagon :: Providers :: File Provider (from https://maven.apache.org/wagon, https://repo1.maven.org/maven2/org/apache/maven/wagon/wagon-file)
 - AspectJ Weaver (from http://www.aspectj.org, https://www.eclipse.org/aspectj/)
-- Cobertura (from http://cobertura.sourceforge.net)
+- Cobertura (from http://cobertura.sourceforge.net, http://cobertura.sourceforge.net/)
 - Default Plexus Container (from https://codehaus-plexus.github.io/, https://repo1.maven.org/maven2/org/codehaus/plexus/plexus-container-default)
 - Doxia :: APT Module (from https://maven.apache.org/doxia/doxia/)
 - Doxia :: Core (from https://maven.apache.org/doxia/doxia/, https://repo1.maven.org/maven2/org/apache/maven/doxia/doxia-core)
@@ -83,7 +83,7 @@ The following software have components provided under the terms of this license:
 - CDI APIs (Relocation) (from https://projects.eclipse.org/projects/ee4j)
 - CDI Language Model (Relocation) (from https://projects.eclipse.org/projects/ee4j)
 - ClassMate (from http://github.com/cowtowncoder/java-classmate)
-- Cobertura (from http://cobertura.sourceforge.net)
+- Cobertura (from http://cobertura.sourceforge.net, http://cobertura.sourceforge.net/)
 - Cobertura Limited Runtime (from http://cobertura.sourceforge.net)
 - Collections (from https://repo1.maven.org/maven2/commons-collections/commons-collections)
 - Commons Digester (from http://commons.apache.org/digester/)
@@ -201,27 +201,27 @@ The following software have components provided under the terms of this license:
 - Mojo's Maven plugin for Cobertura (from http://mojo.codehaus.org/cobertura-maven-plugin/)
 - Netty Reactive Streams Implementation (from https://repo1.maven.org/maven2/com/typesafe/netty/netty-reactive-streams)
 - Netty/Buffer (from http://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-buffer)
-- Netty/Codec (from https://repo1.maven.org/maven2/io/netty/netty-codec)
+- Netty/Codec (from http://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-codec)
 - Netty/Codec/Base (from https://netty.io/)
 - Netty/Codec/Compression (from https://netty.io/)
 - Netty/Codec/DNS (from http://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-codec-dns)
-- Netty/Codec/HTTP (from https://repo1.maven.org/maven2/io/netty/netty-codec-http)
+- Netty/Codec/HTTP (from http://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-codec-http)
 - Netty/Codec/HTTP2 (from http://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-codec-http2)
 - Netty/Codec/Marshalling (from https://netty.io/)
 - Netty/Codec/Protobuf (from https://netty.io/)
 - Netty/Codec/Socks (from http://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-codec-socks)
 - Netty/Common (from http://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-common)
-- Netty/Handler (from https://repo1.maven.org/maven2/io/netty/netty-handler)
+- Netty/Handler (from http://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-handler)
 - Netty/Handler/Proxy (from http://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-handler-proxy)
-- Netty/Resolver (from https://repo1.maven.org/maven2/io/netty/netty-resolver)
+- Netty/Resolver (from http://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-resolver)
 - Netty/Resolver/DNS (from http://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-resolver-dns)
 - Netty/Resolver/DNS/Classes/MacOS (from https://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-resolver-dns-classes-macos)
 - Netty/TomcatNative [BoringSSL - Static] (from https://github.com/netty/netty-tcnative/netty-tcnative-boringssl-static/)
 - Netty/TomcatNative [OpenSSL - Classes] (from https://github.com/netty/netty-tcnative/)
 - Netty/Transport (from http://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-transport)
-- Netty/Transport/Classes/Epoll (from https://repo1.maven.org/maven2/io/netty/netty-transport-classes-epoll)
+- Netty/Transport/Classes/Epoll (from https://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-transport-classes-epoll)
 - Netty/Transport/Classes/KQueue (from https://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-transport-classes-kqueue)
-- Netty/Transport/Native/Unix/Common (from https://repo1.maven.org/maven2/io/netty/netty-transport-native-unix-common)
+- Netty/Transport/Native/Unix/Common (from https://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-transport-native-unix-common)
 - Nimbus Content Type (from https://bitbucket.org/connect2id/nimbus-content-type)
 - Nimbus JOSE+JWT (from https://bitbucket.org/connect2id/nimbus-jose-jwt, https://bitbucket.org/nimbusds/nimbus-jose-jwt)
 - Nimbus LangTag (from https://bitbucket.org/connect2id/nimbus-language-tags)
@@ -373,7 +373,7 @@ The following software have components provided under the terms of this license:
 - Lucene QueryParsers (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-queryparser)
 - Lucene Sandbox (from https://lucene.apache.org/, https://repo1.maven.org/maven2/org/apache/lucene/lucene-sandbox)
 - MinLog (from https://github.com/EsotericSoftware/minlog)
-- Netty/Codec/HTTP (from https://repo1.maven.org/maven2/io/netty/netty-codec-http)
+- Netty/Codec/HTTP (from http://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-codec-http)
 - Old JAXB Core (from <https://eclipse-ee4j.github.io/jaxb-ri/>, https://eclipse-ee4j.github.io/jaxb-ri/, https://repo1.maven.org/maven2/com/sun/xml/bind/jaxb-impl)
 - Plexus Common Utilities (from http://plexus.codehaus.org/plexus-utils, https://codehaus-plexus.github.io/plexus-utils/, https://repo1.maven.org/maven2/org/codehaus/plexus/plexus-utils)
 - Prometheus Metrics Exposition Formats (from http://github.com/prometheus/client_java)
@@ -534,21 +534,21 @@ GPL-1.0-or-later
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Cobertura (from http://cobertura.sourceforge.net)
+- Cobertura (from http://cobertura.sourceforge.net, http://cobertura.sourceforge.net/)
 
 ========================================================================
 GPL-2.0-only
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Cobertura (from http://cobertura.sourceforge.net)
+- Cobertura (from http://cobertura.sourceforge.net, http://cobertura.sourceforge.net/)
 
 ========================================================================
 GPL-2.0-or-later
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Cobertura (from http://cobertura.sourceforge.net)
+- Cobertura (from http://cobertura.sourceforge.net, http://cobertura.sourceforge.net/)
 
 ========================================================================
 GPL-2.0-with-classpath-exception
@@ -585,7 +585,7 @@ GPL-3.0-or-later
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Cobertura (from http://cobertura.sourceforge.net)
+- Cobertura (from http://cobertura.sourceforge.net, http://cobertura.sourceforge.net/)
 
 ========================================================================
 ICU
@@ -623,7 +623,7 @@ LGPL-2.1-only
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Cobertura (from http://cobertura.sourceforge.net)
+- Cobertura (from http://cobertura.sourceforge.net, http://cobertura.sourceforge.net/)
 - Javassist (from http://www.javassist.org/, https://www.javassist.org/)
 - Logback Classic Module (from http://logback.qos.ch, https://repo1.maven.org/maven2/ch/qos/logback/logback-classic)
 - Logback Contrib :: JSON :: Classic (from https://repo1.maven.org/maven2/ch/qos/logback/contrib/logback-json-classic)
@@ -695,7 +695,7 @@ The following software have components provided under the terms of this license:
 - Microsoft Kiota-Java Serialization-Multipart (from https://github.com/microsoft/kiota-java)
 - Microsoft Kiota-Java Serialization-Text (from https://github.com/microsoft/kiota-java)
 - Mockito (from http://mockito.org, https://github.com/mockito/mockito)
-- Netty/Codec/HTTP (from https://repo1.maven.org/maven2/io/netty/netty-codec-http)
+- Netty/Codec/HTTP (from http://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-codec-http)
 - Netty/Common (from http://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-common)
 - Objectify App Engine (from http://code.google.com/p/objectify-appengine/, https://github.com/objectify/objectify)
 - Plexus Default Interactivity Handler (from https://codehaus-plexus.github.io/plexus-pom/, https://repo1.maven.org/maven2/org/codehaus/plexus/plexus-interactivity-api)
@@ -720,7 +720,7 @@ MPL-1.1
 ========================================================================
 The following software have components provided under the terms of this license:
 
-- Cobertura (from http://cobertura.sourceforge.net)
+- Cobertura (from http://cobertura.sourceforge.net, http://cobertura.sourceforge.net/)
 
 ========================================================================
 Plexus
@@ -782,7 +782,7 @@ cc-pd
 The following software have components provided under the terms of this license:
 
 - Guava: Google Core Libraries for Java (from http://code.google.com/p/guava-libraries, https://github.com/google/guava, https://repo1.maven.org/maven2/com/google/guava/guava)
-- Netty/Codec (from https://repo1.maven.org/maven2/io/netty/netty-codec)
+- Netty/Codec (from http://netty.io/, https://repo1.maven.org/maven2/io/netty/netty-codec)
 - Netty/Codec/Base (from https://netty.io/)
 
 ========================================================================
