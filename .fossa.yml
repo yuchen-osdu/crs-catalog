@@ -24,15 +24,7 @@ analyze:
       type: mvn
       target: provider/crs-catalog-azure/crs-catalog-aks/pom.xml
       path: .
-    - name: crs-catalog-gke
-      type: mvn
-      target: provider/crs-catalog-gc/crs-catalog-gke/pom.xml
-      path: .
     - name: crs-catalog-ocp
       type: mvn
       target: provider/crs-catalog-ibm/crs-catalog-ocp/pom.xml
-      path: .
-    - name: crs-catalog-aws
-      type: mvn
-      target: provider/crs-catalog-aws/pom.xml
       path: .
