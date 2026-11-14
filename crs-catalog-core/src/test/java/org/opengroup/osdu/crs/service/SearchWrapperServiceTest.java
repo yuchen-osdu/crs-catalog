@@ -27,6 +27,23 @@ import java.util.Map;
 
 @ExtendWith(MockitoExtension.class)
 public class SearchWrapperServiceTest {
+    @Test
+    void preservesSearchBadRequestForBothPagingModes() throws SearchException {
+        Mockito.when(searchFactory.create(dpsHeaders)).thenReturn(searchService);
+        searchWrapperService.postInit();
+        var response = new org.opengroup.osdu.core.common.http.HttpResponse();
+        response.setResponseCode(400);
+        var error = new SearchException("Invalid search request", response);
+        Mockito.when(searchService.search(Mockito.any())).thenThrow(error);
+        Mockito.when(searchService.searchCursor(Mockito.any())).thenThrow(error);
+        var query = new CoordinateReferenceSystemsQuery();
+        var offsetError = Assertions.assertThrows(org.opengroup.osdu.crs.util.AppException.class,
+                () -> searchWrapperService.search(query, "test-kind"));
+        var cursorError = Assertions.assertThrows(org.opengroup.osdu.crs.util.AppException.class,
+                () -> searchWrapperService.searchWithCursor(query, "test-kind"));
+        Assertions.assertEquals(400, offsetError.getError().getCode());
+        Assertions.assertEquals(400, cursorError.getError().getCode());
+    }
 
 	@InjectMocks
 	private SearchWrapperService searchWrapperService;
@@ -224,4 +241,81 @@ public class SearchWrapperServiceTest {
 		Mockito.verify(searchService, Mockito.times(2)).searchCursor(Mockito.any());
 	}
 
+	@Test
+	void testSearchDedupesSameRecordIdPreferringNewerKind() throws SearchException {
+		CoordinateReferenceSystemsQuery coordinateReferenceSystemsQuery = new CoordinateReferenceSystemsQuery();
+		coordinateReferenceSystemsQuery.setIncludeDeprecated(true);
+		coordinateReferenceSystemsQuery.setLimit(5000);
+
+		Mockito.when(searchFactory.create(dpsHeaders)).thenReturn(searchService);
+		searchWrapperService.postInit();
+
+		Map<String, Object> older = new HashMap<>();
+		older.put("id", "osdu:reference-data--CoordinateTransformation:EPSG::1111");
+		older.put("kind", "osdu:wks:reference-data--CoordinateTransformation:1.1.0");
+		Map<String, Object> newer = new HashMap<>();
+		newer.put("id", "osdu:reference-data--CoordinateTransformation:EPSG::1111");
+		newer.put("kind", "osdu:wks:reference-data--CoordinateTransformation:1.2.0");
+
+		QueryResponse page = new QueryResponse();
+		page.setResults(Arrays.asList(older, newer));
+		page.setTotalCount(2);
+
+		Mockito.when(searchService.search(Mockito.any())).thenReturn(page);
+
+		SearchResponse searchResponse = searchWrapperService.search(
+				coordinateReferenceSystemsQuery, SearchWrapperService.getCoordinateTransformationKind());
+
+		Assertions.assertEquals(1, searchResponse.getSearchResults().getResults().size());
+		Assertions.assertEquals(
+				"osdu:wks:reference-data--CoordinateTransformation:1.2.0",
+				searchResponse.getSearchResults().getResults().get(0).get("kind"));
+	}
+
+	@Test
+	void testCompareKindVersions() {
+		Assertions.assertTrue(SearchWrapperService.compareKindVersions(
+				"osdu:wks:reference-data--CoordinateTransformation:1.2.0",
+				"osdu:wks:reference-data--CoordinateTransformation:1.1.0") > 0);
+		Assertions.assertEquals(0, SearchWrapperService.compareKindVersions(
+				"osdu:wks:reference-data--CoordinateReferenceSystem:1.1.0",
+				"osdu:wks:reference-data--CoordinateReferenceSystem:1.1.0"));
+	}
+
+	@Test
+	void testDedupeByRecordIdKeepsDistinctIds() {
+		Map<String, Object> a = new HashMap<>();
+		a.put("id", "record-a");
+		a.put("kind", "osdu:wks:x:1.0.0");
+		Map<String, Object> b = new HashMap<>();
+		b.put("id", "record-b");
+		b.put("kind", "osdu:wks:x:1.0.0");
+		Assertions.assertEquals(2, SearchWrapperService.dedupeByRecordId(Arrays.asList(a, b)).size());
+	}
+
+	@Test
+	void testGetSingleCrsOrCtEscapesSpecialCharacters() throws SearchException {
+		Mockito.when(searchFactory.create(dpsHeaders)).thenReturn(searchService);
+		searchWrapperService.postInit();
+		Mockito.when(searchService.search(Mockito.any())).thenReturn(new QueryResponse());
+
+		searchWrapperService.getSingleCrsOrCt("id\" || 1=1 || \"", "data\\id", "test-kind");
+
+		ArgumentCaptor<QueryRequest> captor = ArgumentCaptor.forClass(QueryRequest.class);
+		Mockito.verify(searchService).search(captor.capture());
+		Assertions.assertEquals("id: \"id\\\" || 1=1 || \\\"\" && data.ID: \"data\\\\id\"", captor.getValue().getQuery());
+	}
+
+	@Test
+	void testGetSingleCrsOrCtNormalRecordId() throws SearchException {
+		Mockito.when(searchFactory.create(dpsHeaders)).thenReturn(searchService);
+		searchWrapperService.postInit();
+		Mockito.when(searchService.search(Mockito.any())).thenReturn(new QueryResponse());
+
+		searchWrapperService.getSingleCrsOrCt("osdu:reference-data--CoordinateReferenceSystem:EPSG::4326", null, "test-kind");
+
+		ArgumentCaptor<QueryRequest> captor = ArgumentCaptor.forClass(QueryRequest.class);
+		Mockito.verify(searchService).search(captor.capture());
+		Assertions.assertEquals("id: \"osdu:reference-data--CoordinateReferenceSystem:EPSG::4326\"", captor.getValue().getQuery());
+	}
 }
