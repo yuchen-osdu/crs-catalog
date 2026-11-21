@@ -3,36 +3,53 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <java.version>17</java.version>
+        <revision>0.31.0-SNAPSHOT</revision>
+        <java.version>25</java.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
+        <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
         <docker.image.prefix>org.opengroup.osdu</docker.image.prefix>
-        <powermock.version>2.0.6</powermock.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- OSDU Versions -->
-        <os-core-common.version>7.1.0</os-core-common.version>
+        <os-core-common.version>10.0.0</os-core-common.version>
 
         <!-- Spring Versions -->
-        <spring-boot.version>3.5.14</spring-boot.version>
-        <!-- os-core-common 7.0.0 declares lettuce-core as provided; CVE-2025-58057 requires >= 7.5.2.RELEASE -->
+        <spring-boot.version>4.0.9</spring-boot.version>
+        <!-- os-core-common declares lettuce-core as provided; CVE-2025-58057 requires >= 7.5.2.RELEASE -->
         <lettuce.version>7.5.2.RELEASE</lettuce.version>
-        <!-- lettuce-core 7.x requires Netty 4.2+; Spring Boot 3.5.14 provides 4.1.x -->
-        <netty.version>4.2.14.Final</netty.version>
-        <spring-security.version>6.5.10</spring-security.version>
-        <spring-framework.version>6.2.18</spring-framework.version>
+        <!-- lettuce-core 7.x requires Netty 4.2+; keep the patched 4.2.x line (Spring Boot 4.0.9 manages 4.2.17) -->
+        <netty.version>4.2.19.Final</netty.version>
+        <!-- The service runs on Jetty; Spring Boot 4.0.9 manages Jetty 12.1.12, use the latest 12.1.x patch -->
+        <jetty.version>12.1.14</jetty.version>
+        <!-- Tomcat is not the runtime server, but keep any transitive tomcat-embed artifacts on the patched 11.0.x line -->
+        <tomcat.version>11.0.27</tomcat.version>
+        <spring-security.version>7.0.7</spring-security.version>
+        <spring-framework.version>7.0.10</spring-framework.version>
+        <logback.version>1.6.5</logback.version>
+        <guava.version>33.7.2-jre</guava.version>
 
         <!-- Project Versions -->
-        <openapi.version>2.8.16</openapi.version>
-        <swagger-core.version>2.2.45</swagger-core.version>
+        <openapi.version>3.0.3</openapi.version>
+        <swagger-core.version>2.2.47</swagger-core.version>
         <json-smart.version>2.6.0</json-smart.version>
         <lucene.version>8.10.0</lucene.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <lombok.version>1.18.42</lombok.version>
+        <!-- CVE-2026-59889, GHSA-mhm7-754m-9p8w, CVE-2026-54515: jackson-databind < 2.21.5 has @JsonView bypasses.
+             Spring Boot 4 serves JSON with Jackson 3; Jackson 2 remains for third-party libraries. -->
+        <jackson2.version>2.21.8</jackson2.version>
+        <jackson3.version>3.1.8</jackson3.version>
+        <!-- CVE-2026-49844: log4j-api < 2.25.5 mishandles non-finite floats in MapMessage JSON serialization -->
+        <log4j.version>2.25.5</log4j.version>
+        <!-- Nested spring-boot-dependencies → mockito-bom ignores consumer mockito.version; pin explicitly.
+             Mockito 5.20+ pulls ByteBuddy with Java 25 support (Epic 82 tip 13). -->
+        <mockito.version>5.23.0</mockito.version>
 
         <!-- Plugin Versions -->
-        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
-        <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
+        <osdu-enforcer-rules.version>2.0.3</osdu-enforcer-rules.version>
     </properties>
 
     <licenses>
@@ -45,7 +62,7 @@
 
     <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
     <artifactId>crs-catalog-service</artifactId>
-    <version>0.30.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <name>crs-catalog-service</name>
     <description>crs-catalog service</description>
@@ -102,30 +119,6 @@
                 <module>crs-catalog-core-plus</module>
             </modules>
         </profile>
-        <profile>
-            <id>aws</id>
-            <modules>
-                <module>provider/crs-catalog-aws</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>azure</id>
-            <modules>
-                <module>provider/crs-catalog-azure/crs-catalog-aks</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>ibm</id>
-            <modules>
-                <module>provider/crs-catalog-ibm/crs-catalog-ocp</module>
-            </modules>
-        </profile>
-        <profile>
-            <id>gc</id>
-            <modules>
-                <module>provider/crs-catalog-gc/crs-catalog-gke</module>
-            </modules>
-        </profile>
     </profiles>
 
     <dependencyManagement>
@@ -137,11 +130,40 @@
                  os-core-common last as it provides the default dependencies for the project. -->
 
             <!-- BOM Section Start -->
-            <!-- netty-bom first so it wins over Spring Boot's Netty 4.1.x (CVE-2025-58057 et al) -->
+            <!-- netty-bom first so it wins over Spring Boot's Netty (CVE-2025-58057 et al) -->
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-bom</artifactId>
                 <version>${netty.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Patched Jackson 2 / Jackson 3 and Jetty BOMs before Spring Boot so they override its older defaults -->
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson2.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>tools.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson3.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-bom</artifactId>
+                <version>${jetty.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.jetty.ee11</groupId>
+                <artifactId>jetty-ee11-bom</artifactId>
+                <version>${jetty.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -168,6 +190,41 @@
             </dependency>
             <!-- BOM Section End -->
 
+            <!-- Tomcat override: BOM import does not propagate tomcat.version -->
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-core</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-el</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-websocket</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+
+            <!-- Logback 1.6.5 fixes CVE-2026-104721; Spring Boot 4.0.9 still manages 1.5.x -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <!-- Guava 33.7.2 fixes CVE-2026-102554 -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
             <!-- Align swagger-core.v3 across os-core-common and springdoc to avoid mixed versions.
                  Without this, providers pull swagger-core 2.2.43 transitively from os-core-common,
                  which causes issues like the "##default" sentinel leaking into the generated OpenAPI spec. -->
@@ -193,6 +250,21 @@
                 <artifactId>os-core-common</artifactId>
                 <version>${os-core-common.version}</version>
             </dependency>
+            <!--
+                log4j Fix CVE-2026-49844
+                Override Spring Boot's log4j version; property redefinition alone is inert under
+                the imported spring-boot-dependencies BOM.
+            -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-to-slf4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
             <dependency>
                 <groupId>net.minidev</groupId>
                 <artifactId>json-smart</artifactId>
@@ -204,9 +276,7 @@
                 <version>${openapi.version}</version>
             </dependency>
             <!--
-                commons-lang3 Fix CVE-2025-48924
-                Override Spring Boot 3.5.x's commons-lang3 version to fix uncontrolled recursion vulnerability.
-                This can be removed when Spring Boot updates to commons-lang3 3.18.0 or later.
+                commons-lang3 Fix CVE-2025-48924 (uncontrolled recursion)
             -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -223,7 +293,7 @@
             <dependency>
                 <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
                 <artifactId>crs-catalog-core</artifactId>
-                <version>${parent.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>javax.jdo</groupId>
@@ -231,19 +301,19 @@
                 <version>3.1</version>
             </dependency>
             <dependency>
-                <groupId>org.powermock</groupId>
-                <artifactId>powermock-module-junit4</artifactId>
-                <version>${powermock.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.powermock</groupId>
-                <artifactId>powermock-api-mockito2</artifactId>
-                <version>${powermock.version}</version>
+                <groupId>io.lettuce</groupId>
+                <artifactId>lettuce-core</artifactId>
+                <version>${lettuce.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>4.11.0</version>
+                <version>${mockito.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <version>${mockito.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -340,7 +410,7 @@
                     <dependency>
                         <groupId>org.opengroup.osdu</groupId>
                         <artifactId>osdu-enforcer-rules</artifactId>
-                        <version>1.0.1</version>
+                        <version>${osdu-enforcer-rules.version}</version>
                     </dependency>
                 </dependencies>
                 <executions>
@@ -356,14 +426,31 @@
                                     <version>[3.6.3,)</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>[17,)</version>
+                                    <version>[25,)</version>
                                 </requireJavaVersion>
                                 <banDuplicatePomDependencyVersions/>
+                                <reactorModuleConvergence/>
                                 <requireSameVersions>
                                     <plugins>
                                         <plugin>org.apache.maven.plugins:maven-compiler-plugin</plugin>
                                     </plugins>
                                 </requireSameVersions>
+                                <requireSameVersions>
+                                    <plugins>
+                                        <plugin>org.apache.maven.plugins:maven-surefire-plugin</plugin>
+                                        <plugin>org.apache.maven.plugins:maven-failsafe-plugin</plugin>
+                                        <plugin>org.apache.maven.plugins:maven-surefire-report-plugin</plugin>
+                                    </plugins>
+                                </requireSameVersions>
+                                <requireReleaseDeps>
+                                    <message>No Snapshots Allowed!</message>
+                                    <excludes>
+                                        <!-- Reactor / parent (version is 0.31.0-SNAPSHOT until release). -->
+                                        <exclude>org.opengroup.osdu.crs-catalog-service:crs-catalog-service</exclude>
+                                        <exclude>org.opengroup.osdu.crs-catalog-service:crs-catalog-core</exclude>
+                                        <exclude>org.opengroup.osdu.crs-catalog-service:crs-catalog-core-plus</exclude>
+                                    </excludes>
+                                </requireReleaseDeps>
                             </rules>
                         </configuration>
                     </execution>
@@ -378,6 +465,31 @@
                                 <enforceTestExecution/>
                             </rules>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.8.0</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
