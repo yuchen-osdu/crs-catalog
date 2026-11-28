@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.opengroup.osdu.crs-catalog-service</groupId>
         <artifactId>crs-catalog-service</artifactId>
-        <version>0.30.0-SNAPSHOT</version>
+        <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -22,31 +22,11 @@
         <objectify.version>5.1.22</objectify.version>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
         <commons-beanutils.version>1.11.0</commons-beanutils.version>
-        <org-eclipse-jetty.version>12.0.32</org-eclipse-jetty.version>
     </properties>
 
     <prerequisites>
         <maven>3.1.0</maven>
     </prerequisites>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-bom</artifactId>
-                <version>${org-eclipse-jetty.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.jetty.ee10</groupId>
-                <artifactId>jetty-ee10-bom</artifactId>
-                <version>${org-eclipse-jetty.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
   <dependencies>
     <!-- Compile/runtime dependencies -->
@@ -71,7 +51,7 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
+      <artifactId>spring-boot-starter-webmvc</artifactId>
       <exclusions>
         <exclusion>
           <groupId>org.springframework.boot</groupId>
@@ -146,25 +126,14 @@
         </dependency>
 
         <!-- Test Dependencies -->
-    <dependency>
-      <groupId>org.powermock</groupId>
-      <artifactId>powermock-module-junit4</artifactId>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-        </exclusion>
-      </exclusions>
-        </dependency>
         <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito2</artifactId>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
+            <artifactId>mockito-junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

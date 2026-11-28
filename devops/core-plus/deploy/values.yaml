@@ -1,5 +1,7 @@
 global:
   domain: ""
+  # Host the HTTPRoute attaches to when httpRoute.hostnames is empty.
+  hostname: ""
   limitsEnabled: true
 
 data:
@@ -19,6 +21,21 @@ conf:
   appName: "crs-catalog"
   replicas: 1
 
+httpRoute:
+  enabled: false
+  # Route name. Defaults to "<release>-route" so it never collides with a route of the same name
+  # defined outside this chart.
+  name: ""
+  parentRefs:
+    - name: cimpl-gateway
+      namespace: istio-system
+  # Defaults to global.hostname when empty. The render fails when both are empty.
+  hostnames: []
+  # One rule per entry. Optional per entry: pathType (default PathPrefix), serviceName
+  # (default conf.appName), port (default 80) and filters (for example URLRewrite).
+  routes:
+    - path: /api/crs/catalog/
+
 istio:
   proxyCPU: "5m"
   proxyCPULimit: "200m"
@@ -30,13 +47,14 @@ istio:
       - v2
       - v3
     disable:
-      - "api-docs"
-      - "api-docs/*"
-      - "api-docs.yaml"
-      - "swagger" #TODO need to check if needs
-      - "swagger-ui.html" #TODO need to check if needs
-      - "swagger-ui/*" #TODO need to check if needs
-      - "swagger-resources" #TODO need to check if needs
-      - "swagger-config" #TODO need to check if needs
-      - "health/liveness"
-      - "health/readiness"
+      - "/api/crs/catalog/api-docs"
+      - "/api/crs/catalog/api-docs/*"
+      - "/api/crs/catalog/api-docs.yaml"
+      - "/api/crs/catalog/api-docs.yaml/*"
+      - "/api/crs/catalog/swagger"
+      - "/api/crs/catalog/swagger-ui"
+      - "/api/crs/catalog/swagger-ui/*"
+      - "/api/crs/catalog/swagger-ui.html"
+      - "/api/crs/catalog/api-docs/swagger-config"
+      # Public version info (expanded to /api/crs/catalog/<version>/info)
+      - "info"
